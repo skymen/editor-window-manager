@@ -1622,14 +1622,13 @@ function addDialogStyles() {
       gap: 8px;
       padding: 8px 14px;
       background: var(--gray7, #383838);
-      border: 1px solid var(--gray8, #404040);
       border-bottom: none;
       border-radius: 6px 6px 0 0;
       cursor: pointer;
       white-space: nowrap;
       color: var(--gray18, #8f8f8f);
       font-size: 13px;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      transition: background 0.15s, color 0.15s;
       margin-bottom: -1px;
       position: relative;
     }
@@ -1637,12 +1636,10 @@ function addDialogStyles() {
     .theme-dialog-tab:hover {
       background: var(--gray9, #474747);
       color: var(--gray26, #cfcfcf);
-      border-color: var(--gray11, #575757);
     }
 
     .theme-dialog-tab.active {
       background: var(--gray11, #575757);
-      border-color: var(--gray11, #575757);
       border-bottom: 2px solid var(--turquoise, #29f3d0);
       color: var(--gray29, #e8e8e8);
       font-weight: 500;
@@ -1860,20 +1857,22 @@ function addDialogStyles() {
 
     .theme-minimized-dock {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
+      bottom: 0px;
+      right: 0px;
       display: flex;
       gap: 8px;
       z-index: 9999;
       flex-wrap: wrap;
       max-width: 600px;
+      padding: 10px;
     }
 
     .theme-dock-item {
-      background: var(--turquoise, #29f3d0);
       border-radius: 6px;
-      padding: 10px 16px;
-      color: var(--gray4, #1f1f1f);
+      padding: 10px 14px;
+      background: var(--gray11, #575757);
+      border-bottom: 2px solid var(--turquoise, #29f3d0);
+      color: var(--gray29, #e8e8e8);
       cursor: pointer;
       font-size: 13px;
       font-weight: 500;
@@ -1884,8 +1883,7 @@ function addDialogStyles() {
     }
 
     .theme-dock-item:hover {
-      background: var(--turquoise, #29f3d0);
-      border-color: var(--turquoise, #29f3d0);
+      background: var(--gray13, #404040);
       filter: brightness(1.1);
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
