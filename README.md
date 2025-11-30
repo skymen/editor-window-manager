@@ -1,9 +1,9 @@
 <img src="./src/icon.svg" width="100" /><br>
 # Editor Window Manager
 <i>Description</i> <br>
-### Version 1.2.1.0
+### Version 1.2.2.0
 
-[<img src="https://placehold.co/200x50/4493f8/FFF?text=Download&font=montserrat" width="200"/>](https://github.com/skymen/editor-window-manager/releases/download/editor_window_manager-1.2.1.0.c3addon/editor_window_manager-1.2.1.0.c3addon)
+[<img src="https://placehold.co/200x50/4493f8/FFF?text=Download&font=montserrat" width="200"/>](https://github.com/skymen/editor-window-manager/releases/download/editor_window_manager-1.2.2.0.c3addon/editor_window_manager-1.2.2.0.c3addon)
 <br>
 <sub> [See all releases](https://github.com/skymen/editor-window-manager/releases) </sub> <br>
 
