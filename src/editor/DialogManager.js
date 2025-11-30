@@ -1558,7 +1558,6 @@ function addDialogStyles() {
       width: 600px;
       height: 400px;
       background: var(--gray11, #575757);
-      border: 1px solid var(--gray8, #404040);
       border-radius: 4px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
       z-index: 10000;
@@ -1573,9 +1572,8 @@ function addDialogStyles() {
     }
 
     .theme-dialog-header {
-      background: var(--gray10, #4f4f4f);
+      background: var(--gray13, #696969);
       padding: 8px 8px 0 8px;
-      border-bottom: 1px solid var(--gray8, #404040);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1645,7 +1643,7 @@ function addDialogStyles() {
     .theme-dialog-tab.active {
       background: var(--gray11, #575757);
       border-color: var(--gray11, #575757);
-      border-bottom: 1px solid var(--gray11, #575757);
+      border-bottom: 2px solid var(--turquoise, #29f3d0);
       color: var(--gray29, #e8e8e8);
       font-weight: 500;
       padding-top: 10px;
@@ -1677,7 +1675,7 @@ function addDialogStyles() {
     .theme-dialog-tab .tab-popout:hover,
     .theme-dialog-tab .tab-close:hover {
       background: var(--gray11, #575757);
-      color: var(--gray29, #e8e8e8);
+      color: var(--turquoise, #29f3d0);
     }
 
     .theme-dialog-tab.drop-target-tab {
@@ -1872,13 +1870,13 @@ function addDialogStyles() {
     }
 
     .theme-dock-item {
-      background: var(--gray4, #1f1f1f);
-      border: 1px solid var(--gray8, #404040);
+      background: var(--turquoise, #29f3d0);
       border-radius: 6px;
       padding: 10px 16px;
-      color: var(--gray29, #e8e8e8);
+      color: var(--gray4, #1f1f1f);
       cursor: pointer;
       font-size: 13px;
+      font-weight: 500;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       transition: all 0.2s;
       user-select: none;
@@ -1886,8 +1884,9 @@ function addDialogStyles() {
     }
 
     .theme-dock-item:hover {
-      background: var(--gray11, #575757);
-      border-color: var(--gray15, #787878);
+      background: var(--turquoise, #29f3d0);
+      border-color: var(--turquoise, #29f3d0);
+      filter: brightness(1.1);
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
     }
