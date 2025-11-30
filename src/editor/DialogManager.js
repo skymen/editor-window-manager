@@ -586,15 +586,15 @@ export const DialogManager = {
               margin: 0; 
               padding: 0; 
               overflow: hidden;
-              background: #2a2a2a;
-              color: #fff;
+              background: #575757;
+              color: #b8b8b8;
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             }
             #content { 
               width: 100%; 
               height: 100vh; 
               overflow: auto;
-              color: #fff;
+              color: #b8b8b8;
             }
             #content * {
               color: inherit;
@@ -1619,8 +1619,8 @@ function addDialogStyles() {
     .theme-dialog-tab {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
+      gap: 2px;
+      padding: 8px 8px;
       background: var(--gray7, #383838);
       border-bottom: none;
       border-radius: 6px 6px 0 0;
@@ -1649,6 +1649,8 @@ function addDialogStyles() {
 
     .theme-dialog-tab .tab-title {
       flex: 1;
+      margin-right: 10px;
+      margin-left: 6px;
     }
 
     .theme-dialog-tab .tab-popout,
