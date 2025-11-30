@@ -611,19 +611,23 @@ export const DialogManager = {
       const sourceContainer = this.containers.get(sourceContainerId);
       if (sourceContainer) {
         const containerData = this.containers.get(sourceContainerId);
-        const wasActiveWindow = containerData && containerData.activeWindowId === windowId;
-        
+        const wasActiveWindow =
+          containerData && containerData.activeWindowId === windowId;
+
         this.updateTabVisibility(sourceContainer.element);
         this.updateContainerVisibility(sourceContainerId);
-        
+
         // If this was the active window, focus another visible tab
         if (wasActiveWindow) {
-          const remainingVisibleWindows = Array.from(this.windows.values()).filter(
-            (w) => w.containerId === sourceContainerId && !w.isInPopup
-          );
-          
+          const remainingVisibleWindows = Array.from(
+            this.windows.values()
+          ).filter((w) => w.containerId === sourceContainerId && !w.isInPopup);
+
           if (remainingVisibleWindows.length > 0) {
-            this.focusWindowInContainer(remainingVisibleWindows[0].id, sourceContainerId);
+            this.focusWindowInContainer(
+              remainingVisibleWindows[0].id,
+              sourceContainerId
+            );
           }
         }
       }
