@@ -1,10 +1,10 @@
 {
   "languageTag": "en-US",
-  "fileDescription": "Strings for sample_addon.",
+  "fileDescription": "Strings for editor_window_manager.",
   "text": {
     "plugins": {
-      "sample_addon": {
-        "name": "Sample Addon",
+      "editor_window_manager": {
+        "name": "Editor Window Manager",
         "description": "Description",
         "help-url": "https://www.construct.net",
         "aceCategories": {},
