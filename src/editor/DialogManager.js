@@ -140,6 +140,11 @@ export const DialogManager = {
     this.makeDraggable(container);
     this.makeResizable(container);
 
+    // Bring container to front when clicked anywhere
+    container.addEventListener("click", () => {
+      this.bringContainerToFront(containerId);
+    });
+
     // Store container data
     const containerData = {
       id: containerId,
