@@ -6,6 +6,7 @@ const WINDOW_OFFSET_MAX = 150; // Maximum offset before wrapping
 const DRAG_OFFSET_X = 300; // X offset when dragging tab to new window
 const DRAG_OFFSET_Y = 20; // Y offset when dragging tab to new window
 const BASE_Z_INDEX = 10000; // Base z-index for dialog containers
+const MERGE_HOVER_DELAY = 300; // Milliseconds to hover before merge is enabled
 
 export const DialogManager = {
   windows: new Map(),
@@ -980,6 +981,8 @@ export const DialogManager = {
     let startX, startY, startLeft, startTop;
     let hasMoved = false;
     let potentialMergeTarget = null;
+    let mergeHoverTimer = null;
+    let mergeEnabled = false;
 
     const onMouseDown = (e) => {
       if (
@@ -990,6 +993,7 @@ export const DialogManager = {
 
       isDragging = true;
       hasMoved = false;
+      mergeEnabled = false;
       startX = e.clientX;
       startY = e.clientY;
       startLeft = container.offsetLeft;
@@ -1031,11 +1035,7 @@ export const DialogManager = {
         const mouseX = e.clientX;
         const mouseY = e.clientY;
 
-        // Remove previous merge highlight
-        if (potentialMergeTarget) {
-          potentialMergeTarget.classList.remove("drop-target");
-        }
-        potentialMergeTarget = null;
+        let foundTarget = null;
 
         // Check if hovering over another container
         this.containers.forEach((containerData) => {
@@ -1048,10 +1048,33 @@ export const DialogManager = {
             mouseY >= rect.top &&
             mouseY <= rect.bottom
           ) {
-            potentialMergeTarget = containerData.element;
-            potentialMergeTarget.classList.add("drop-target");
+            foundTarget = containerData.element;
           }
         });
+
+        // If we've moved to a different target or no target
+        if (foundTarget !== potentialMergeTarget) {
+          // Clear previous timer and highlight
+          if (mergeHoverTimer) {
+            clearTimeout(mergeHoverTimer);
+            mergeHoverTimer = null;
+          }
+          if (potentialMergeTarget) {
+            potentialMergeTarget.classList.remove("drop-target");
+          }
+          mergeEnabled = false;
+          potentialMergeTarget = foundTarget;
+
+          // If there's a new target, start the hover timer
+          if (potentialMergeTarget) {
+            mergeHoverTimer = setTimeout(() => {
+              mergeEnabled = true;
+              if (potentialMergeTarget) {
+                potentialMergeTarget.classList.add("drop-target");
+              }
+            }, MERGE_HOVER_DELAY);
+          }
+        }
       }
     };
 
@@ -1060,13 +1083,19 @@ export const DialogManager = {
         isDragging = false;
         header.style.cursor = "grab";
 
+        // Clear hover timer
+        if (mergeHoverTimer) {
+          clearTimeout(mergeHoverTimer);
+          mergeHoverTimer = null;
+        }
+
         // Remove all merge highlights
         this.containers.forEach((containerData) => {
           containerData.element.classList.remove("drop-target");
         });
 
-        // Check if we should merge
-        if (hasMoved && potentialMergeTarget) {
+        // Check if we should merge (only if merge was enabled by hovering long enough)
+        if (hasMoved && potentialMergeTarget && mergeEnabled) {
           const sourceContainerId = container.dataset.containerId;
           const targetContainerId = potentialMergeTarget.dataset.containerId;
 
@@ -1077,6 +1106,7 @@ export const DialogManager = {
         }
 
         potentialMergeTarget = null;
+        mergeEnabled = false;
         hasMoved = false;
       }
     };
