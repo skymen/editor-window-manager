@@ -504,6 +504,14 @@ export const DialogManager = {
     const draggedTab = draggedWindow.tabElement;
     const targetTab = targetWindow.tabElement;
 
+    // Remove any drag-related classes
+    draggedTab.classList.remove(
+      "tab-dragging",
+      "drop-indicator-before",
+      "drop-indicator-after"
+    );
+    targetTab.classList.remove("drop-indicator-before", "drop-indicator-after");
+
     if (insertBefore) {
       tabsContainer.insertBefore(draggedTab, targetTab);
     } else {
@@ -1022,6 +1030,8 @@ export const DialogManager = {
 
       const dockItem = document.createElement("div");
       dockItem.className = "theme-dock-item";
+      dockItem.draggable = true;
+      dockItem.dataset.containerId = containerData.id;
 
       // Show all tab names if multiple, otherwise just the one
       if (windowsInContainer.length > 1) {
@@ -1034,6 +1044,83 @@ export const DialogManager = {
 
       dockItem.addEventListener("click", () => {
         this.restoreContainer(containerData.id);
+      });
+
+      // Drag handlers for reordering
+      dockItem.addEventListener("dragstart", (e) => {
+        dockItem.classList.add("dock-item-dragging");
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", containerData.id);
+      });
+
+      dockItem.addEventListener("dragend", () => {
+        dockItem.classList.remove("dock-item-dragging");
+        // Remove all drop indicators
+        document.querySelectorAll(".theme-dock-item").forEach((item) => {
+          item.classList.remove(
+            "dock-drop-indicator-before",
+            "dock-drop-indicator-after"
+          );
+        });
+      });
+
+      dockItem.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        const draggingItem = document.querySelector(".dock-item-dragging");
+        if (!draggingItem || draggingItem === dockItem) return;
+
+        // Determine drop position
+        const rect = dockItem.getBoundingClientRect();
+        const midX = rect.left + rect.width / 2;
+        const insertBefore = e.clientX < midX;
+
+        // Remove previous indicators
+        document.querySelectorAll(".theme-dock-item").forEach((item) => {
+          item.classList.remove(
+            "dock-drop-indicator-before",
+            "dock-drop-indicator-after"
+          );
+        });
+
+        // Add new indicator
+        if (insertBefore) {
+          dockItem.classList.add("dock-drop-indicator-before");
+        } else {
+          dockItem.classList.add("dock-drop-indicator-after");
+        }
+      });
+
+      dockItem.addEventListener("dragleave", (e) => {
+        if (!dockItem.contains(e.relatedTarget)) {
+          dockItem.classList.remove(
+            "dock-drop-indicator-before",
+            "dock-drop-indicator-after"
+          );
+        }
+      });
+
+      dockItem.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const draggingItem = document.querySelector(".dock-item-dragging");
+        if (!draggingItem || draggingItem === dockItem) return;
+
+        // Determine drop position
+        const rect = dockItem.getBoundingClientRect();
+        const midX = rect.left + rect.width / 2;
+        const insertBefore = e.clientX < midX;
+
+        // Reorder in DOM
+        if (insertBefore) {
+          this.minimizedDock.insertBefore(draggingItem, dockItem);
+        } else {
+          this.minimizedDock.insertBefore(draggingItem, dockItem.nextSibling);
+        }
+
+        // Clean up
+        dockItem.classList.remove(
+          "dock-drop-indicator-before",
+          "dock-drop-indicator-after"
+        );
       });
 
       this.minimizedDock.appendChild(dockItem);
@@ -1709,6 +1796,7 @@ function addDialogStyles() {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       transition: all 0.2s;
       user-select: none;
+      position: relative;
     }
 
     .theme-dock-item:hover {
@@ -1716,6 +1804,42 @@ function addDialogStyles() {
       border-color: #777;
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .theme-dock-item[draggable="true"] {
+      cursor: grab;
+    }
+
+    .theme-dock-item[draggable="true"]:active {
+      cursor: grabbing;
+    }
+
+    .theme-dock-item.dock-item-dragging {
+      opacity: 0.5;
+    }
+
+    .theme-dock-item.dock-drop-indicator-before::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #4a9eff;
+      border-radius: 2px;
+      animation: pulse-indicator 0.6s ease-in-out infinite;
+    }
+
+    .theme-dock-item.dock-drop-indicator-after::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #4a9eff;
+      border-radius: 2px;
+      animation: pulse-indicator 0.6s ease-in-out infinite;
     }
   `;
 
