@@ -6,7 +6,7 @@
       "editor_window_manager": {
         "name": "Editor Window Manager",
         "description": "Description",
-        "help-url": "https://www.construct.net",
+        "help-url": "https://github.com/skymen/editor-window-manager/blob/main/docs.md",
         "aceCategories": {},
         "properties": {},
         "actions": {},

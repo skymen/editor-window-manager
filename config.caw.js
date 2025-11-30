@@ -12,8 +12,9 @@ export const name = "Editor Window Manager";
 export const version = _version;
 export const minConstructVersion = undefined;
 export const author = "skymen";
-export const website = "https://www.construct.net";
-export const documentation = "https://www.construct.net";
+export const website = "https://github.com/skymen/editor-window-manager";
+export const documentation =
+  "https://github.com/skymen/editor-window-manager/blob/main/docs.md";
 export const description = "Description";
 export const category = ADDON_CATEGORY.GENERAL;
 
