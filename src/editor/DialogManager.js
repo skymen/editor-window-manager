@@ -1,13 +1,24 @@
 // Dialog Manager - handles multiple windows, tabs, minimizing, and popups
+
+// Constants for window positioning and layering
+const WINDOW_OFFSET_STEP = 30; // Pixels to offset each new window
+const WINDOW_OFFSET_MAX = 150; // Maximum offset before wrapping
+const DRAG_OFFSET_X = 300; // X offset when dragging tab to new window
+const DRAG_OFFSET_Y = 20; // Y offset when dragging tab to new window
+const BASE_Z_INDEX = 10000; // Base z-index for dialog containers
+
 export const DialogManager = {
   windows: new Map(),
-  activeWindowId: null,
+  containers: new Map(), // Track multiple containers
   minimizedDock: null,
+  containerIdCounter: 0,
+  dragState: null, // Track tab dragging state
 
   init() {
     addDialogStyles();
     this.createMinimizedDock();
     this.setupWindowResizeListener();
+    this.setupGlobalDragListeners();
   },
 
   createMinimizedDock() {
@@ -24,11 +35,20 @@ export const DialogManager = {
     this.resizeListenerAdded = true;
 
     window.addEventListener("resize", () => {
-      const container = document.querySelector(".theme-dialog-container");
-      if (container && container.style.display !== "none") {
-        this.constrainToViewport(container);
-      }
+      this.containers.forEach((containerData) => {
+        if (containerData.element && containerData.element.style.display !== "none") {
+          this.constrainToViewport(containerData.element);
+        }
+      });
     });
+  },
+
+  setupGlobalDragListeners() {
+    if (this.globalDragListenersAdded) return;
+    this.globalDragListenersAdded = true;
+
+    document.addEventListener("mousemove", (e) => this.handleTabDragMove(e));
+    document.addEventListener("mouseup", (e) => this.handleTabDragEnd(e));
   },
 
   createWindow({ id, title, content, onInit }) {
@@ -44,17 +64,112 @@ export const DialogManager = {
       isMinimized: false,
       isInPopup: false,
       tabElement: null,
+      containerId: null,
     };
 
     this.windows.set(id, windowData);
-    this.renderWindow(windowData);
-    this.focusWindow(id);
+    
+    // Each window opens in its own separate container by default
+    const container = this.createNewContainer();
+    this.renderWindowInContainer(windowData, container);
+    this.focusWindowInContainer(id, container.dataset.containerId);
 
     return windowData;
   },
 
-  renderWindow(windowData) {
-    const container = this.getOrCreateContainer();
+  createNewContainer(position = null) {
+    const containerId = `container-${++this.containerIdCounter}`;
+    
+    const container = document.createElement("div");
+    container.className = "theme-dialog-container";
+    container.dataset.containerId = containerId;
+    container.innerHTML = `
+      <div class="theme-dialog-header">
+        <div class="theme-dialog-tabs"></div>
+        <div class="theme-dialog-controls">
+          <button class="theme-dialog-btn minimize-btn" title="Minimize">_</button>
+          <button class="theme-dialog-btn close-btn" title="Close">×</button>
+        </div>
+      </div>
+      <div class="theme-dialog-tabs-content"></div>
+    `;
+
+    document.body.appendChild(container);
+
+    // Position the container
+    if (position) {
+      container.style.left = position.left + "px";
+      container.style.top = position.top + "px";
+    } else {
+      // Offset new windows slightly from previous ones
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const offset = (this.containers.size * WINDOW_OFFSET_STEP) % WINDOW_OFFSET_MAX;
+      container.style.left = Math.max(0, (viewportWidth - 600) / 2 + offset) + "px";
+      container.style.top = Math.max(0, (viewportHeight - 400) / 2 + offset) + "px";
+    }
+
+    // Setup controls
+    container.querySelector(".close-btn").addEventListener("click", () => {
+      this.closeActiveWindowInContainer(containerId);
+    });
+
+    container.querySelector(".minimize-btn").addEventListener("click", () => {
+      this.minimizeContainer(containerId);
+    });
+
+    // Setup drop zone for merging windows
+    this.setupContainerDropZone(container);
+
+    this.makeDraggable(container);
+    this.makeResizable(container);
+
+    // Store container data
+    const containerData = {
+      id: containerId,
+      element: container,
+      activeWindowId: null,
+      isMinimized: false,
+    };
+    this.containers.set(containerId, containerData);
+
+    return container;
+  },
+
+  setupContainerDropZone(container) {
+    container.addEventListener("dragover", (e) => {
+      if (!this.dragState) return;
+      e.preventDefault();
+      container.classList.add("drop-target");
+    });
+
+    container.addEventListener("dragleave", (e) => {
+      // Only remove if we're actually leaving the container
+      if (!container.contains(e.relatedTarget)) {
+        container.classList.remove("drop-target");
+      }
+    });
+
+    container.addEventListener("drop", (e) => {
+      e.preventDefault();
+      container.classList.remove("drop-target");
+      
+      if (!this.dragState) return;
+      
+      const { windowId, sourceContainerId } = this.dragState;
+      const targetContainerId = container.dataset.containerId;
+      
+      // Don't merge into the same container (reordering is handled separately)
+      if (sourceContainerId === targetContainerId) return;
+      
+      this.moveWindowToContainer(windowId, targetContainerId);
+      this.dragState = null;
+    });
+  },
+
+  renderWindowInContainer(windowData, container) {
+    const containerId = container.dataset.containerId;
+    windowData.containerId = containerId;
 
     // Create or update tab
     this.createTab(windowData, container);
@@ -69,6 +184,9 @@ export const DialogManager = {
       if (windowData.onInit) {
         setTimeout(() => windowData.onInit(windowData.element), 0);
       }
+    } else {
+      // Move existing element to new container
+      container.querySelector(".theme-dialog-tabs-content").appendChild(windowData.element);
     }
 
     this.updateTabVisibility(container);
@@ -82,99 +200,376 @@ export const DialogManager = {
     return windowEl;
   },
 
-  getOrCreateContainer() {
-    let container = document.querySelector(".theme-dialog-container");
-
-    if (!container) {
-      container = document.createElement("div");
-      container.className = "theme-dialog-container";
-      container.innerHTML = `
-        <div class="theme-dialog-header">
-          <div class="theme-dialog-tabs"></div>
-          <div class="theme-dialog-controls">
-            <button class="theme-dialog-btn popup-btn" title="Open in popup">⧉</button>
-            <button class="theme-dialog-btn minimize-btn" title="Minimize">_</button>
-            <button class="theme-dialog-btn close-btn" title="Close">×</button>
-          </div>
-        </div>
-        <div class="theme-dialog-tabs-content"></div>
-      `;
-
-      document.body.appendChild(container);
-
-      // Center the container initially
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      container.style.left = Math.max(0, (viewportWidth - 600) / 2) + "px";
-      container.style.top = Math.max(0, (viewportHeight - 400) / 2) + "px";
-
-      // Setup controls
-      container.querySelector(".close-btn").addEventListener("click", () => {
-        this.closeActiveWindow();
-      });
-
-      container.querySelector(".minimize-btn").addEventListener("click", () => {
-        this.minimizeContainer();
-      });
-
-      container.querySelector(".popup-btn").addEventListener("click", () => {
-        this.openActiveInPopup();
-      });
-
-      this.makeDraggable(container);
-      this.makeResizable(container);
-    }
-
-    return container;
-  },
-
   createTab(windowData, container) {
-    if (windowData.tabElement) return;
+    // Remove existing tab if present
+    if (windowData.tabElement) {
+      windowData.tabElement.remove();
+    }
 
     const tab = document.createElement("div");
     tab.className = "theme-dialog-tab";
     tab.dataset.windowId = windowData.id;
-    tab.innerHTML = `<span>${windowData.title}</span><button class="tab-close">×</button>`;
+    tab.draggable = true;
+    tab.innerHTML = `
+      <span class="tab-title">${windowData.title}</span>
+      <button class="tab-popout" title="Pop out to separate window">⧉</button>
+      <button class="tab-close" title="Close">×</button>
+    `;
 
+    // Pop-out button handler
+    tab.querySelector(".tab-popout").addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.popOutWindow(windowData.id);
+    });
+
+    // Close button handler
     tab.querySelector(".tab-close").addEventListener("click", (e) => {
       e.stopPropagation();
       this.closeWindow(windowData.id);
     });
 
+    // Tab click to focus
     tab.addEventListener("click", () => {
-      this.focusWindow(windowData.id);
+      this.focusWindowInContainer(windowData.id, windowData.containerId);
+    });
+
+    // Tab drag start
+    tab.addEventListener("dragstart", (e) => {
+      this.handleTabDragStart(e, windowData, container);
+    });
+
+    tab.addEventListener("dragend", () => {
+      this.handleTabDragEnd();
+    });
+
+    // Tab drop for reordering within same container
+    tab.addEventListener("dragover", (e) => {
+      if (!this.dragState) return;
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const draggedWindowId = this.dragState.windowId;
+      const targetWindowId = windowData.id;
+      
+      if (draggedWindowId === targetWindowId) return;
+      if (this.dragState.sourceContainerId !== windowData.containerId) return;
+      
+      // Visual indicator for drop position
+      const rect = tab.getBoundingClientRect();
+      const midX = rect.left + rect.width / 2;
+      
+      tab.classList.remove("drop-left", "drop-right");
+      if (e.clientX < midX) {
+        tab.classList.add("drop-left");
+      } else {
+        tab.classList.add("drop-right");
+      }
+    });
+
+    tab.addEventListener("dragleave", () => {
+      tab.classList.remove("drop-left", "drop-right");
+    });
+
+    tab.addEventListener("drop", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (!this.dragState) return;
+      
+      const draggedWindowId = this.dragState.windowId;
+      const targetWindowId = windowData.id;
+      
+      if (draggedWindowId === targetWindowId) return;
+      
+      tab.classList.remove("drop-left", "drop-right");
+      
+      // Reorder tabs
+      const rect = tab.getBoundingClientRect();
+      const midX = rect.left + rect.width / 2;
+      const insertBefore = e.clientX < midX;
+      
+      this.reorderTab(draggedWindowId, targetWindowId, insertBefore, container);
+      this.dragState = null;
     });
 
     windowData.tabElement = tab;
     container.querySelector(".theme-dialog-tabs").appendChild(tab);
   },
 
+  handleTabDragStart(e, windowData, container) {
+    this.dragState = {
+      windowId: windowData.id,
+      sourceContainerId: container.dataset.containerId,
+      startX: e.clientX,
+      startY: e.clientY,
+    };
+    
+    // Set drag image
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", windowData.id);
+    
+    // Highlight potential drop targets
+    setTimeout(() => {
+      this.containers.forEach((containerData) => {
+        if (containerData.id !== this.dragState?.sourceContainerId) {
+          containerData.element.classList.add("potential-drop-target");
+        }
+      });
+    }, 0);
+  },
+
+  handleTabDragMove(e) {
+    if (!this.dragState) return;
+    
+    // Track mouse position for creating new window when dropped outside
+    this.dragState.currentX = e.clientX;
+    this.dragState.currentY = e.clientY;
+  },
+
+  handleTabDragEnd(e) {
+    if (!this.dragState) return;
+    
+    // Remove all highlight classes
+    this.containers.forEach((containerData) => {
+      containerData.element.classList.remove("potential-drop-target", "drop-target");
+    });
+    
+    document.querySelectorAll(".theme-dialog-tab").forEach((tab) => {
+      tab.classList.remove("drop-left", "drop-right");
+    });
+    
+    // Check if dropped outside any container - create new window
+    if (e && this.dragState.currentX !== undefined) {
+      const droppedOnContainer = Array.from(this.containers.values()).some((containerData) => {
+        const rect = containerData.element.getBoundingClientRect();
+        return (
+          this.dragState.currentX >= rect.left &&
+          this.dragState.currentX <= rect.right &&
+          this.dragState.currentY >= rect.top &&
+          this.dragState.currentY <= rect.bottom
+        );
+      });
+      
+      if (!droppedOnContainer) {
+        // Create new container at drop position
+        this.popOutWindowToPosition(this.dragState.windowId, {
+          left: this.dragState.currentX - DRAG_OFFSET_X,
+          top: this.dragState.currentY - DRAG_OFFSET_Y,
+        });
+      }
+    }
+    
+    this.dragState = null;
+  },
+
+  reorderTab(draggedWindowId, targetWindowId, insertBefore, container) {
+    const draggedWindow = this.windows.get(draggedWindowId);
+    const targetWindow = this.windows.get(targetWindowId);
+    
+    if (!draggedWindow || !targetWindow) return;
+    if (draggedWindow.containerId !== targetWindow.containerId) return;
+    
+    const tabsContainer = container.querySelector(".theme-dialog-tabs");
+    const draggedTab = draggedWindow.tabElement;
+    const targetTab = targetWindow.tabElement;
+    
+    if (insertBefore) {
+      tabsContainer.insertBefore(draggedTab, targetTab);
+    } else {
+      tabsContainer.insertBefore(draggedTab, targetTab.nextSibling);
+    }
+  },
+
+  moveWindowToContainer(windowId, targetContainerId) {
+    const windowData = this.windows.get(windowId);
+    if (!windowData) return;
+    
+    const sourceContainerId = windowData.containerId;
+    const sourceContainer = this.containers.get(sourceContainerId);
+    const targetContainer = this.containers.get(targetContainerId);
+    
+    if (!sourceContainer || !targetContainer) return;
+    
+    // Move tab and content to new container
+    const targetElement = targetContainer.element;
+    this.renderWindowInContainer(windowData, targetElement);
+    
+    // Update active window in target container
+    this.focusWindowInContainer(windowId, targetContainerId);
+    
+    // Clean up source container if empty
+    this.cleanupContainerIfEmpty(sourceContainerId);
+  },
+
+  popOutWindow(windowId) {
+    const windowData = this.windows.get(windowId);
+    if (!windowData) return;
+    
+    const sourceContainerId = windowData.containerId;
+    const sourceContainer = this.containers.get(sourceContainerId);
+    if (!sourceContainer) return;
+    
+    // Count visible windows in source container
+    const visibleWindowsInContainer = Array.from(this.windows.values()).filter(
+      (w) => w.containerId === sourceContainerId && !w.isInPopup
+    );
+    
+    // If this is the only window, don't pop out (already separate)
+    if (visibleWindowsInContainer.length <= 1) return;
+    
+    // Create new container for this window
+    const sourceRect = sourceContainer.element.getBoundingClientRect();
+    const newContainer = this.createNewContainer({
+      left: sourceRect.left + 50,
+      top: sourceRect.top + 50,
+    });
+    
+    this.renderWindowInContainer(windowData, newContainer);
+    this.focusWindowInContainer(windowId, newContainer.dataset.containerId);
+    
+    // Update source container
+    this.cleanupContainerIfEmpty(sourceContainerId);
+    this.updateTabVisibility(sourceContainer.element);
+    
+    // Focus another window in source container
+    const remainingWindow = Array.from(this.windows.values()).find(
+      (w) => w.containerId === sourceContainerId && !w.isInPopup
+    );
+    if (remainingWindow) {
+      this.focusWindowInContainer(remainingWindow.id, sourceContainerId);
+    }
+  },
+
+  popOutWindowToPosition(windowId, position) {
+    const windowData = this.windows.get(windowId);
+    if (!windowData) return;
+    
+    const sourceContainerId = windowData.containerId;
+    const sourceContainer = this.containers.get(sourceContainerId);
+    if (!sourceContainer) return;
+    
+    // Count visible windows in source container
+    const visibleWindowsInContainer = Array.from(this.windows.values()).filter(
+      (w) => w.containerId === sourceContainerId && !w.isInPopup
+    );
+    
+    // If this is the only window, just move the container
+    if (visibleWindowsInContainer.length <= 1) {
+      sourceContainer.element.style.left = position.left + "px";
+      sourceContainer.element.style.top = position.top + "px";
+      this.constrainToViewport(sourceContainer.element);
+      return;
+    }
+    
+    // Create new container at position
+    const newContainer = this.createNewContainer(position);
+    this.constrainToViewport(newContainer);
+    
+    this.renderWindowInContainer(windowData, newContainer);
+    this.focusWindowInContainer(windowId, newContainer.dataset.containerId);
+    
+    // Update source container
+    this.updateTabVisibility(sourceContainer.element);
+    
+    // Focus another window in source container
+    const remainingWindow = Array.from(this.windows.values()).find(
+      (w) => w.containerId === sourceContainerId && !w.isInPopup
+    );
+    if (remainingWindow) {
+      this.focusWindowInContainer(remainingWindow.id, sourceContainerId);
+    }
+  },
+
+  cleanupContainerIfEmpty(containerId) {
+    const containerData = this.containers.get(containerId);
+    if (!containerData) return;
+    
+    const windowsInContainer = Array.from(this.windows.values()).filter(
+      (w) => w.containerId === containerId
+    );
+    
+    if (windowsInContainer.length === 0) {
+      containerData.element.remove();
+      this.containers.delete(containerId);
+    } else {
+      this.updateTabVisibility(containerData.element);
+    }
+  },
+
   updateTabVisibility(container) {
-    const tabs = container.querySelectorAll(".theme-dialog-tab");
+    const containerId = container.dataset.containerId;
+    const containerData = this.containers.get(containerId);
+    if (!containerData) return;
+
+    // Get all visible tabs (not in popup)
+    const allTabs = container.querySelectorAll(".theme-dialog-tab");
+    const visibleTabs = Array.from(allTabs).filter((tab) => {
+      const windowId = tab.dataset.windowId;
+      const windowData = this.windows.get(windowId);
+      return windowData && !windowData.isInPopup;
+    });
+
     const contents = container.querySelectorAll(".theme-window-content");
 
-    tabs.forEach((tab) => {
+    // Update tab active states and visibility
+    allTabs.forEach((tab) => {
       const windowId = tab.dataset.windowId;
-      const isActive = windowId === this.activeWindowId;
+      const windowData = this.windows.get(windowId);
+      const isActive = windowId === containerData.activeWindowId;
+      
       tab.classList.toggle("active", isActive);
+      
+      // Hide tabs that are in popup
+      if (windowData && windowData.isInPopup) {
+        tab.style.display = "none";
+      } else {
+        tab.style.display = "";
+      }
     });
 
     contents.forEach((content) => {
       const windowId = content.dataset.windowId;
-      const isActive = windowId === this.activeWindowId;
-      content.style.display = isActive ? "block" : "none";
+      const windowData = this.windows.get(windowId);
+      const isActive = windowId === containerData.activeWindowId;
+      
+      // Hide content that is in popup or not active
+      if (windowData && windowData.isInPopup) {
+        content.style.display = "none";
+      } else {
+        content.style.display = isActive ? "block" : "none";
+      }
     });
 
-    // Show/hide tabs bar if only one tab
+    // Show/hide tabs bar if only one visible tab
     const tabsBar = container.querySelector(".theme-dialog-tabs");
-    tabsBar.style.display = tabs.length > 1 ? "flex" : "none";
+    tabsBar.style.display = visibleTabs.length > 1 ? "flex" : "none";
   },
 
-  focusWindow(id) {
-    this.activeWindowId = id;
-    const container = document.querySelector(".theme-dialog-container");
-    if (container) {
-      this.updateTabVisibility(container);
+  focusWindowInContainer(windowId, containerId) {
+    const containerData = this.containers.get(containerId);
+    if (!containerData) return;
+    
+    containerData.activeWindowId = windowId;
+    
+    // Bring container to front
+    this.bringContainerToFront(containerId);
+    
+    if (containerData.element) {
+      this.updateTabVisibility(containerData.element);
+    }
+  },
+
+  bringContainerToFront(containerId) {
+    // Get max z-index among all containers
+    let maxZ = BASE_Z_INDEX;
+    this.containers.forEach((containerData) => {
+      const z = parseInt(containerData.element.style.zIndex) || BASE_Z_INDEX;
+      if (z > maxZ) maxZ = z;
+    });
+    
+    const containerData = this.containers.get(containerId);
+    if (containerData) {
+      containerData.element.style.zIndex = maxZ + 1;
     }
   },
 
@@ -190,6 +585,9 @@ export const DialogManager = {
       windowData.popupWindow.close();
     }
 
+    const containerId = windowData.containerId;
+    const containerData = this.containers.get(containerId);
+
     if (windowData.tabElement) {
       windowData.tabElement.remove();
     }
@@ -200,54 +598,59 @@ export const DialogManager = {
 
     this.windows.delete(id);
 
-    // Update active window
-    if (this.activeWindowId === id) {
-      const remainingIds = Array.from(this.windows.keys());
-      this.activeWindowId = remainingIds.length > 0 ? remainingIds[0] : null;
+    // Update active window in container
+    if (containerData && containerData.activeWindowId === id) {
+      const remainingWindows = Array.from(this.windows.values()).filter(
+        (w) => w.containerId === containerId && !w.isInPopup
+      );
+      containerData.activeWindowId = remainingWindows.length > 0 ? remainingWindows[0].id : null;
     }
 
-    // Remove container if no windows left
-    const container = document.querySelector(".theme-dialog-container");
-    if (container && this.windows.size === 0) {
-      container.remove();
-    } else if (container) {
-      this.updateTabVisibility(container);
-    }
+    // Clean up container if empty
+    this.cleanupContainerIfEmpty(containerId);
 
     this.updateMinimizedDock();
   },
 
-  closeActiveWindow() {
-    if (this.activeWindowId) {
-      this.closeWindow(this.activeWindowId);
+  closeActiveWindowInContainer(containerId) {
+    const containerData = this.containers.get(containerId);
+    if (containerData && containerData.activeWindowId) {
+      this.closeWindow(containerData.activeWindowId);
     }
   },
 
-  minimizeContainer() {
-    const container = document.querySelector(".theme-dialog-container");
-    if (!container) return;
+  minimizeContainer(containerId) {
+    const containerData = this.containers.get(containerId);
+    if (!containerData) return;
 
-    container.style.display = "none";
+    containerData.element.style.display = "none";
+    containerData.isMinimized = true;
 
-    // Mark all windows as minimized and create dock items
+    // Mark all windows in this container as minimized
     this.windows.forEach((windowData) => {
-      windowData.isMinimized = true;
+      if (windowData.containerId === containerId) {
+        windowData.isMinimized = true;
+      }
     });
 
     this.updateMinimizedDock();
   },
 
-  restoreWindow(id) {
-    const container = document.querySelector(".theme-dialog-container");
-    if (container) {
-      container.style.display = "flex";
-    }
+  restoreContainer(containerId) {
+    const containerData = this.containers.get(containerId);
+    if (!containerData) return;
 
+    containerData.element.style.display = "flex";
+    containerData.isMinimized = false;
+
+    // Mark all windows in this container as not minimized
     this.windows.forEach((windowData) => {
-      windowData.isMinimized = false;
+      if (windowData.containerId === containerId) {
+        windowData.isMinimized = false;
+      }
     });
 
-    this.focusWindow(id);
+    this.bringContainerToFront(containerId);
     this.updateMinimizedDock();
   },
 
@@ -256,128 +659,42 @@ export const DialogManager = {
 
     this.minimizedDock.innerHTML = "";
 
-    const minimizedWindows = Array.from(this.windows.values()).filter(
-      (w) => w.isMinimized
+    // Group minimized windows by container
+    const minimizedContainers = Array.from(this.containers.values()).filter(
+      (c) => c.isMinimized
     );
 
-    if (minimizedWindows.length === 0) {
+    if (minimizedContainers.length === 0) {
       this.minimizedDock.style.display = "none";
       return;
     }
 
     this.minimizedDock.style.display = "flex";
 
-    minimizedWindows.forEach((windowData) => {
+    minimizedContainers.forEach((containerData) => {
+      // Get windows in this container
+      const windowsInContainer = Array.from(this.windows.values()).filter(
+        (w) => w.containerId === containerData.id && !w.isInPopup
+      );
+
+      if (windowsInContainer.length === 0) return;
+
       const dockItem = document.createElement("div");
       dockItem.className = "theme-dock-item";
-      dockItem.textContent = windowData.title;
+      
+      // Show all tab names if multiple, otherwise just the one
+      if (windowsInContainer.length > 1) {
+        dockItem.textContent = windowsInContainer.map((w) => w.title).join(", ");
+      } else {
+        dockItem.textContent = windowsInContainer[0].title;
+      }
+      
       dockItem.addEventListener("click", () => {
-        this.restoreWindow(windowData.id);
+        this.restoreContainer(containerData.id);
       });
 
       this.minimizedDock.appendChild(dockItem);
     });
-  },
-
-  openActiveInPopup() {
-    if (!this.activeWindowId) return;
-
-    const windowData = this.windows.get(this.activeWindowId);
-    if (!windowData || windowData.isInPopup) return;
-
-    const popup = window.open(
-      "",
-      `theme-window-${windowData.id}`,
-      "width=800,height=600,menubar=no,toolbar=no,location=no,status=no"
-    );
-
-    if (!popup) {
-      alert("Popup blocked! Please allow popups for this site.");
-      return;
-    }
-
-    // Setup popup document
-    popup.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>${windowData.title}</title>
-        <style>
-          body { margin: 0; padding: 20px; font-family: system-ui; background: #2a2a2a; color: #fff; }
-        </style>
-      </head>
-      <body></body>
-      </html>
-    `);
-
-    // Move content to popup
-    popup.document.body.appendChild(windowData.element.cloneNode(true));
-
-    windowData.popupWindow = popup;
-    windowData.isInPopup = true;
-
-    // Hide the tab completely
-    if (windowData.tabElement) {
-      windowData.tabElement.style.display = "none";
-    }
-    if (windowData.element) {
-      windowData.element.style.display = "none";
-    }
-
-    // Check if there are any remaining visible windows
-    const container = document.querySelector(".theme-dialog-container");
-    if (container) {
-      const hasVisibleWindows = Array.from(this.windows.values()).some(
-        (w) => !w.isInPopup && !w.isMinimized
-      );
-
-      if (!hasVisibleWindows) {
-        // Hide the container if all windows are popped out or minimized
-        container.style.display = "none";
-      } else {
-        // Switch to another visible window
-        const visibleWindow = Array.from(this.windows.values()).find(
-          (w) => !w.isInPopup && !w.isMinimized
-        );
-        if (visibleWindow) {
-          this.focusWindow(visibleWindow.id);
-        }
-      }
-    }
-
-    // Watch for popup close
-    const checkPopupClosed = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(checkPopupClosed);
-        this.returnFromPopup(windowData.id);
-      }
-    }, 500);
-  },
-
-  returnFromPopup(id) {
-    const windowData = this.windows.get(id);
-    if (!windowData) return;
-
-    windowData.isInPopup = false;
-    windowData.popupWindow = null;
-
-    // Show the tab again
-    if (windowData.tabElement) {
-      windowData.tabElement.style.display = "";
-    }
-
-    if (windowData.element) {
-      windowData.element.style.display =
-        this.activeWindowId === id ? "block" : "none";
-    }
-
-    // Show the container again
-    const container = document.querySelector(".theme-dialog-container");
-    if (container) {
-      container.style.display = "flex";
-    }
-
-    this.focusWindow(id);
   },
 
   makeDraggable(container) {
@@ -399,6 +716,7 @@ export const DialogManager = {
       startTop = container.offsetTop;
 
       header.style.cursor = "grabbing";
+      this.bringContainerToFront(container.dataset.containerId);
       e.preventDefault();
     };
 
@@ -693,11 +1011,16 @@ function addDialogStyles() {
       font-weight: 500;
     }
 
+    .theme-dialog-tab .tab-title {
+      flex: 1;
+    }
+
+    .theme-dialog-tab .tab-popout,
     .theme-dialog-tab .tab-close {
       background: transparent;
       border: none;
       color: #aaa;
-      font-size: 16px;
+      font-size: 14px;
       width: 18px;
       height: 18px;
       display: flex;
@@ -707,11 +1030,40 @@ function addDialogStyles() {
       border-radius: 3px;
       padding: 0;
       line-height: 1;
+      flex-shrink: 0;
     }
 
+    .theme-dialog-tab .tab-popout:hover,
     .theme-dialog-tab .tab-close:hover {
       background: #555;
       color: #fff;
+    }
+
+    .theme-dialog-tab.drop-left {
+      border-left: 3px solid #4a9eff;
+    }
+
+    .theme-dialog-tab.drop-right {
+      border-right: 3px solid #4a9eff;
+    }
+
+    .theme-dialog-tab[draggable="true"] {
+      cursor: grab;
+    }
+
+    .theme-dialog-tab[draggable="true"]:active {
+      cursor: grabbing;
+    }
+
+    .theme-dialog-container.potential-drop-target {
+      outline: 2px dashed #4a9eff;
+      outline-offset: -2px;
+    }
+
+    .theme-dialog-container.drop-target {
+      outline: 3px solid #4a9eff;
+      outline-offset: -3px;
+      background: rgba(74, 158, 255, 0.1);
     }
 
     .theme-dialog-controls {
