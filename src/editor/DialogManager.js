@@ -1557,9 +1557,9 @@ function addDialogStyles() {
       position: fixed;
       width: 600px;
       height: 400px;
-      background: #2a2a2a;
-      border: 1px solid #555;
-      border-radius: 8px;
+      background: var(--gray11, #575757);
+      border: 1px solid var(--gray8, #404040);
+      border-radius: 4px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
       z-index: 10000;
       display: flex;
@@ -1573,19 +1573,19 @@ function addDialogStyles() {
     }
 
     .theme-dialog-header {
-      background: #1a1a1a;
+      background: var(--gray10, #4f4f4f);
       padding: 8px 8px 0 8px;
-      border-bottom: 1px solid #555;
+      border-bottom: 1px solid var(--gray8, #404040);
       display: flex;
       justify-content: space-between;
       align-items: center;
       user-select: none;
       flex-shrink: 0;
-      border-radius: 8px 8px 0 0;
+      border-radius: 4px 4px 0 0;
     }
 
     .theme-dialog-title {
-      color: #fff;
+      color: var(--gray29, #e8e8e8);
       font-size: 14px;
       font-weight: 500;
       white-space: nowrap;
@@ -1606,7 +1606,7 @@ function addDialogStyles() {
     }
     
     .theme-dialog-tabs.tabs-drop-target {
-      background: rgba(74, 158, 255, 0.1);
+      background: rgba(var(--turquoise-rgb, 41, 243, 208), 0.1);
     }
 
     .theme-dialog-tabs::-webkit-scrollbar {
@@ -1614,7 +1614,7 @@ function addDialogStyles() {
     }
 
     .theme-dialog-tabs::-webkit-scrollbar-thumb {
-      background: #555;
+      background: var(--gray11, #575757);
       border-radius: 2px;
     }
 
@@ -1623,13 +1623,13 @@ function addDialogStyles() {
       align-items: center;
       gap: 8px;
       padding: 8px 14px;
-      background: #1e1e1e;
-      border: 1px solid #444;
+      background: var(--gray7, #383838);
+      border: 1px solid var(--gray8, #404040);
       border-bottom: none;
       border-radius: 6px 6px 0 0;
       cursor: pointer;
       white-space: nowrap;
-      color: #888;
+      color: var(--gray18, #8f8f8f);
       font-size: 13px;
       transition: background 0.15s, color 0.15s, border-color 0.15s;
       margin-bottom: -1px;
@@ -1637,16 +1637,16 @@ function addDialogStyles() {
     }
 
     .theme-dialog-tab:hover {
-      background: #262626;
-      color: #ccc;
-      border-color: #555;
+      background: var(--gray9, #474747);
+      color: var(--gray26, #cfcfcf);
+      border-color: var(--gray11, #575757);
     }
 
     .theme-dialog-tab.active {
-      background: #2a2a2a;
-      border-color: #555;
-      border-bottom: 1px solid #2a2a2a;
-      color: #fff;
+      background: var(--gray11, #575757);
+      border-color: var(--gray11, #575757);
+      border-bottom: 1px solid var(--gray11, #575757);
+      color: var(--gray29, #e8e8e8);
       font-weight: 500;
       padding-top: 10px;
       z-index: 1;
@@ -1660,7 +1660,7 @@ function addDialogStyles() {
     .theme-dialog-tab .tab-close {
       background: transparent;
       border: none;
-      color: #aaa;
+      color: var(--gray21, #a8a8a8);
       font-size: 14px;
       width: 18px;
       height: 18px;
@@ -1676,12 +1676,12 @@ function addDialogStyles() {
 
     .theme-dialog-tab .tab-popout:hover,
     .theme-dialog-tab .tab-close:hover {
-      background: #555;
-      color: #fff;
+      background: var(--gray11, #575757);
+      color: var(--gray29, #e8e8e8);
     }
 
     .theme-dialog-tab.drop-target-tab {
-      background: rgba(74, 158, 255, 0.2);
+      background: rgba(var(--turquoise-rgb, 41, 243, 208), 0.2);
     }
 
     .theme-dialog-tab.tab-dragging {
@@ -1699,7 +1699,7 @@ function addDialogStyles() {
       top: 0;
       bottom: 0;
       width: 3px;
-      background: #4a9eff;
+      background: var(--turquoise, #29f3d0);
       border-radius: 2px;
       animation: pulse-indicator 0.6s ease-in-out infinite;
     }
@@ -1715,7 +1715,7 @@ function addDialogStyles() {
       top: 0;
       bottom: 0;
       width: 3px;
-      background: #4a9eff;
+      background: var(--turquoise, #29f3d0);
       border-radius: 2px;
       animation: pulse-indicator 0.6s ease-in-out infinite;
     }
@@ -1740,7 +1740,7 @@ function addDialogStyles() {
     }
 
     .theme-dialog-container.drop-target {
-      outline: 2px solid #4a9eff;
+      outline: 2px solid var(--turquoise, #29f3d0);
       outline-offset: -2px;
     }
 
@@ -1754,7 +1754,7 @@ function addDialogStyles() {
     .theme-dialog-btn {
       background: transparent;
       border: none;
-      color: #aaa;
+      color: var(--gray21, #a8a8a8);
       font-size: 18px;
       width: 24px;
       height: 24px;
@@ -1769,8 +1769,8 @@ function addDialogStyles() {
     }
 
     .theme-dialog-btn:hover {
-      background: #444;
-      color: #fff;
+      background: var(--gray8, #404040);
+      color: var(--gray29, #e8e8e8);
     }
 
     .theme-dialog-tabs-content {
@@ -1786,7 +1786,7 @@ function addDialogStyles() {
       right: 0;
       bottom: 0;
       overflow: auto;
-      color: #fff;
+      color: var(--gray23, #b8b8b8);
     }
 
     .theme-dialog-resize-handle {
@@ -1872,11 +1872,11 @@ function addDialogStyles() {
     }
 
     .theme-dock-item {
-      background: #1a1a1a;
-      border: 1px solid #555;
+      background: var(--gray4, #1f1f1f);
+      border: 1px solid var(--gray8, #404040);
       border-radius: 6px;
       padding: 10px 16px;
-      color: #fff;
+      color: var(--gray29, #e8e8e8);
       cursor: pointer;
       font-size: 13px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -1886,8 +1886,8 @@ function addDialogStyles() {
     }
 
     .theme-dock-item:hover {
-      background: #2a2a2a;
-      border-color: #777;
+      background: var(--gray11, #575757);
+      border-color: var(--gray15, #787878);
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
     }
@@ -1911,7 +1911,7 @@ function addDialogStyles() {
       top: 0;
       bottom: 0;
       width: 3px;
-      background: #4a9eff;
+      background: var(--turquoise, #29f3d0);
       border-radius: 2px;
       animation: pulse-indicator 0.6s ease-in-out infinite;
     }
@@ -1923,7 +1923,7 @@ function addDialogStyles() {
       top: 0;
       bottom: 0;
       width: 3px;
-      background: #4a9eff;
+      background: var(--turquoise, #29f3d0);
       border-radius: 2px;
       animation: pulse-indicator 0.6s ease-in-out infinite;
     }
