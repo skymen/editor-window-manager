@@ -1578,7 +1578,7 @@ function addDialogStyles() {
       border-bottom: 1px solid #555;
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: center;
       user-select: none;
       flex-shrink: 0;
       border-radius: 8px 8px 0 0;
@@ -1748,7 +1748,7 @@ function addDialogStyles() {
       display: flex;
       gap: 5px;
       margin-left: 10px;
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
 
     .theme-dialog-btn {
