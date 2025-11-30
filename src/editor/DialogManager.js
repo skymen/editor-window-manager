@@ -1858,17 +1858,24 @@ function addDialogStyles() {
     .theme-minimized-dock {
       position: fixed;
       bottom: 0px;
-      right: 0px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
-      gap: 8px;
+      gap: 6px;
       z-index: 9999;
       flex-wrap: wrap;
       max-width: 600px;
-      padding: 10px;
+      padding: 6px 12px 0px 12px;
+      background: rgba(var(--gray4-raw, 31, 31, 31), 0.3);
+      // border-right: 1px solid var(--turquoise, #29f3d0);
+      border-bottom: 2px solid var(--turquoise, #29f3d0);
+      backdrop-filter: blur(10px);
+      border-radius: 4px 0 0 0;
     }
 
     .theme-dock-item {
-      border-radius: 6px;
+      margin-bottom: -2px;
+      border-radius: 2px 2px 0 0;
       padding: 10px 14px;
       background: var(--gray11, #575757);
       border-bottom: 2px solid var(--turquoise, #29f3d0);
@@ -1885,7 +1892,8 @@ function addDialogStyles() {
     .theme-dock-item:hover {
       background: var(--gray13, #404040);
       filter: brightness(1.1);
-      transform: translateY(-2px);
+      border-bottom: 4px solid var(--turquoise, #29f3d0);
+      margin-top: -2px;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
     }
 
