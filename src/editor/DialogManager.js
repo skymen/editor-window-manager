@@ -272,11 +272,39 @@ export const DialogManager = {
 
       if (draggedWindowId === targetWindowId) return;
 
-      tab.classList.add("drop-target-tab");
+      // Check if merging from different container
+      if (this.dragState.sourceContainerId !== windowData.containerId) {
+        // Different container - show merge highlight
+        tab.classList.add("drop-target-tab");
+      } else {
+        // Same container - show reorder indicator
+        const rect = tab.getBoundingClientRect();
+        const midX = rect.left + rect.width / 2;
+        const insertBefore = e.clientX < midX;
+
+        // Remove previous indicators from all tabs
+        document.querySelectorAll(".theme-dialog-tab").forEach((t) => {
+          t.classList.remove("drop-indicator-before", "drop-indicator-after");
+        });
+
+        // Add indicator to target tab
+        if (insertBefore) {
+          tab.classList.add("drop-indicator-before");
+        } else {
+          tab.classList.add("drop-indicator-after");
+        }
+      }
     });
 
-    tab.addEventListener("dragleave", () => {
-      tab.classList.remove("drop-target-tab");
+    tab.addEventListener("dragleave", (e) => {
+      // Only remove if we're actually leaving the tab
+      if (!tab.contains(e.relatedTarget)) {
+        tab.classList.remove(
+          "drop-target-tab",
+          "drop-indicator-before",
+          "drop-indicator-after"
+        );
+      }
     });
 
     tab.addEventListener("drop", (e) => {
@@ -290,7 +318,11 @@ export const DialogManager = {
 
       if (draggedWindowId === targetWindowId) return;
 
-      tab.classList.remove("drop-target-tab");
+      tab.classList.remove(
+        "drop-target-tab",
+        "drop-indicator-before",
+        "drop-indicator-after"
+      );
 
       // Check if merging from different container
       if (this.dragState.sourceContainerId !== windowData.containerId) {
@@ -330,11 +362,22 @@ export const DialogManager = {
       if (!this.dragState) return;
 
       // Only handle if not over a specific tab
-      if (e.target.closest(".theme-dialog-tab")) return;
+      if (e.target.closest(".theme-dialog-tab")) {
+        // Over a specific tab, remove the tabs-drop-target class
+        tabsContainer.classList.remove("tabs-drop-target");
+        return;
+      }
 
       e.preventDefault();
       e.stopPropagation();
-      tabsContainer.classList.add("tabs-drop-target");
+
+      // Only show drop target for merging from different container
+      const targetContainerId = container.dataset.containerId;
+      if (this.dragState.sourceContainerId !== targetContainerId) {
+        tabsContainer.classList.add("tabs-drop-target");
+      } else {
+        tabsContainer.classList.remove("tabs-drop-target");
+      }
     });
 
     tabsContainer.addEventListener("dragleave", (e) => {
@@ -347,7 +390,10 @@ export const DialogManager = {
       if (!this.dragState) return;
 
       // Only handle if not over a specific tab
-      if (e.target.closest(".theme-dialog-tab")) return;
+      if (e.target.closest(".theme-dialog-tab")) {
+        tabsContainer.classList.remove("tabs-drop-target");
+        return;
+      }
 
       e.preventDefault();
       e.stopPropagation();
@@ -356,7 +402,7 @@ export const DialogManager = {
       const { windowId, sourceContainerId } = this.dragState;
       const targetContainerId = container.dataset.containerId;
 
-      // Don't merge into the same container (unless it's a different position)
+      // Don't merge into the same container
       if (sourceContainerId === targetContainerId) return;
 
       // Merge into this container
@@ -371,7 +417,11 @@ export const DialogManager = {
       sourceContainerId: container.dataset.containerId,
       startX: e.clientX,
       startY: e.clientY,
+      draggedTab: windowData.tabElement,
     };
+
+    // Add dragging class for styling
+    windowData.tabElement.classList.add("tab-dragging");
 
     // Set drag image
     e.dataTransfer.effectAllowed = "move";
@@ -392,10 +442,25 @@ export const DialogManager = {
     // Remove all highlight classes
     this.containers.forEach((containerData) => {
       containerData.element.classList.remove("drop-target");
+      const tabsContainer =
+        containerData.element.querySelector(".theme-dialog-tabs");
+      if (tabsContainer) {
+        tabsContainer.classList.remove("tabs-drop-target");
+      }
     });
 
     document.querySelectorAll(".theme-dialog-tab").forEach((tab) => {
-      tab.classList.remove("drop-target-tab");
+      tab.classList.remove(
+        "drop-target-tab",
+        "tab-dragging",
+        "drop-indicator-before",
+        "drop-indicator-after"
+      );
+    });
+
+    // Remove any drop indicators
+    document.querySelectorAll(".tab-drop-indicator").forEach((indicator) => {
+      indicator.remove();
     });
 
     // Use event coordinates if available, otherwise use tracked position
@@ -1440,6 +1505,53 @@ function addDialogStyles() {
 
     .theme-dialog-tab.drop-target-tab {
       background: rgba(74, 158, 255, 0.2);
+    }
+
+    .theme-dialog-tab.tab-dragging {
+      opacity: 0.5;
+    }
+
+    .theme-dialog-tab.drop-indicator-before {
+      position: relative;
+    }
+
+    .theme-dialog-tab.drop-indicator-before::before {
+      content: '';
+      position: absolute;
+      left: -2px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #4a9eff;
+      border-radius: 2px;
+      animation: pulse-indicator 0.6s ease-in-out infinite;
+    }
+
+    .theme-dialog-tab.drop-indicator-after {
+      position: relative;
+    }
+
+    .theme-dialog-tab.drop-indicator-after::after {
+      content: '';
+      position: absolute;
+      right: -2px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #4a9eff;
+      border-radius: 2px;
+      animation: pulse-indicator 0.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse-indicator {
+      0%, 100% {
+        opacity: 1;
+        transform: scaleY(1);
+      }
+      50% {
+        opacity: 0.6;
+        transform: scaleY(0.9);
+      }
     }
 
     .theme-dialog-tab[draggable="true"] {
