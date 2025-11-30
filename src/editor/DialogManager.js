@@ -88,6 +88,7 @@ export const DialogManager = {
     container.dataset.containerId = containerId;
     container.innerHTML = `
       <div class="theme-dialog-header">
+        <div class="theme-dialog-title" style="display: none;"></div>
         <div class="theme-dialog-tabs"></div>
         <div class="theme-dialog-controls">
           <button class="theme-dialog-btn popout-btn" title="Pop out to browser window" style="display: none;">⧉</button>
@@ -704,14 +705,35 @@ export const DialogManager = {
       }
     });
 
-    // Show/hide tabs bar if only one visible tab
+    const titleElement = container.querySelector(".theme-dialog-title");
     const tabsBar = container.querySelector(".theme-dialog-tabs");
-    tabsBar.style.display = visibleTabs.length > 1 ? "flex" : "none";
-
-    // Show/hide pop-out button in header controls when there's only one tab
+    const header = container.querySelector(".theme-dialog-header");
     const popoutBtn = container.querySelector(".popout-btn");
-    if (popoutBtn) {
-      popoutBtn.style.display = visibleTabs.length === 1 ? "" : "none";
+
+    if (visibleTabs.length === 1) {
+      // Single tab mode: show title, hide tabs, show popout button
+      const activeWindow = this.windows.get(containerData.activeWindowId);
+      if (activeWindow && titleElement) {
+        titleElement.textContent = activeWindow.title;
+        titleElement.style.display = "";
+      }
+      tabsBar.style.display = "none";
+      if (popoutBtn) {
+        popoutBtn.style.display = "";
+      }
+      // Right-align controls
+      header.style.justifyContent = "space-between";
+    } else {
+      // Multiple tabs mode: hide title, show tabs, hide popout button
+      if (titleElement) {
+        titleElement.style.display = "none";
+      }
+      tabsBar.style.display = "flex";
+      if (popoutBtn) {
+        popoutBtn.style.display = "none";
+      }
+      // Default alignment
+      header.style.justifyContent = "space-between";
     }
   },
 
@@ -1297,6 +1319,16 @@ function addDialogStyles() {
       align-items: center;
       user-select: none;
       flex-shrink: 0;
+    }
+
+    .theme-dialog-title {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
     }
 
     .theme-dialog-tabs {
