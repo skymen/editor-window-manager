@@ -1,0 +1,2280 @@
+/* >>>>>>>>>>>>>>>>>>>>>>>> INDEX <<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+	/* >>>>>>>>>>>> BASE <<<<<<<<<<<< */
+
+		/* ======== FONTS ======== */
+
+		/* ======== COLORS ======== */
+
+			/* ---- GRAY PALETTE ---- */
+			/* ---- ACCENT PALETTE ---- */
+
+		/* ======== ANIMATIONS ======== */
+
+			/* ---- FADE ---- */
+			/* ---- ZOOM ---- */
+			/* ---- TRANSFORM POSITION ---- */
+			/* ---- TRANSFORM SIZE ---- */
+
+
+	/* >>>>>>>>>>>> COMPONENTS <<<<<<<<<<<< */
+
+		/* ---- TITLE SECTION ---- */
+		/* ---- SEARCH BAR ---- */
+		/* ---- BUTTON FILTERS ---- */
+		/* ---- SELECTED TAGS ---- */
+		/* ---- LIST TAGS ---- */
+		/* ---- CARD EXAMPLE ---- */
+		/* ---- PLACEHOLDER EXAMPLE ---- */
+		/* ---- DIMMER ---- */
+		/* ---- OVERLAY ---- */
+		/* ---- DIALOG FILTERS ---- */
+
+
+	/* >>>>>>>>>>>> LAYOUTS <<<<<<<<<<<< */
+
+		/* ======== SETTINGS ======== */
+
+			/* ---- BASE LAYOUT ---- */
+			/* ---- BREAKPOINT A ---- */
+			/* ---- BREAKPOINT B ---- */
+
+		/* ======== VARIABLES ======== */
+
+			/* ---- BASE LAYOUT ---- */
+			/* ---- BREAKPOINT A ---- */
+			/* ---- BREAKPOINT B ---- */
+
+		/* ======== BASE LAYOUT ======== */
+
+			/* ---- EXAMPLE BROWSER ---- */
+			/* ---- CONTAINER ---- */
+			/* ---- SEARCH EXAMPLES ---- */
+			/* ---- BUTTON FILTERS ---- */
+			/* ---- GROUP FILTERS ---- */
+			/* ---- TITLE FILTERS ---- */
+			/* ---- LIST TAGS ---- */
+			/* ---- GROUP EXAMPLES ---- */
+
+		/* ======== BREAKPOINT A ======== */
+
+			/* ---- CONTAINER ---- */
+			/* ---- SEARCH EXAMPLES ---- */
+			/* ---- BUTTON FILTERS ---- */
+			/* ---- GROUP FILTERS ---- */
+			/* ---- GROUP EXAMPLES ---- */
+
+		/* ======== BREAKPOINT B ======== */
+
+			/* ---- CONTAINER ---- */
+			/* ---- SEARCH EXAMPLES ---- */
+			/* ---- BUTTON FILTERS ---- */
+			/* ---- GROUP FILTERS ---- */
+			/* ---- TITLE FILTERS ---- */
+			/* ---- SELECTED TAGS ---- */
+			/* ---- LIST TAGS ---- */
+			/* ---- GROUP EXAMPLES ---- */
+
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>> BASE <<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+
+/* ================ FONTS ================ */
+
+
+#exampleBrowserWrap * {
+	box-sizing: border-box;
+	letter-spacing: normal;
+}
+
+
+/* ================ COLORS ================ */
+
+
+/* -------- GRAY PALETTE -------- */
+
+#exampleBrowserWrap {
+	/* HEX */
+	--gray0: #000;
+	--gray1: #080808;
+	--gray2: #0f0f0f;
+	--gray3: #171717;
+	--gray4: #1f1f1f;
+	--gray5: #292929;
+	--gray6: #303030;
+	--gray7: #383838;
+	--gray8: #404040;
+	--gray9: #474747;
+	--gray10: #4f4f4f;
+	--gray11: #575757;
+	--gray12: #5e5e5e;
+	--gray13: #696969;
+	--gray14: #707070;
+	--gray15: #787878;
+	--gray16: #808080;
+	--gray17: #878787;
+	--gray18: #8f8f8f;
+	--gray19: #969696;
+	--gray20: #9e9e9e;
+	--gray21: #a8a8a8;
+	--gray22: #b0b0b0;
+	--gray23: #b8b8b8;
+	--gray24: #bfbfbf;
+	--gray25: #c7c7c7;
+	--gray26: #cfcfcf;
+	--gray27: #d6d6d6;
+	--gray28: #dedede;
+	--gray29: #e8e8e8;
+	--gray30: #f0f0f0;
+	--gray31: #f7f7f7;
+	--gray32: #fff;
+
+	/* RGB */
+	--gray0-rgb: 0,0,0;
+	--gray1-rgb: 8,8,8;
+	--gray2-rgb: 15,15,15;
+	--gray3-rgb: 23,23,23;
+	--gray4-rgb: 31,31,31;
+	--gray5-rgb: 41,41,41;
+	--gray6-rgb: 48,48,48;
+	--gray7-rgb: 56,56,56;
+	--gray8-rgb: 64,64,64;
+	--gray9-rgb: 71,71,71;
+	--gray10-rgb: 79,79,79;
+	--gray11-rgb: 87,87,87;
+	--gray12-rgb: 94,94,94;
+	--gray13-rgb: 105,105,105;
+	--gray14-rgb: 112,112,112;
+	--gray15-rgb: 120,120,120;
+	--gray16-rgb: 128,128,128;
+	--gray17-rgb: 135,135,135;
+	--gray18-rgb: 143,143,143;
+	--gray19-rgb: 150,150,150;
+	--gray20-rgb: 158,158,158;
+	--gray21-rgb: 168,168,168;
+	--gray22-rgb: 176,176,176;
+	--gray23-rgb: 184,184,184;
+	--gray24-rgb: 191,191,191;
+	--gray25-rgb: 199,199,199;
+	--gray26-rgb: 207,207,207;
+	--gray27-rgb: 214,214,214;
+	--gray28-rgb: 222,222,222;
+	--gray29-rgb: 232,232,232;
+	--gray30-rgb: 240,240,240;
+	--gray31-rgb: 247,247,247;
+	--gray32-rgb: 255,255,255;
+
+	/* FILTER */
+	/* starting from black */
+	--gray0-filter: invert(0);
+	--gray1-filter: invert(3%);
+	--gray2-filter: invert(6%);
+	--gray3-filter: invert(9%);
+	--gray4-filter: invert(12%);
+	--gray5-filter: invert(16%);
+	--gray6-filter: invert(19%);
+	--gray7-filter: invert(22%);
+	--gray8-filter: invert(25%);
+	--gray9-filter: invert(28%);
+	--gray10-filter: invert(31%);
+	--gray11-filter: invert(34%);
+	--gray12-filter: invert(37%);
+	--gray13-filter: invert(41%);
+	--gray14-filter: invert(44%);
+	--gray15-filter: invert(47%);
+	--gray16-filter: invert(50%);
+	--gray17-filter: invert(53%);
+	--gray18-filter: invert(56%);
+	--gray19-filter: invert(59%);
+	--gray20-filter: invert(62%);
+	--gray21-filter: invert(66%);
+	--gray22-filter: invert(69%);
+	--gray23-filter: invert(72%);
+	--gray24-filter: invert(75%);
+	--gray25-filter: invert(78%);
+	--gray26-filter: invert(81%);
+	--gray27-filter: invert(84%);
+	--gray28-filter: invert(87%);
+	--gray29-filter: invert(90%);
+	--gray30-filter: invert(94%);
+	--gray31-filter: invert(97%);
+	--gray32-filter: invert(100%);
+}
+
+
+/* -------- ACCENT PALETTE -------- */
+
+#exampleBrowserWrap {
+	/* HEX */
+	--turquoise: #29f3d0;
+	--green: #3ff276;
+	--yellow: #e4fb45;
+	--orange: #fc7770;
+	--red: #ff465f;
+	--pink: #fb6db6;
+	--purple: #ba96ff;
+	--blue: #38e1ff;
+	--lightGray: #ddeaf8;
+	--darkGray: #a8bac7;
+
+	/* RGB */
+	--turquoise-rgb: 41, 243, 208;
+	--green-rgb: 63, 242, 118;
+	--yellow-rgb: 228, 251, 69;
+	--orange-rgb: 252, 119, 112;
+	--red-rgb: 255, 70, 95;
+	--pink-rgb: 251, 109, 182;
+	--purple-rgb: 186, 150, 255;
+	--blue-rgb: 56, 225, 255;
+	--lightGray-rgb: 221, 234, 248;
+	--darkGray-rgb: 168, 186, 199;
+
+	/* FILTER */
+	/* starting from black */
+	--turquoise-filter: invert(64%) sepia(1) hue-rotate(121deg) saturate(3.1);
+	--green-filter: invert(63%) sepia(1) hue-rotate(85deg) saturate(3.1);
+	--yellow-filter: invert(76%) sepia(1) hue-rotate(24deg) saturate(3);
+	--orange-filter: invert(48%) sepia(1) hue-rotate(-47deg) saturate(3.2);
+	--red-filter: invert(36%) sepia(1) hue-rotate(-59deg) saturate(5.3);
+	--pink-filter: invert(46%) sepia(1) hue-rotate(-83deg) saturate(3.2);
+	--purple-filter: invert(60%) sepia(1) hue-rotate(-154deg) saturate(7.4);
+	--blue-filter: invert(64%) sepia(1) hue-rotate(160deg) saturate(3.95);
+	--lightGray-filter: invert(86%) sepia(27%) hue-rotate(170deg);
+	--darkGray-filter: invert(66%) sepia(42%) hue-rotate(165deg);
+}
+
+/* >>>>>>>>>>>>>>>>>>>>>>>> COMPONENTS <<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+
+/* -------- TITLE SECTION -------- */
+
+#exampleBrowserWrap .titleSection {
+	line-height: 1em;
+	font-weight: normal;
+	letter-spacing: normal;
+	text-transform: uppercase;
+
+	color: var(--gray23);
+}
+
+
+/* -------- SEARCH BAR -------- */
+
+/* SEARCH BAR */
+#exampleBrowserWrap .searchBar {
+	--iconSize: 24px;
+	--iconMargin: 4px;
+
+	position: relative;
+	display: block;
+
+	border-radius: 100vh;
+	background: var(--gray4);
+}
+
+/* SEARCH INPUT */
+#exampleBrowserWrap .searchBar > .searchInput {
+	flex: 1 1 100%;
+
+	display: flex;
+	align-items: center;
+	min-height: 30px;
+	margin-left: 16px;
+	margin-right: calc( var(--iconSize) + var(--iconMargin) * 2 );
+	padding: 2px 0px;
+
+	overflow: hidden;
+	white-space: nowrap;
+
+	color: var(--gray24);
+	outline: none;
+}
+
+/* SEARCH ICON */
+#exampleBrowserWrap .searchBar > .searchInput[empty] {
+	margin-right: 16px;
+	padding-right: calc( var(--iconSize) + var(--iconMargin) * 2 - 16px );
+}
+
+#exampleBrowserWrap .searchBar > .searchInput[empty]::after {
+	position: absolute;
+	top: calc(50% - var(--iconSize) / 2); right: 6px;
+	z-index: 1;
+
+	content: "";
+	display: block;
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	background: url("media/icons/search.svg") no-repeat center center / contain;
+	filter: var(--gray8-filter);
+
+	pointer-events: none;
+}
+
+/* CLEAR BUTTON */
+#exampleBrowserWrap .searchBar > .buttonClear {
+	--iconSize: 22px;
+
+	position: absolute;
+	top: calc(50% - var(--iconSize) / 2); right: 5px;
+	z-index: 1;
+
+	content: "";
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	border-radius: 100vh;
+	background: var(--gray8);
+
+	cursor: pointer;
+}
+
+/* :Hover */
+#exampleBrowserWrap .searchBar > .buttonClear:hover {
+	background: var(--red);
+}
+
+/* :Active */
+#exampleBrowserWrap .searchBar > .buttonClear:active {
+	background: var(--gray30);
+}
+
+/* CLEAR BUTTON ICON */
+#exampleBrowserWrap .searchBar > .buttonClear > .icon {
+	--iconSize: 24px;
+
+	display: block;
+	width: var(--iconSize);
+	height: var(--iconSize);
+	margin: calc( 0 - var(--iconSize) / 2 );
+
+	filter: var(--gray4-filter);
+
+	pointer-events: none;
+}
+
+/* hide Clear Button when empty */
+#exampleBrowserWrap .searchBar > .searchInput[empty] ~ .buttonClear {
+	display: none;
+}
+
+/* :Hover */
+#exampleBrowserWrap .searchBar > .buttonClear:hover > .icon {
+	filter: var(--gray31-filter);
+}
+
+/* :Active */
+#exampleBrowserWrap .searchBar > .buttonClear:active > .icon {
+	filter: var(--gray4-filter);
+}
+
+
+/* -------- BUTTON FILTERS -------- */
+
+#exampleBrowserWrap .buttonFilters {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	min-height: 32px;
+	padding: 0 8px;
+
+	line-height: 1em;
+	text-align: center;
+	text-transform: uppercase;
+
+	border-radius: 3px;
+	color: var(--gray26);
+	background: var(--gray11);
+}
+
+/* :Hover */
+#exampleBrowserWrap .buttonFilters:hover {
+	color: var(--gray29);
+	background: var(--gray14);
+	cursor: pointer;
+}
+
+/* :Active */
+#exampleBrowserWrap .buttonFilters:active {
+	color: var(--gray4);
+	background: var(--gray30);
+}
+
+
+/* -------- SELECTED TAGS -------- */
+
+/* SELECTED TAGS */
+#exampleBrowserWrap .selectedTags {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	gap: 6px;
+
+	max-width: 100%;
+	min-height: 0;
+	overflow: hidden;
+}
+
+/* Placeholder Text */
+#exampleBrowserWrap .selectedTags:empty::after {
+	justify-self: center;
+
+	content: attr(placeholder);
+	display: block;
+	box-sizing: border-box;
+	min-height: 24px;
+	margin: 0 auto;
+	padding: 6px 0;
+
+	word-break: break-word;
+
+	color: var(--gray16);
+}
+
+/* -Dialog */
+#exampleBrowserWrap .selectedTags.-dialog:empty::after {
+	color: var(--gray23);
+}
+
+/* TAG */
+#exampleBrowserWrap .selectedTags > .tag {
+	--gutterH: 4px;
+	--iconSize: 20px;
+	--iconMarginRight: 5px;
+	--paddingH: 12px;
+	--minTextWidth: 3ch;
+	--colorRGB: var(--gray11-rgb);
+
+	position: relative;
+
+	display: block;
+	box-sizing: border-box;
+	overflow: hidden;
+	min-width: calc( var(--paddingH) + var(--minTextWidth) + var(--gutterH) + var(--iconSize) + var(--iconMarginRight) );
+	min-height: 24px;
+	padding: 6px var(--paddingH);
+	padding-right: calc( var(--gutterH) + var(--iconSize) + var(--iconMarginRight) );
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	border-radius: 100vh;
+	color: var(--gray7);
+	background: rgb( var(--colorRGB) );
+	filter: brightness(95%);
+
+	cursor: pointer;
+}
+
+html[uianimationsenabled] #exampleBrowserWrap .selectedTags > .tag {
+	animation: ebZoomIn 50ms both;
+}
+
+/* :Hover */
+#exampleBrowserWrap .selectedTags > .tag:hover {
+	color: var(--gray5);
+	filter: saturate(95%) brightness(115%);
+}
+
+/* :Active */
+#exampleBrowserWrap .selectedTags > .tag:active {
+	color: var(--gray4);
+	background: var(--gray30);
+}
+
+/* -Dialog */
+#exampleBrowserWrap .selectedTags.-dialog > .tag {
+	filter: brightness(100%);
+}
+
+/* :hover */
+#exampleBrowserWrap .selectedTags.-dialog > .tag:hover {
+	filter: saturate(80%) brightness(120%);
+}
+
+/* -Level */
+#exampleBrowserWrap .selectedTags > .tag.-level {
+	--colorRGB: var(--lightGray-rgb);
+}
+
+/* -Category */
+#exampleBrowserWrap .selectedTags > .tag.-category {
+	--colorRGB: var(--green-rgb);
+}
+
+/* -Coding */
+#exampleBrowserWrap .selectedTags > .tag.-coding {
+	--colorRGB: var(--green-rgb);
+}
+
+/* -Genre */
+#exampleBrowserWrap .selectedTags > .tag.-genre {
+	--colorRGB: var(--pink-rgb);
+}
+
+/* -Tag */
+#exampleBrowserWrap .selectedTags > .tag.-tag {
+	--colorRGB: var(--yellow-rgb);
+}
+
+/* -Plugin */
+#exampleBrowserWrap .selectedTags > .tag.-plugin {
+	--colorRGB: var(--blue-rgb);
+}
+
+/* -Behavior */
+#exampleBrowserWrap .selectedTags > .tag.-behavior {
+	--colorRGB: var(--orange-rgb);
+}
+
+/* -Effect */
+#exampleBrowserWrap .selectedTags > .tag.-effect {
+	--colorRGB: var(--purple-rgb);
+}
+
+/* TAG CLOSE ICON */
+#exampleBrowserWrap .selectedTags > .tag::after {
+	position: absolute;
+	top: calc( 50% - var(--iconSize) / 2 ); right: var(--iconMarginRight);
+
+	content: "";
+	display: block;
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	background: url("media/icons/clearCross.svg") no-repeat center center / contain;
+	filter: var(--gray6-filter);
+	opacity: 100%;
+}
+
+/* :Hover, :Active */
+#exampleBrowserWrap .selectedTags > .tag:hover::after,
+#exampleBrowserWrap .selectedTags > .tag:active::after {
+	background: url("media/icons/clear.svg") no-repeat center center / contain;
+}
+
+/* CLEAR BUTTON */
+#exampleBrowserWrap .selectedTags > .buttonClear {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 4px;
+
+	border-radius: 100vh;
+	background: var(--gray11);
+
+	cursor: pointer;
+}
+
+html[uianimationsenabled] #exampleBrowserWrap .selectedTags > .buttonClear {
+	animation: ebZoomIn 100ms 50ms both;
+}
+
+/* :Hover */
+#exampleBrowserWrap .selectedTags > .buttonClear:hover {
+	background: var(--red);
+}
+
+/* :Active */
+#exampleBrowserWrap .selectedTags > .buttonClear:active {
+	background: var(--gray30);
+}
+
+/* -Dialog */
+#exampleBrowserWrap .selectedTags.-dialog .buttonClear {
+	background: var(--gray16);
+}
+
+/* :hover */
+#exampleBrowserWrap .selectedTags.-dialog > .buttonClear:hover {
+	background: var(--red);
+}
+
+/* :active */
+#exampleBrowserWrap .selectedTags.-dialog > .buttonClear:active {
+	background: var(--gray31);
+}
+
+/* CLEAR BUTTON ICON */
+#exampleBrowserWrap .selectedTags > .buttonClear > .icon {
+	--iconSize : 24px;
+
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	filter: var(--gray6-filter);
+
+	pointer-events: none;
+}
+
+/* :Hover */
+#exampleBrowserWrap .selectedTags > .buttonClear:hover > .icon {
+	filter: var(--gray31-filter);
+}
+
+/* :Active */
+#exampleBrowserWrap .selectedTags > .buttonClear:active > .icon {
+	filter: var(--gray4-filter);
+}
+
+/* -Dialog */
+#exampleBrowserWrap .selectedTags.-dialog .buttonClear > .icon {
+	filter: var(--gray10-filter);
+}
+
+/* :hover */
+#exampleBrowserWrap .selectedTags.-dialog > .buttonClear:hover > .icon {
+	filter: var(--gray31-filter);
+}
+
+/* :active */
+#exampleBrowserWrap .selectedTags.-dialog > .buttonClear:active > .icon {
+	filter: var(--gray4-filter);
+}
+
+
+/* -------- LIST TAGS -------- */
+
+/* LIST TAGS*/
+/* -Dialog */
+#exampleBrowserWrap .listTags.-dialog {
+	flex: 1 0 100%;
+
+	max-width: 35ch;
+}
+
+/* TITLE SECTION */
+#exampleBrowserWrap .listTags .titleSection {
+	--iconSize: 20px;
+	--gutterH: 12px;
+
+	position: relative;
+
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	min-height: 24px;
+	padding: 16px 8px;
+	padding-left: calc( var(--iconSize) + var(--gutterH) );
+
+	font-weight: 600;
+	line-height: 1em;
+	text-transform: uppercase;
+	word-break: break-word;
+
+	color: var(--gray23);
+
+	cursor: pointer;
+}
+
+/* :Hover */
+#exampleBrowserWrap .listTags .titleSection:hover {
+	color: var(--gray27);
+}
+
+/* [Disabled] */
+#exampleBrowserWrap .listTags .titleSection[disabled] {
+	/*text-decoration: line-through;*/
+
+	opacity: 0.35;
+
+	cursor: initial;
+	pointer-events: none;
+}
+
+/* -Dialog */
+#exampleBrowserWrap .listTags.-dialog .titleSection {
+	color: var(--gray26);
+}
+
+/* :hover */
+#exampleBrowserWrap .listTags.-dialog .titleSection:hover {
+	color: var(--gray30);
+}
+
+/* TITLE SUB-SECTION */
+#exampleBrowserWrap .listTags .section > .titleSection {
+	font-weight: 500;
+
+	color: var(--gray22);
+}
+
+/* :Hover */
+#exampleBrowserWrap .listTags .section > .titleSection:hover {
+	color: var(--gray26);
+}
+
+/* -Dialog */
+#exampleBrowserWrap .listTags.-dialog .section > .titleSection {
+	color: var(--gray25);
+}
+
+/* :hover */
+#exampleBrowserWrap .listTags.-dialog .section > .titleSection:hover {
+	color: var(--gray29);
+}
+
+/* SECTION EXPAND ICON */
+#exampleBrowserWrap .listTags .titleSection::before {
+	position: absolute;
+	top: calc( 50% - var(--iconSize) / 2 ); left: 0;
+
+	content: "";
+	display: block;
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	background: url("media/icons/expand.svg") no-repeat center center / contain;
+	filter: var(--gray12-filter);
+	transform: rotate(-90deg);
+}
+
+html[uianimationsenabled] #exampleBrowserWrap .listTags .titleSection::before {
+	transition: transform 100ms cubic-bezier(0.4,0,0,1.6);
+}
+
+/* :Hover */
+#exampleBrowserWrap .listTags .titleSection:hover::before {
+	filter: var(--gray16-filter);
+}
+
+/* [Expanded] */
+#exampleBrowserWrap .listTags .titleSection[expanded]::before {
+	transform: rotate(0deg);
+}
+
+/* -Dialog */
+#exampleBrowserWrap .listTags.-dialog .titleSection::before {
+	filter: var(--gray16-filter);
+}
+
+/* :hover */
+#exampleBrowserWrap .listTags.-dialog .titleSection:hover::before {
+	filter: var(--gray20-filter);
+}
+
+/* SUB-SECTION EXPAND ICON */
+#exampleBrowserWrap .listTags .section > .titleSection::before {
+	filter: var(--gray4-filter);
+}
+
+/* :Hover */
+#exampleBrowserWrap .listTags .section > .titleSection:hover::before {
+	filter: var(--gray3-filter);
+}
+
+/* -Dialog */
+#exampleBrowserWrap .listTags.-dialog .section > .titleSection::before {
+	filter: var(--gray6-filter);
+}
+
+/* :hover */
+#exampleBrowserWrap .listTags.-dialog .section > .titleSection:hover::before {
+	filter: var(--gray5-filter);
+}
+
+/* COUNT BADGE */
+/* Display if selectedCount is not 0 */
+#exampleBrowserWrap .listTags .titleSection:not([selectedCount="0"])::after {
+	--paddingH: 6px;
+	--paddingV: 3px;
+	--color: var(--gray27);
+
+	justify-self: center;
+	align-self: center;
+
+	content: attr(selectedCount);
+	display: flex;
+	justify-content: center;
+	min-width: 1em;
+	margin: -0.5em 0; /* removes badge height, so only 'title-name + padding' sets the title block height */
+	margin-left: var(--gutterH);
+	padding: var(--paddingV) var(--paddingH);
+
+	font-size: 0.88em;
+	line-height: 1em;
+	font-weight: 800;
+	white-space: pre;
+
+	border-radius: 100vh;
+	color: var(--gray7);
+	background: var(--color);
+	filter: none;
+}
+
+html[uianimationsenabled] #exampleBrowserWrap .listTags .titleSection:not([selectedCount="0"])::after {
+	animation: ebZoomIn 50ms 50ms both;
+}
+
+/* Hide count badge when script fails to load */
+#exampleBrowserWrap .listTags .titleSection:not([selectedCount])::after {
+	display: none;
+}
+
+/* :Hover */
+#exampleBrowserWrap .listTags .titleSection:hover::after {
+	color: var(--gray5);
+	filter: saturate(80%) brightness(120%);
+}
+
+/* -Dialog */
+#exampleBrowserWrap .listTags.-dialog .titleSection::after {
+	color: var(--gray9);
+	filter: none;
+}
+
+/* :hover */
+#exampleBrowserWrap .listTags.-dialog .titleSection:hover::after {
+	color: var(--gray7);
+	filter: saturate(60%) brightness(120%);
+}
+
+/* -Level */
+#exampleBrowserWrap .listTags .titleSection.-level::after {
+	--color: var(--lightGray);
+}
+
+/* -Category */
+#exampleBrowserWrap .listTags .titleSection.-category::after {
+	--color: var(--green);
+}
+
+/* -Coding */
+#exampleBrowserWrap .listTags .titleSection.-coding::after {
+	--color: var(--green);
+}
+
+/* -Genre */
+#exampleBrowserWrap .listTags .titleSection.-genre::after {
+	--color: var(--pink);
+}
+
+/* -Tag */
+#exampleBrowserWrap .listTags .titleSection.-tag::after {
+	--color: var(--yellow);
+}
+
+/* -Plugin */
+#exampleBrowserWrap .listTags .titleSection.-plugin::after {
+	--color: var(--blue);
+}
+
+/* -Behavior */
+#exampleBrowserWrap .listTags .titleSection.-behavior::after {
+	--color: var(--orange);
+}
+
+/* -Effect */
+#exampleBrowserWrap .listTags .titleSection.-effect::after {
+	--color: var(--purple);
+}
+
+/* SUB-SECTION COUNT BADGE */
+#exampleBrowserWrap .listTags .section > .titleSection:not([selectedCount="0"])::after {
+	--border: 1px;
+	--color: var(--lightGray);
+
+	font-weight: 700;
+
+	color: var(--color);
+	background: transparent;
+	box-shadow: inset 0 0 0 var(--border) var(--color);
+	opacity: 0.85;
+}
+
+html[uianimationsenabled] #exampleBrowserWrap .listTags .section > .titleSection:not([selectedCount="0"])::after {
+	animation: ebZoomIn 50ms both;
+}
+
+/* -Level */
+#exampleBrowserWrap .listTags .section > .titleSection.-level::after {
+	--color: var(--lightGray);
+}
+
+/* -Category */
+#exampleBrowserWrap .listTags .section > .titleSection.-category::after {
+	--color: var(--green);
+}
+
+/* -Coding */
+#exampleBrowserWrap .listTags .section > .titleSection.-coding::after {
+	--color: var(--green);
+}
+
+/* -Genre */
+#exampleBrowserWrap .listTags .section > .titleSection.-genre::after {
+	--color: var(--pink);
+}
+
+/* -Tag */
+#exampleBrowserWrap .listTags .section > .titleSection.-tag::after {
+	--color: var(--yellow);
+}
+
+/* -Plugin */
+#exampleBrowserWrap .listTags .section > .titleSection.-plugin::after {
+	--color: var(--blue);
+}
+
+/* -Behavior */
+#exampleBrowserWrap .listTags .section > .titleSection.-behavior::after {
+	--color: var(--orange);
+}
+
+/* -Effect */
+#exampleBrowserWrap .listTags .section > .titleSection.-effect::after {
+	--color: var(--purple);
+}
+
+/* SECTION */
+#exampleBrowserWrap .listTags .section {
+	--iconSize: 20px;
+	--gutterH: 12px;
+
+	overflow: hidden;
+	max-height: var(--contentHeight);
+	padding-left: calc( (var(--iconSize) + var(--gutterH)) / 2 );
+}
+
+html[uianimationsenabled] #exampleBrowserWrap .listTags .section {
+	transition: max-height 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Collapsed */
+#exampleBrowserWrap .listTags .section:not([expanded]) {
+	max-height: 0px;
+}
+
+html[uianimationsenabled] #exampleBrowserWrap .listTags .section:not([expanded]) {
+	transition: max-height 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Remove indentation from sub-sections */
+#exampleBrowserWrap .listTags .section .section {
+	padding-left: 0;
+}
+
+/* Add vertical margin for tag setions */
+#exampleBrowserWrap .listTags .section > .tag:first-child {
+	margin-top: 12px;
+}
+
+#exampleBrowserWrap .listTags .section > .tag:last-child {
+	margin-bottom: 12px;
+}
+
+/* TAG */
+#exampleBrowserWrap .listTags .section > .tag {
+	--iconSize: 20px;
+	--gutterH: 12px;
+	--color: var(--lightGray);
+
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	min-height: 36px;
+	padding: 4px;
+	padding-left: calc( var(--iconSize) + var(--gutterH) );
+
+	color: var(--color);
+	filter: brightness(90%);
+
+	cursor: pointer;
+}
+
+/* :Hover */
+#exampleBrowserWrap .listTags .section > .tag:hover {
+	filter: saturate(80%) brightness(120%);
+}
+
+/* [Selected] */
+#exampleBrowserWrap .listTags .section > .tag[selected] {
+	filter: brightness(120%);
+}
+
+/* [Disabled] */
+#exampleBrowserWrap .listTags .section > .tag[disabled] {
+	/*text-decoration: line-through;*/
+	color: var(--gray22);
+	opacity: 0.35;
+	filter: brightness(100%) !important;
+
+	cursor: default;
+}
+
+/* -Dialog */
+#exampleBrowserWrap .listTags.-dialog .section > .tag {
+	filter: brightness(100%);
+}
+
+/* :hover */
+#exampleBrowserWrap .listTags.-dialog .section > .tag:hover {
+	filter: saturate(80%) brightness(130%);
+}
+
+/* [selected] */
+#exampleBrowserWrap .listTags.-dialog .section > .tag[selected] {
+	filter: brightness(130%);
+}
+
+/* -Level */
+#exampleBrowserWrap .listTags .section > .tag.-level,
+#exampleBrowserWrap .footersearchtag.-level {
+	--color: var(--lightGray);
+}
+
+/* -Category */
+#exampleBrowserWrap .listTags .section > .tag.-category,
+#exampleBrowserWrap .footersearchtag.-category {
+	--color: var(--green);
+}
+
+/* -Coding */
+#exampleBrowserWrap .listTags .section > .tag.-coding,
+#exampleBrowserWrap .footersearchtag.-coding {
+	--color: var(--green);
+}
+
+/* -Genre */
+#exampleBrowserWrap .listTags .section > .tag.-genre,
+#exampleBrowserWrap .footersearchtag.-genre {
+	--color: var(--pink);
+}
+
+/* -Tag */
+#exampleBrowserWrap .listTags .section > .tag.-tag,
+#exampleBrowserWrap .footersearchtag.-tag {
+	--color: var(--yellow);
+}
+
+/* -Plugin */
+#exampleBrowserWrap .listTags .section > .tag.-plugin,
+#exampleBrowserWrap .footersearchtag.-plugin {
+	--color: var(--blue);
+}
+
+/* -Behavior */
+#exampleBrowserWrap .listTags .section > .tag.-behavior,
+#exampleBrowserWrap .footersearchtag.-behavior {
+	--color: var(--orange);
+}
+
+/* -Effect */
+#exampleBrowserWrap .listTags .section > .tag.-effect,
+#exampleBrowserWrap .footersearchtag.-effect {
+	--color: var(--purple);
+}
+
+/* CHECK ICON */
+#exampleBrowserWrap .listTags .section > .tag::before {
+	position: absolute;
+	top: calc( 50% - var(--iconSize) / 2 ); left: 0;
+
+	content: "";
+	display: block;
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	filter: var(--gray26-filter);
+	background: url("media/icons/check.svg") no-repeat center center / contain;
+
+	animation: ebZoomOut 50ms both;
+}
+
+/* [Selected] */
+#exampleBrowserWrap .listTags .section > .tag[selected]::before {
+	animation: ebZoomIn 100ms both;
+}
+
+html[uianimationsdisabled] #exampleBrowserWrap .listTags .section > .tag::before,
+html[uianimationsdisabled] #exampleBrowserWrap .listTags .section > .tag[selected]::before {
+	animation-duration: 0s;
+}
+/* -------- CARD EXAMPLE -------- */
+
+/* CARD EXAMPLE */
+.startPageOrExampleBrowser .cardExample {
+	--expandedWidth: 400px;
+	--durationIn: 200ms;
+	--durationOut: 100ms;
+	--ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+	display: flex;
+	flex-flow: column nowrap;
+	min-height: 128px;
+
+	border-radius: 4px;
+	background: var(--gray11);
+
+	cursor: pointer;
+	user-select: none;
+}
+
+/* :Hover */
+/* uses a custom hover/active state so the preview button (child) can highlight independently from the example card (parent) */
+.startPageOrExampleBrowser .cardExample[hover] {
+	color: var(--gray29);
+	background: var(--gray14);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample[active] {
+	color: var(--gray4);
+	background: var(--gray30);
+}
+
+/* [Transition In] */
+.startPageOrExampleBrowser .cardExample[transitionIn] {
+	position: fixed;
+
+	overflow: hidden;
+
+	transform: translate(-50%, -50%);
+	animation:
+		ebTransformX var(--durationIn) var(--ease) both,
+		ebTransformY var(--durationIn) var(--ease) both,
+		ebTransformW var(--durationIn) var(--ease) both,
+		ebTransformH var(--durationIn) var(--ease) both;
+	
+	will-change: top, left, width, height;
+}
+
+/* [Transition Out] */
+.startPageOrExampleBrowser .cardExample[transitionOut] {
+	position: fixed;
+
+	overflow: hidden;
+
+	transform: translate(-50%, -50%);
+	animation:
+		ebTransformX var(--durationOut) var(--ease) reverse both,
+		ebTransformY var(--durationOut) var(--ease) reverse both,
+		ebTransformW var(--durationOut) var(--ease) reverse both,
+		ebTransformH var(--durationOut) var(--ease) reverse both;
+	
+	will-change: top, left, width, height;
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] {
+	z-index: 1;
+	
+	max-width: 95%;
+	width: var(--expandedWidth);
+	max-height: 95%;
+
+	border-radius: 6px;
+	visibility: invisible;
+	filter: drop-shadow( 0 4px 5px rgba(10,10,10,.35) ) drop-shadow( 0 2px 1px rgba(10,10,10,.5) );
+
+	cursor: auto;
+}
+
+/* THUMB */
+.startPageOrExampleBrowser .cardExample > .thumb {
+	--padding: 4px;
+	--iconShadow: drop-shadow(0 1.5px 1px rgba( var(--gray0-rgb), 0.75));
+	
+	position: relative;
+	
+	border-top-left-radius: inherit;
+	border-top-right-radius: inherit;
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] > .thumb {
+	cursor: pointer;
+}
+
+/* THUMB VIGNETTE */
+.startPageOrExampleBrowser .cardExample > .thumb::before {
+	position: absolute;
+	left: 0; right: 0; top: 0; bottom: 0;
+	z-index: 1;
+
+	content: "";
+	
+	border-top-left-radius: inherit;
+	border-top-right-radius: inherit;
+	box-shadow: 0 0 64px 4px inset rgba(0, 0, 0, 0.4);
+}
+
+/* THUMB IMAGE */
+.startPageOrExampleBrowser .cardExample > .thumb > .image {
+	display: block;
+	width: 100%;
+	min-height: 128px;
+	max-height: 22vh;
+	height: auto;
+	object-fit: cover;
+
+	border-top-left-radius: inherit;
+	border-top-right-radius: inherit;
+	filter: contrast(90%) brightness(90%);
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample[hover] > .thumb > .image {
+	filter: none;
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample[active] > .thumb > .image {
+	filter: grayscale(1) contrast(80%) brightness(120%);
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] > .thumb > .image {
+	max-height: 100vh;
+
+	filter: brightness(100%);
+}
+
+/* :hover */
+.startPageOrExampleBrowser .cardExample[expanded] > .thumb[hover] > .image {
+	filter: contrast(90%) brightness(110%);
+}
+
+/* :active */
+.startPageOrExampleBrowser .cardExample[expanded] > .thumb[active] > .image {
+	filter: grayscale(1) contrast(80%) brightness(130%);
+}
+
+/* OFFLINE STATUS */
+.startPageOrExampleBrowser .cardExample > .thumb > .status {
+	position: absolute;
+	top: var(--padding); left: var(--padding);
+	z-index: 1;
+
+	padding: 2px;
+
+	border-radius: 100vh;
+	background: rgba( var(--gray4-rgb), 65%);
+}
+
+/* OFFLINE STATUS ICON */
+.startPageOrExampleBrowser .cardExample .status > .icon {
+	--iconSizeA: 20px;
+	--iconSizeB: 24px;
+	--durationIn: 200ms;
+	--durationOut: 100ms;
+	--ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+	
+	--widthA: var(--iconSizeA);
+	--heightA: var(--iconSizeA);
+	--widthB: var(--iconSizeB);
+	--heightB: var(--iconSizeB);
+	
+	display: block;
+	width: var(--iconSizeA);
+	height: var(--iconSizeA);
+
+	filter: var(--gray27-filter) var(--iconShadow);
+}
+
+/* [Transition In] */
+.startPageOrExampleBrowser .cardExample[transitionIn] .status > .icon {
+	animation:
+		ebTransformW var(--durationIn) var(--ease) both,
+		ebTransformH var(--durationIn) var(--ease) both;
+}
+
+/* [Transition Out] */
+.startPageOrExampleBrowser .cardExample[transitionOut] .status > .icon {
+	animation:
+		ebTransformW var(--durationOut) var(--ease) reverse both,
+		ebTransformH var(--durationOut) var(--ease) reverse both;
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded]:not([transitionIn], [transitionOut]) .status > .icon {
+	width: var(--iconSizeB);
+	height: var(--iconSizeB);
+}
+
+/* SPECIAL ICONS GROUP */
+.startPageOrExampleBrowser .cardExample > .thumb > .groupIcons {
+	position: absolute;
+	right: var(--padding); bottom: var(--padding);
+	z-index: 1;
+
+	display: flex;
+	flex: row nowrap;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 2px;
+
+	border-radius: 6px;
+	background: rgba( var(--gray4-rgb), 65%);
+}
+
+/* hide when empty */
+.startPageOrExampleBrowser .cardExample .groupIcons:empty {
+	display: none;
+}
+
+/* SPECIAL ICON */
+.startPageOrExampleBrowser .cardExample .groupIcons > .icon {
+	--iconSizeA: 24px;
+	--iconSizeB: 28px;
+	--durationIn: 200ms;
+	--durationOut: 100ms;
+	--ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+	
+	--widthA: var(--iconSizeA);
+	--heightA: var(--iconSizeA);
+	--widthB: var(--iconSizeB);
+	--heightB: var(--iconSizeB);
+	
+	width: var(--iconSizeA);
+	height: var(--iconSizeA);
+
+	filter: var(--gray27-filter) var(--iconShadow);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample[active] .groupIcons > .icon {
+	filter: var(--gray27-filter);
+}
+
+/* [Transition In] */
+.startPageOrExampleBrowser .cardExample[transitionIn] .groupIcons > .icon {
+	animation:
+		ebTransformW var(--durationIn) var(--ease) both,
+		ebTransformH var(--durationIn) var(--ease) both;
+}
+
+/* [Transition Out] */
+.startPageOrExampleBrowser .cardExample[transitionOut] .groupIcons > .icon {
+	animation:
+		ebTransformW var(--durationOut) var(--ease) reverse both,
+		ebTransformH var(--durationOut) var(--ease) reverse both;
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded]:not([transitionIn],[transitionOut]) .groupIcons > .icon {
+	width: var(--iconSizeB);
+	height: var(--iconSizeB);
+}
+
+/* -Tag */
+.startPageOrExampleBrowser .cardExample .groupIcons > .icon.-tag {
+	filter: var(--yellow-filter) var(--iconShadow);
+}
+
+/* BUTTON CLOSE */
+.startPageOrExampleBrowser .cardExample > .thumb > .buttonClose {
+	--durationIn: 150ms;
+	--delayIn: 50ms;
+	--durationOut: 100ms;
+	--ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+	
+	position: absolute;
+	top: var(--padding); right: var(--padding);
+	z-index: 1;
+
+	display: none;
+	justify-content: center;
+	align-items: center;
+	width: 26px;
+	height: 26px;
+
+	border-radius: 100vh;
+	background: var(--gray14);	
+	filter: var(--iconShadow);
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample > .thumb > .buttonClose:hover {
+	background: var(--red);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample > .thumb > .buttonClose:active {
+	background: var(--gray30);
+}
+
+/* :[Transition In] */
+.startPageOrExampleBrowser .cardExample[transitionIn] > .thumb > .buttonClose {
+	animation:
+		ebZoomIn var(--durationIn) var(--ease) var(--delayIn) both,
+		ebFadeIn var(--durationIn) var(--ease) var(--delayIn) both;
+}
+
+/* :[Transition Out] */
+.startPageOrExampleBrowser .cardExample[transitionOut] > .thumb > .buttonClose {
+	animation:
+		ebZoomOut var(--durationOut) var(--ease) both,
+		ebFadeOut var(--durationOut) var(--ease) both;
+}
+
+/* :[Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] > .thumb > .buttonClose {
+	display: flex;
+}
+
+/* BUTTON CLOSE ICON */
+.startPageOrExampleBrowser .cardExample .buttonClose > .icon {
+	--iconSize: 18px;
+	
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	filter: var(--gray24-filter);
+	
+	pointer-events: none;
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample > .thumb > .buttonClose:hover > .icon {
+	filter: var(--gray31-filter);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample > .thumb > .buttonClose:active > .icon {
+	filter: var(--gray4-filter);
+}
+
+/* INFO GROUP */
+.startPageOrExampleBrowser .cardExample > .info {
+	--padding: 12px;
+	--gutterH: 12px;
+	--buttonSize: 32px;
+	--iconSize: 24px;
+
+	position: relative;
+
+	flex-grow: 1;
+
+	display: flex;
+	flex-flow: column nowrap;
+	overflow: hidden;
+	padding: var(--padding) var(--padding);
+}
+
+/* HEADER */
+.startPageOrExampleBrowser .cardExample > .info > .header {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: flex-start;
+	margin-bottom: 12px;
+}
+
+/* TITLE */
+.startPageOrExampleBrowser .cardExample > .info .title {
+	flex: 1 1 auto;
+	
+	margin-right: var(--gutterH);
+
+	font-weight: 600;
+	text-transform: uppercase;
+	word-break: break-word;
+
+	color: var(--gray28);
+
+	pointer-events: none;
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample[hover] > .info .title {
+	color: var(--gray31);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample[active] > .info .title {
+	color: var(--gray4);
+}
+
+/* [Recommended] */
+.startPageOrExampleBrowser .cardExample[recommended] > .info .title::before {
+	content: "";
+	display: inline;
+	margin-right: 0.5ch;
+	padding-right: 1.5em;
+
+	background: url("media/icons/star.svg") no-repeat center center / contain;
+	filter: var(--yellow-filter);
+}
+
+/* :active */
+.startPageOrExampleBrowser .cardExample[recommended][active] > .info .title::before {
+	filter: var(--gray6-filter);
+}
+
+/* BUTTON PREVIEW */
+.startPageOrExampleBrowser .cardExample > .info .buttonPreview {
+	flex: 0 0 auto;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+
+	border-radius: 100vh;
+	background: var(--gray14);
+
+	cursor: pointer;
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] > .info .buttonPreview {
+	--gutter: 8px;
+	--size: 32px;
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample[hover] > .info .buttonPreview {
+	background: var(--gray17);
+}
+
+.startPageOrExampleBrowser .cardExample > .info .buttonPreview:hover {
+	background: var(--gray17);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample > .info .buttonPreview:active {
+	background: var(--gray30);
+}
+
+/* BUTTON PREVIEW ICON */
+.startPageOrExampleBrowser .cardExample > .info .buttonPreview > .icon {
+	--iconSize: 20px;
+	
+	width: var(--iconSize);
+	height: var(--iconSize);
+	
+	filter: var(--gray23-filter);
+	
+	pointer-events: none;
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample[hover] > .info .buttonPreview > .icon {
+	filter: var(--gray28-filter);
+}
+
+.startPageOrExampleBrowser .cardExample > .info .buttonPreview:hover > .icon {
+	filter: var(--gray28-filter);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample > .info .buttonPreview:active > .icon {
+	filter: var(--gray6-filter);
+}
+
+/* BUTTON OPEN */
+.startPageOrExampleBrowser .cardExample > .info .buttonOpen {
+	display: none;
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] > .info .buttonOpen {
+	--iconSizeA: 0px;
+	--iconSizeB: 32px;
+	--durationIn: 100ms;
+	--durationOut: 100ms;
+	--ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+	
+	--widthA: var(--iconSizeA);
+	--heightA: var(--iconSizeA);
+	--widthB: var(--iconSizeB);
+	--heightB: var(--iconSizeB);
+	
+	flex: 0 0 auto;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: var(--iconSizeA);
+	height: var(--iconSizeA);
+	margin-left: 8px;
+	padding: 0;
+
+	border-radius: 100vh;
+	background: var(--gray14);
+
+	cursor: pointer;
+}
+
+/* When transitions finished */
+.startPageOrExampleBrowser .cardExample[expanded]:not([transitionIn], [transitionOut]) > .info .buttonOpen {
+	width: var(--iconSizeB);
+	height: var(--iconSizeB);
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample[hover] > .info .buttonOpen {
+	background: var(--gray17);
+}
+
+.startPageOrExampleBrowser .cardExample > .info .buttonOpen:hover {
+	background: var(--gray17);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample > .info .buttonOpen:active {
+	background: var(--gray30);
+}
+
+/* :[Transition In] */
+.startPageOrExampleBrowser .cardExample[transitionIn] > .info .buttonOpen {
+	animation:
+		ebTransformW var(--durationIn) var(--ease) both,
+		ebTransformH var(--durationIn) var(--ease) both,
+		ebZoomIn var(--durationIn) var(--ease) both,
+		ebFadeIn var(--durationIn) var(--ease) both;
+		
+		will-change: top, left, width, height;
+}
+
+/* :[Transition Out] */
+.startPageOrExampleBrowser .cardExample[transitionOut] > .info .buttonOpen {
+	animation:
+		ebTransformW var(--durationOut) var(--ease) reverse both,
+		ebTransformH var(--durationOut) var(--ease) reverse both,
+		ebZoomIn var(--durationOut) var(--ease) reverse both,
+		ebFadeIn var(--durationOut) var(--ease) reverse both;
+		
+		will-change: top, left, width, height;
+}
+
+/* BUTTON OPEN ICON */
+.startPageOrExampleBrowser .cardExample > .info .buttonOpen > .icon {
+	--iconSize: 20px;
+	
+	width: var(--iconSize);
+	height: var(--iconSize);
+	
+	filter: var(--gray23-filter);
+	
+	pointer-events: none;
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample[hover] > .info .buttonOpen > .icon {
+	filter: var(--gray28-filter);
+}
+
+.startPageOrExampleBrowser .cardExample > .info .buttonOpen:hover > .icon {
+	filter: var(--gray28-filter);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample > .info .buttonOpen:active > .icon {
+	filter: var(--gray6-filter);
+}
+
+/* DESCRIPTION */
+.startPageOrExampleBrowser .cardExample > .info > .description {
+	--minLines: 2;
+	--lineHeight: 1.25em;
+	--descenderHeight: calc(0.5em - 0.5ex);
+
+	flex: 1 0 calc( var(--lineHeight) * var(--minLines) + var(--descenderHeight) );
+
+	position: relative;
+
+	overflow: hidden;
+
+	hyphens: auto;
+
+	color: var(--gray22);
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample[hover] > .info > .description {
+	color: var(--gray25);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample[active] > .info > .description {
+	color: var(--gray8);
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] > .info > .description {
+	flex: 1 0 auto;
+
+	word-break: break-word;
+	overflow-wrap: break-word;
+}
+
+/* DESCRIPTION OVERFLOW FADE */
+.startPageOrExampleBrowser .cardExample > .info > .description::after {
+	--lineHeight: 1.25em;
+	--overflowGradientColor: var(--gray11);
+	--overflowGradientColorRgb: var(--gray11-rgb);
+
+	position: absolute;
+	right: 0; bottom: 0;
+	z-index: 1;
+
+	content: "";
+	display: inline-block;
+
+	font-size: 1em;
+	text-align: right;
+	vertical-align: baseline;
+
+	opacity: 1;
+
+	transition: opacity 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample[hover] > .info > .description::after {
+	--overflowGradientColor: var(--gray14);
+	--overflowGradientColorRgb: var(--gray14-rgb);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample[active] > .info > .description::after {
+	--overflowGradientColor: var(--gray30);
+	--overflowGradientColorRgb: var(--gray30-rgb);
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] > .info > .description::after {
+	opacity: 0;
+
+	transition: opacity 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* TAG GROUP */
+.startPageOrExampleBrowser .cardExample .info > .groupTag {
+	display: none;
+	flex-flow: row wrap;
+	align-items: center;
+	gap: 6px;
+}
+
+html[uianimationsenabled] .startPageOrExampleBrowser .cardExample .info > .groupTag {
+	animation: ebFadeOut 100ms cubic-bezier(0.4, 0.0, 0.2, 1) both;
+}
+
+/* [Expanded] */
+.startPageOrExampleBrowser .cardExample[expanded] .info > .groupTag {
+	display: flex;
+	margin-top: 24px;
+}
+
+html[uianimationsenabled] .startPageOrExampleBrowser .cardExample[expanded] .info > .groupTag {
+	animation: ebFadeIn 100ms cubic-bezier(0.4, 0.0, 0.2, 1) 100ms both;
+}
+
+/* TAG */
+.startPageOrExampleBrowser .cardExample .info > .groupTag > .tag {
+	--minTextWidth: 3ch;
+	--paddingH: 12px;
+	--color: var(--gray14-rgb);
+
+	position: relative;
+
+	display: block;
+	box-sizing: border-box;
+	overflow: hidden;
+	min-width: calc( var(--paddingH) + var(--minTextWidth) + var(--paddingH) );
+	min-height: 24px;
+	padding: 6px var(--paddingH);
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	border-radius: 100vh;
+	color: rgb( var(--color) );
+	box-shadow: inset 0 0 0 1px rgb( var(--color) );
+	filter: none;
+
+	cursor: pointer;
+}
+
+/* :Hover */
+.startPageOrExampleBrowser .cardExample .info > .groupTag > .tag:hover {
+	background: rgba( var(--color) , 0.1);
+}
+
+/* :Active */
+.startPageOrExampleBrowser .cardExample .info > .groupTag > .tag:active {
+	color: var(--gray4);
+	background: var(--gray30);
+	box-shadow: none;
+}
+
+/* [Selected] */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag[selected] {
+	color: var(--gray6);
+	box-shadow: none;
+	background: rgb( var(--color) );
+	filter: none;
+}
+
+/* :hover */
+.startPageOrExampleBrowser .cardExample .info > .groupTag > .tag[selected]:hover {
+	color: var(--gray2);
+	background: rgb( var(--color) );
+	filter: saturate(80%) brightness(120%);
+}
+
+/* -Level */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag.-level {
+	--color: var(--lightGray-rgb);
+}
+
+/* -Category */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag.-category {
+	--color: var(--green-rgb);
+}
+
+/* -Coding */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag.-coding {
+	--color: var(--green-rgb);
+}
+
+/* -Genre */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag.-genre {
+	--color: var(--pink-rgb);
+}
+
+/* -Tag */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag.-tag {
+	--color: var(--yellow-rgb);
+}
+
+/* -Plugin */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag.-plugin {
+	--color: var(--blue-rgb);
+}
+
+/* -Behavior */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag.-behavior {
+	--color: var(--orange-rgb);
+}
+
+/* -Effect */
+.startPageOrExampleBrowser .cardExample .groupTag > .tag.-effect {
+	--color: var(--purple-rgb);
+}
+
+
+/* -------- PLACEHOLDER EXAMPLE -------- */
+
+#exampleBrowserWrap .placeholderExample {
+	border-radius: 8px;
+	background: var(--gray6);
+}
+
+
+/* -------- DIMMER -------- */
+
+#exampleBrowserWrap .dimmer {
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 1;
+
+	display: block;
+
+	background: rgba( var(--gray4-rgb), 0.5 );
+}
+
+
+/* -------- OVERLAY -------- */
+
+#exampleBrowserWrap .overlay {
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 1;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: auto;
+
+	cursor: pointer;
+}
+
+
+/* -------- DIALOG FILTERS -------- */
+
+/* DIALOG FILTERS */
+#exampleBrowserWrap .dialogFilters {
+	display: flex;
+	flex-flow: column nowrap;
+	overflow: hidden;
+	max-width: 95%;
+	min-height: 20em;
+	max-height: 95%;
+	width: 50ch;
+	height: 45em;
+
+	border-radius: 4px;
+	color: var(--gray23);
+	background-color: var(--gray11);
+	filter: drop-shadow( 0 4px 5px rgba(10,10,10,.35) ) drop-shadow( 0 2px 1px rgba(10,10,10,.5) );
+
+	user-select: none;
+}
+
+/* HEADER */
+#exampleBrowserWrap .dialogFilters > .header {
+	flex: 1 0 auto;
+
+	display: flex;
+	flex-flow: row nowrap;
+
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	background: var(--gray13);
+}
+
+/* CAPTION */
+#exampleBrowserWrap .dialogFilters > .header > .caption {
+	flex-grow: 1;
+
+	display: block;
+	overflow: hidden;
+	padding: .3em;
+
+	text-align: center;
+	text-overflow: ellipsis;
+
+	color: var(--gray29);
+}
+
+/* CLOSE BUTTON */
+#exampleBrowserWrap .dialogFilters > .header > .buttonClose {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 26px;
+	height: 26px;
+	padding: 0;
+
+	border-radius: 0 4px 0 0;
+}
+
+/* :Hover */
+#exampleBrowserWrap .dialogFilters > .header > .buttonClose:hover {
+	background: var(--red);
+}
+
+/* :Active */
+#exampleBrowserWrap .dialogFilters > .header > .buttonClose:active {
+	background: var(--gray30);
+}
+
+/* CLOSE BUTTON ICON */
+#exampleBrowserWrap .dialogFilters > .header > .buttonClose > .icon {
+	width: 18px;
+	height: 18px;
+	filter: var(--gray23-filter);
+
+	pointer-events: none;
+}
+
+/* :Hover */
+#exampleBrowserWrap .dialogFilters > .header > .buttonClose:hover > .icon {
+	filter: var(--gray31-filter);
+}
+
+/* :Active */
+#exampleBrowserWrap .dialogFilters > .header > .buttonClose:active > .icon {
+	filter: var(--gray4-filter);
+}
+
+/* CONTENT */
+#exampleBrowserWrap .dialogFilters > .content {
+	flex: 1 1 100%;
+
+	display: flex;
+	justify-content: center;
+	overflow-x: auto;
+	overflow-y: scroll;
+	padding: 12px;
+}
+
+/* FOOTER */
+#exampleBrowserWrap .dialogFilters > .footer {
+	flex: 1 0 auto;
+
+	display: block;
+	overflow-y: auto;
+	min-height: 2em;
+	max-height: 30%;
+	padding: 12px;
+
+	border-top: 2px solid var(--gray10);
+}
+
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>> LAYOUTS <<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+
+/* ================ SETTINGS ================ */
+
+
+#exampleBrowserWrap {
+	/* -------- BASE LAYOUT -------- */
+	--windowPaddingH: 5%;
+	--windowPaddingV: 24px;
+	--gutter: 12px;
+	--smallGutterV: 24px;
+	--bigGutterV: 36px;
+	
+	--windowMinWidth: 160px;
+	--sidebarWidth: 35ch;
+	--exampleMinWidth: 28ch;
+
+	/* -------- BREAKPOINT A -------- */
+	--windowPaddingH-A: 36px;
+	--windowPaddingV-A: 28px;
+	--smallGutterV-A: 24px;
+	--bigGutterV-A: 36px;
+
+	/* -------- BREAKPOINT B -------- */
+	--windowPaddingH-B: 40px;
+	--windowPaddingV-B: 36px;
+	--smallGutterV-B: 24px;
+	--mediumGutterV-B: 36px;
+	--bigGutterH-B: 36px;
+}
+
+
+
+/* ================ VARIABLES ================ */
+
+
+#exampleBrowserWrap {
+	/* -------- BASE LAYOUT -------- */
+	--\\doubleGutter: calc( var(--gutter) * 2 );
+
+	/* -------- BREAKPOINT A -------- */
+	--\\smallGutterV-A: calc( var(--smallGutterV-A) - var(--\\doubleGutter) );
+	--\\bigGutterV-A: calc( var(--bigGutterV-A) - var(--\\doubleGutter) );
+
+	/* -------- BREAKPOINT B -------- */
+	--\\bigGutterH-B: calc( var(--bigGutterH-B) - var(--\\doubleGutter) );
+}
+
+
+
+/* ================ BASE LAYOUT ================ */
+
+
+/* -------- EXAMPLE BROWSER -------- */
+#exampleBrowserWrap {
+	overflow-y: scroll;
+
+	color: var(--gray26);
+	background: var(--gray7);
+
+	user-select: none;
+}
+
+/* -------- CONTAINER -------- */
+#exampleBrowserWrap #container {
+	min-width: var(--windowMinWidth);
+	width: 100%;
+	padding: var(--windowPaddingV) var(--windowPaddingH);
+}
+
+/* -------- SEARCH EXAMPLES -------- */
+#exampleBrowserWrap #searchExamples {
+	margin-bottom: var(--bigGutterV);
+}
+
+/* -------- BUTTON FILTERS -------- */
+#exampleBrowserWrap #buttonFilters {
+	margin-bottom: var(--smallGutterV);
+}
+
+/* -------- GROUP FILTERS -------- */
+#exampleBrowserWrap #groupFilters {
+	display: flex;
+	flex-flow: column nowrap;
+
+	margin-bottom: var(--bigGutterV);
+}
+
+/* -------- TITLE FILTERS -------- */
+#exampleBrowserWrap #groupFilters > #titleFilters {
+	display: none;
+}
+
+/* -------- LIST TAGS -------- */
+#exampleBrowserWrap #groupFilters > #listTags {
+	display: none;
+}
+
+/* -------- GROUP EXAMPLES -------- */
+#exampleBrowserWrap #groupExamples {
+	display: grid;
+	grid-gap: var(--gutter);
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+}
+
+
+
+/* ================ BREAKPOINT A ================ */
+
+
+/* -------- CONTAINER -------- */
+#exampleBrowserWrap[w480] #container {
+	--minColWidth: var(--exampleMinWidth);
+
+	display: grid;
+	grid-gap: var(--gutter);
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows:
+		auto
+		var(--\\bigGutterV-A)
+		auto
+		var(--\\smallGutterV-A)
+		auto;
+	align-content: start;
+	align-items: center;
+	grid-auto-flow: column;
+
+	padding: var(--windowPaddingV-A) var(--windowPaddingH-A);
+}
+
+/* -------- SEARCH EXAMPLES -------- */
+#exampleBrowserWrap[w480] #searchExamples {
+	grid-column-start: 1;
+	grid-row-start: 1;
+	margin: 0;
+}
+
+/* -------- BUTTON FILTERS -------- */
+#exampleBrowserWrap[w480] #buttonFilters {
+	grid-column-start: 2;
+	grid-row-start: 1;
+	margin: 0;
+}
+
+/* -------- GROUP FILTERS -------- */
+#exampleBrowserWrap[w480] #groupFilters {
+	grid-column: 1 / -1;
+	grid-row-start: 3;
+
+	margin: 0;
+}
+
+/* -------- GROUP EXAMPLES -------- */
+#exampleBrowserWrap[w480] .resultsGridWrap {
+	grid-column: 1 / -1;
+	grid-row-start: 5;
+}
+
+#exampleBrowserWrap[w480] #groupExamples {
+	grid-template-columns: 1fr 1fr;
+	grid-template-columns: repeat( auto-fill, minmax(var(--minColWidth), 1fr) );
+}
+
+
+
+/* ================ BREAKPOINT B ================ */
+
+
+/* -------- CONTAINER -------- */
+#exampleBrowserWrap[w920] #container {
+	grid-template-columns: minmax( var(--sidebarWidth), 1fr ) var(--\\bigGutterH-B) repeat( auto-fill, minmax( calc( var(--minColWidth) + var(--gutter) ), 1fr) );
+	grid-template-rows: auto 1fr;
+	align-items: start;
+
+	padding: var(--windowPaddingV-B) var(--windowPaddingH-B);
+}
+
+/* -------- SEARCH EXAMPLES -------- */
+#exampleBrowserWrap[w920] #searchExamples {
+	grid-column: 1 / 1;
+	grid-row-start: 1;
+
+	margin-bottom: var(--mediumGutterV-B);
+}
+
+/* -------- BUTTON FILTERS -------- */
+#exampleBrowserWrap[w920] #buttonFilters {
+	display: none;
+}
+
+/* -------- GROUP FILTERS -------- */
+#exampleBrowserWrap[w920] #groupFilters {
+	grid-column: 1 / 1;
+	grid-row-start: 2;
+}
+
+/* -------- TITLE FILTERS -------- */
+#exampleBrowserWrap[w920] #groupFilters > #titleFilters {
+	display: flex;
+	margin-bottom: var(--smallGutterV-B);
+}
+
+/* -------- SELECTED TAGS -------- */
+#exampleBrowserWrap[w920] #selectedTags {
+	margin-bottom: var(--mediumGutterV-B);
+}
+
+/* -------- LIST TAGS -------- */
+#exampleBrowserWrap[w920] #groupFilters > #listTags {
+	display: block;
+}
+
+/* -------- GROUP EXAMPLES -------- */
+#exampleBrowserWrap[w920] .resultsGridWrap {
+	grid-column: 3 / -1;
+	grid-row: 1 / 3;
+}
+
+#exampleBrowserWrap[w920] #groupExamples {
+	grid-template-columns: repeat( auto-fill, minmax(var(--minColWidth), 1fr) );
+}
+
+#exampleBrowserWrap .resultsFooter {
+	color: var(--gray17);
+}
+
+/* Review changes */
+#exampleBrowserWrap .resultCountNumber {
+	font-weight: 600;
+	color: var(--gray23);
+}
+
+#exampleBrowserWrap .resultCountTotal {
+	color: var(--gray23);
+}
+#exampleBrowserWrap .footersearchterm {
+	color: var(--gray27);
+}
+
+#exampleBrowserWrap .resultsFooterClearWrap div {
+	color: var(--gray26);
+	background: var(--gray11);
+}
+
+/* :Hover */
+#exampleBrowserWrap .resultsFooterClearWrap div:hover {
+	color: var(--gray29);
+	background: var(--gray14);
+	cursor: pointer;
+}
+
+/* :Active */
+#exampleBrowserWrap .resultsFooterClearWrap div:active {
+	color: var(--gray4);
+	background: var(--gray30);
+}

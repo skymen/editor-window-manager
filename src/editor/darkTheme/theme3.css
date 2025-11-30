@@ -1,0 +1,1216 @@
+/* >>>>>>>>>>>>>>>>>>>>>>>> INDEX <<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+	/* >>>>>>>>>>>> BASE <<<<<<<<<<<< */
+
+		/* ======== FONTS ======== */
+
+		/* ======== COLORS ======== */
+
+			/* ---- GRAY PALETTE ---- */
+			/* ---- ACCENT PALETTE ---- */
+
+		/* ======== ANIMATIONS ======== */
+
+			/* ---- FADE ---- */
+			/* ---- ZOOM ---- */
+			/* ---- DROP ---- */
+			/* ---- TRANSFORM POSITION ---- */
+			/* ---- TRANSFORM SIZE ---- */
+
+
+	/* >>>>>>>>>>>> COMPONENTS <<<<<<<<<<<< */
+
+			/* ---- IMAGE C3 LOGO ---- */
+			/* ---- GROUP ---- */
+			/* ---- BUTTON ---- */
+			/* ---- MENU BUTTON ---- */
+			/* ---- TITLE SECTION ---- */
+			/* ---- CARD PROJECT ---- */
+			/* ---- CARD LINK ---- */
+			/* ---- CARD COMMUNITY ---- */
+			/* ---- CARD EXAMPLE ---- */
+			/* ---- PLACEHOLDER EXAMPLE	---- */
+			/* ---- DIMMER ---- */
+			/* ---- OVERLAY ---- */
+
+
+	/* >>>>>>>>>>>> LAYOUTS <<<<<<<<<<<< */
+
+		/* ======== SETTINGS ======== */
+
+			/* ---- BASE LAYOUT ---- */
+			/* ---- BREAKPOINT A ---- */
+			/* ---- BREAKPOINT B ---- */
+
+		/* ======== VARIABLES ======== */
+
+			/* ---- BASE LAYOUT ---- */
+			/* ---- BREAKPOINT A ---- */
+			/* ---- BREAKPOINT B ---- */
+
+		/* ======== BASE LAYOUT ======== */
+
+			/* ---- GRID AREAS PLACEMENT ---- */
+			/* ---- START PAGE ---- */
+			/* ---- CONTAINER ---- */
+			/* ---- IMAGE C3 LOGO ---- */
+			/* ---- GROUP NEW/OPEN ---- */
+			/* ---- BUTTON ---- */
+			/* ---- TITLE SECTION ---- */
+			/* ---- CARD PROJECT ---- */
+			/* ---- GROUP LINKS ---- */
+
+		/* ======== BREAKPOINT A ======== */
+
+			/* ---- CONTAINER ---- */
+			/* ---- IMAGE C3 LOGO ---- */
+			/* ---- GROUP NEW/OPEN ---- */
+			/* ---- GROUP RECENT ---- */
+			/* ---- PROJECT CARD ---- */
+			/* ---- BUTTON EXAMPLES ---- */
+			/* ---- GROUP EXAMPLES ---- */
+			/* ---- CARD EXAMPLE ---- */
+			/* ---- PLACEHOLDER EXAMPLE ---- */
+			/* ---- GROUP LINKS ---- */
+			/* ---- GROUP COMMUNITY ---- */
+
+		/* ======== BREAKPOINT B ======== */
+
+			/* ---- CONTAINER ---- */
+			/* ---- IMAGE C3 LOGO ---- */
+			/* ---- GROUP NEW/OPEN ---- */
+			/* ---- GROUP EXAMPLES ---- */
+			/* ---- GROUP COMMUNITY ---- */
+
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>> BASE <<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+
+/* ================ FONTS ================ */
+
+
+#startPage2Wrap * {
+	box-sizing: border-box;
+	letter-spacing: normal;
+}
+
+
+
+/* ================ COLORS ================ */
+
+
+/* -------- GRAY PALETTE -------- */
+
+#startPage2Wrap {
+	/* HEX */
+	--gray0: #000;
+	--gray1: #080808;
+	--gray2: #0f0f0f;
+	--gray3: #171717;
+	--gray4: #1f1f1f;
+	--gray5: #292929;
+	--gray6: #303030;
+	--gray7: #383838;
+	--gray8: #404040;
+	--gray9: #474747;
+	--gray10: #4f4f4f;
+	--gray11: #575757;
+	--gray12: #5e5e5e;
+	--gray13: #696969;
+	--gray14: #707070;
+	--gray15: #787878;
+	--gray16: #808080;
+	--gray17: #878787;
+	--gray18: #8f8f8f;
+	--gray19: #969696;
+	--gray20: #9e9e9e;
+	--gray21: #a8a8a8;
+	--gray22: #b0b0b0;
+	--gray23: #b8b8b8;
+	--gray24: #bfbfbf;
+	--gray25: #c7c7c7;
+	--gray26: #cfcfcf;
+	--gray27: #d6d6d6;
+	--gray28: #dedede;
+	--gray29: #e8e8e8;
+	--gray30: #f0f0f0;
+	--gray31: #f7f7f7;
+	--gray32: #fff;
+
+	/* RGB */
+	--gray0-rgb: 0,0,0;
+	--gray1-rgb: 8,8,8;
+	--gray2-rgb: 15,15,15;
+	--gray3-rgb: 23,23,23;
+	--gray4-rgb: 31,31,31;
+	--gray5-rgb: 41,41,41;
+	--gray6-rgb: 48,48,48;
+	--gray7-rgb: 56,56,56;
+	--gray8-rgb: 64,64,64;
+	--gray9-rgb: 71,71,71;
+	--gray10-rgb: 79,79,79;
+	--gray11-rgb: 87,87,87;
+	--gray12-rgb: 94,94,94;
+	--gray13-rgb: 105,105,105;
+	--gray14-rgb: 112,112,112;
+	--gray15-rgb: 120,120,120;
+	--gray16-rgb: 128,128,128;
+	--gray17-rgb: 135,135,135;
+	--gray18-rgb: 143,143,143;
+	--gray19-rgb: 150,150,150;
+	--gray20-rgb: 158,158,158;
+	--gray21-rgb: 168,168,168;
+	--gray22-rgb: 176,176,176;
+	--gray23-rgb: 184,184,184;
+	--gray24-rgb: 191,191,191;
+	--gray25-rgb: 199,199,199;
+	--gray26-rgb: 207,207,207;
+	--gray27-rgb: 214,214,214;
+	--gray28-rgb: 222,222,222;
+	--gray29-rgb: 232,232,232;
+	--gray30-rgb: 240,240,240;
+	--gray31-rgb: 247,247,247;
+	--gray32-rgb: 255,255,255;
+
+	/* FILTER */
+	/* starting from black */
+	--gray0-filter: invert(0);
+	--gray1-filter: invert(3%);
+	--gray2-filter: invert(6%);
+	--gray3-filter: invert(9%);
+	--gray4-filter: invert(12%);
+	--gray5-filter: invert(16%);
+	--gray6-filter: invert(19%);
+	--gray7-filter: invert(22%);
+	--gray8-filter: invert(25%);
+	--gray9-filter: invert(28%);
+	--gray10-filter: invert(31%);
+	--gray11-filter: invert(34%);
+	--gray12-filter: invert(37%);
+	--gray13-filter: invert(41%);
+	--gray14-filter: invert(44%);
+	--gray15-filter: invert(47%);
+	--gray16-filter: invert(50%);
+	--gray17-filter: invert(53%);
+	--gray18-filter: invert(56%);
+	--gray19-filter: invert(59%);
+	--gray20-filter: invert(62%);
+	--gray21-filter: invert(66%);
+	--gray22-filter: invert(69%);
+	--gray23-filter: invert(72%);
+	--gray24-filter: invert(75%);
+	--gray25-filter: invert(78%);
+	--gray26-filter: invert(81%);
+	--gray27-filter: invert(84%);
+	--gray28-filter: invert(87%);
+	--gray29-filter: invert(90%);
+	--gray30-filter: invert(94%);
+	--gray31-filter: invert(97%);
+	--gray32-filter: invert(100%);
+}
+
+
+/* -------- ACCENT PALETTE -------- */
+
+#startPage2Wrap {
+	/* HEX */
+	--turquoise: #29f3d0;
+	--green: #3ff276;
+	--yellow: #e4fb45;
+	--orange: #fc7770;
+	--red: #ff465f;
+	--pink: #fb6db6;
+	--purple: #ba96ff;
+	--blue: #38e1ff;
+	--lightGray: #ddeaf8;
+	--darkGray: #a8bac7;
+
+	/* RGB */
+	--turquoise-rgb: 41, 243, 208;
+	--green-rgb: 63, 242, 118;
+	--yellow-rgb: 228, 251, 69;
+	--orange-rgb: 252, 119, 112;
+	--red-rgb: 255, 70, 95;
+	--pink-rgb: 251, 109, 182;
+	--purple-rgb: 186, 150, 255;
+	--blue-rgb: 56, 225, 255;
+	--lightGray-rgb: 221, 234, 248;
+	--darkGray-rgb: 168, 186, 199;
+
+	/* FILTER */
+	/* starting from black */
+	--turquoise-filter: invert(64%) sepia(1) hue-rotate(121deg) saturate(3.1);
+	--green-filter: invert(63%) sepia(1) hue-rotate(85deg) saturate(3.1);
+	--yellow-filter: invert(76%) sepia(1) hue-rotate(24deg) saturate(3);
+	--orange-filter: invert(48%) sepia(1) hue-rotate(-47deg) saturate(3.2);
+	--red-filter: invert(36%) sepia(1) hue-rotate(-59deg) saturate(5.3);
+	--pink-filter: invert(46%) sepia(1) hue-rotate(-83deg) saturate(3.2);
+	--purple-filter: invert(60%) sepia(1) hue-rotate(-154deg) saturate(7.4);
+	--blue-filter: invert(64%) sepia(1) hue-rotate(160deg) saturate(3.95);
+	--lightGray-filter: invert(86%) sepia(27%) hue-rotate(170deg);
+	--darkGray-filter: invert(66%) sepia(42%) hue-rotate(165deg);
+}
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>> COMPONENTS <<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+
+/* -------- IMAGE C3 LOGO -------- */
+
+#startPage2Wrap .imageC3Logo {
+	--marginH: 16px;
+
+	justify-self: center;
+
+	width: calc(100% - var(--marginH) * 2);
+
+	object-fit: contain;
+}
+
+
+/* -------- GROUP -------- */
+
+#startPage2Wrap .group {
+	display: grid;
+	grid-gap: var(--gutter);
+}
+
+
+/* -------- BUTTON -------- */
+
+#startPage2Wrap .button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	min-height: 36px;
+	padding: 0 8px;
+
+	line-height: 1em;
+	text-align: center;
+	text-transform: uppercase;
+
+	border-radius: 3px;
+	color: var(--gray26);
+	background: var(--gray11);
+}
+
+/* :Hover */
+#startPage2Wrap .button:hover {
+	color: var(--gray31);
+	background: var(--gray13);
+
+	cursor: pointer;
+}
+
+/* :Active */
+#startPage2Wrap .button:active {
+	color: var(--gray4);
+	background: var(--gray30);
+}
+
+/* -Option[open] */
+#startPage2Wrap .button.-option[open] {
+	color: var(--gray6);
+	background: var(--gray26);
+}
+
+/* ICON */
+/* -Option */
+#startPage2Wrap .button.-option::after {
+	--iconSize: 16px;
+
+	content: "";
+	display: block;
+	width: var(--iconSize);
+	height: var(--iconSize);
+	margin-left: 8px;
+	margin-right: -8px;
+
+	background: url("media/icons/expand.svg") no-repeat center center / contain;
+	filter: var(--gray21-filter);
+}
+
+/* :hover */
+#startPage2Wrap .button.-option:hover::after {
+	filter: var(--gray26-filter);
+}
+
+/* :active */
+#startPage2Wrap .button.-option:active::after {
+	filter: var(--gray4-filter);
+}
+
+/* [open] */
+#startPage2Wrap .button.-option[open]::after {
+	filter: var(--gray6-filter);
+}
+
+
+/* -------- MENU BUTTON -------- */
+
+/* MENU */
+#startPage2Wrap .menuButton {
+	--margin: 8px;
+
+	position: fixed;
+	top: calc(var(--top) - var(--margin)); right: calc(100% - var(--right) - var(--margin));
+
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 2px;
+	box-sizing: border-box;
+	overflow: hidden;
+	min-width: var(--width);
+	max-width: 95%;
+	min-height: 0;
+	margin: var(--margin);
+	padding: 8px 0;
+
+	border-radius: 4px;
+	background: var(--gray4);
+	box-shadow: 0 2px 3px -1px rgba(var(--gray1-rgb), 75%);
+
+	cursor: pointer;
+	user-select: none;
+}
+
+html[uianimationsenabled] #startPage2Wrap .menuButton {
+	animation: var(--animation);
+}
+
+/* OPTION */
+#startPage2Wrap .menuButton > .option {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	min-height: 36px;
+	padding: 4px 16px;
+
+	color: var(--gray23);
+}
+
+/* :Hover */
+#startPage2Wrap .menuButton > .option:hover {
+	color: var(--gray29);
+	background: var(--gray6);
+}
+
+/* :Active */
+#startPage2Wrap .menuButton > .option:active {
+	color: var(--gray4);
+	background: var(--gray30);
+}
+
+/* ICON */
+#startPage2Wrap .menuButton > .option > .icon {
+	--iconSize: 24px;
+
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	filter: var(--gray23-filter);
+}
+
+html[uianimationsenabled] #startPage2Wrap .menuButton > .option > .icon {
+	animation: spZoomIn 150ms cubic-bezier(0.4, 0.0, 0.2, 1) both;
+}
+
+/* :Hover */
+#startPage2Wrap .menuButton > .option:hover > .icon {
+	filter: var(--gray29-filter);
+}
+
+/* :Active */
+#startPage2Wrap .menuButton > .option:active > .icon {
+	filter: var(--gray4-filter);
+}
+
+/* TITLE */
+#startPage2Wrap .menuButton > .option > .title {
+	text-transform: uppercase;
+}
+
+html[uianimationsenabled] #startPage2Wrap .menuButton > .option > .title {
+	animation: spFadeIn 200ms cubic-bezier(0.4, 0.0, 0.2, 1) both;
+}
+
+
+/* -------- TITLE SECTION -------- */
+
+#startPage2Wrap .titleSection {
+	font-weight: normal;
+	letter-spacing: normal;
+	text-transform: uppercase;
+
+	color: var(--gray23);
+}
+
+
+/* -------- CARD PROJECT -------- */
+
+#startPage2Wrap .cardProject {
+	--iconSize: 24px;
+	--paddingH: 16px;
+	--paddingV: 8px;
+
+	position: relative;
+
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: stretch;
+
+	min-width: 0;
+	min-height: 36px;
+	padding: var(--paddingV) var(--paddingH) var(--paddingV) calc( var(--iconSize) + var(--paddingH) * 2 );
+
+	border-radius: 3px;
+	background: var(--gray11);
+}
+
+/* :Hover */
+#startPage2Wrap .cardProject:hover {
+	background: var(--gray13);
+
+	cursor: pointer;
+}
+
+/* :Active */
+#startPage2Wrap .cardProject:active {
+	background: var(--gray30);
+}
+
+/* :Empty */
+#startPage2Wrap .cardProject:empty {
+	--borderWidth: 2px;
+
+	border: var(--borderWidth) dotted var(--gray11);
+	border-radius: calc( var(--borderWidth) + 3px );
+	background: transparent;
+	opacity: 0.55;
+}
+
+/* :Hover, :Active */
+#startPage2Wrap .cardProject:empty:hover,
+#startPage2Wrap .cardProject:empty:active {
+	background: transparent;
+
+	cursor: initial;
+}
+
+/* ICON */
+#startPage2Wrap .cardProject > .icon {
+	position: absolute;
+	top: calc( 50% - var(--iconSize) / 2 );
+	left: var(--paddingH);
+
+	width: var(--iconSize);
+
+	filter: var(--gray23-filter);
+}
+
+/* :Hover */
+#startPage2Wrap .cardProject:hover > .icon {
+	filter: var(--gray28-filter);
+}
+
+/* :Active */
+#startPage2Wrap .cardProject:active > .icon {
+	filter: var(--gray6-filter);
+}
+
+/* TITLE */
+#startPage2Wrap .cardProject > .title {
+	margin-bottom: 4px;
+
+	font-weight: 600;
+	text-transform: initial;
+
+	color: var(--gray28);
+}
+
+/* :Hover */
+#startPage2Wrap .cardProject:hover > .title {
+	color: var(--gray32);
+}
+
+/* :Active */
+#startPage2Wrap .cardProject:active > .title {
+	color: var(--gray4);
+}
+
+/* INFO */
+#startPage2Wrap .cardProject > .info {
+	display: flex;
+	justify-content: space-between;
+	overflow: hidden;
+	height: 1.5em;
+
+	font-size: 0.9em;
+	white-space: pre;
+
+	color: var(--gray20);
+}
+
+/* :Hover */
+#startPage2Wrap .cardProject:hover > .info {
+	color: var(--gray25);
+}
+
+/* :Active */
+#startPage2Wrap .cardProject:active > .info {
+	color: var(--gray10);
+}
+
+/* TYPE */
+#startPage2Wrap .cardProject > .info > .type {
+	margin-right: 1rem;
+}
+
+/* _OVERFLOW RIGHT */
+/* Hide children from the left if there's not enough space */
+#startPage2Wrap .cardProject > .info ._overflowLeft {
+	display: flex;
+	flex-flow: row-reverse wrap;
+	overflow: hidden;
+}
+
+/* _OVERFLOW LEFT */
+/* Hide children from the right if there's not enough space */
+#startPage2Wrap .cardProject > .info ._overflowRight {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-end;
+	overflow: hidden;
+}
+
+/* PUSHER */
+/* Pushes all children if there's not enough space, allowing to hide them all */
+#startPage2Wrap .cardProject > .info ._overflowRight::before {
+	content: " ";
+	width: 0;
+}
+
+/* SEPARATOR */
+#startPage2Wrap .cardProject > .info .weekday::after,
+#startPage2Wrap .cardProject > .info .time::before {
+	content: ", ";
+}
+
+
+/* -------- CARD LINK -------- */
+
+/* CARD LINK */
+#startPage2Wrap .cardLink {
+	--iconSize: 36px;
+	--titleLineHeight: 1.25em;
+	--gutterH: 16px;
+	--gutterV: 8px;
+	--descriptionBreakpoint: 22ch;
+
+	--color: var(--gray14);
+	--colorFilter: var(--gray21-filter);
+
+	position: relative;
+
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	align-items: flex-start;
+	padding: 16px;
+	overflow: hidden;
+
+	line-height: var(--titleLineHeight);
+	white-space: pre-wrap;
+	word-break: break-word;
+	overflow-wrap: break-word;
+
+	border-radius: 3px;
+	background: var(--gray11);
+}
+
+/* :Hover */
+#startPage2Wrap .cardLink:hover {
+	color: var(--gray29);
+	background: var(--color);
+
+	cursor: pointer;
+}
+
+/* :Active */
+#startPage2Wrap .cardLink:active {
+	color: var(--gray4);
+	background: var(--gray30);
+}
+
+/* -Blue */
+#startPage2Wrap .cardLink.-blue {
+	--color: var(--blue);
+	--colorFilter: var(--blue-filter);
+}
+
+/* -Yellow */
+#startPage2Wrap .cardLink.-yellow {
+	--color: var(--yellow);
+	--colorFilter: var(--yellow-filter);
+}
+
+/* -Turquoise */
+#startPage2Wrap .cardLink.-turquoise {
+	--color: var(--turquoise);
+	--colorFilter: var(--turquoise-filter);
+}
+
+/* ICON */
+#startPage2Wrap .cardLink > .icon {
+	width: var(--iconSize);
+	height: auto;
+	margin-right: var(--gutterH);
+	margin-bottom: var(--gutterV);
+
+	filter: var(--colorFilter);
+}
+
+/* :Hover, :Active */
+#startPage2Wrap .cardLink:hover > .icon,
+#startPage2Wrap .cardLink:active > .icon {
+	filter: var(--gray4-filter);
+}
+
+/* TITLE */
+#startPage2Wrap .cardLink > .title {
+	flex: 1 1 0;
+
+	margin-bottom: var(--gutterV);
+
+	line-height: var(--titleLineHeight);
+	font-weight: 600;
+	text-transform: uppercase;
+
+	color: var(--gray26);
+}
+
+/* :Hover, :Active */
+#startPage2Wrap .cardLink:hover > .title,
+#startPage2Wrap .cardLink:active > .title {
+	color: var(--gray4);
+}
+
+/* FORCE BREAK */
+/* Force flex break */
+#startPage2Wrap .cardLink > hr._forceBreak {
+	flex-basis: 100%;
+
+	margin: 0;
+
+	border: 0;
+	background: red;
+}
+
+/* ICON PLACEHOLDER */
+/* Pushes the description to wrap when there's not enough space */
+#startPage2Wrap .cardLink > .placeholderIcon {
+	width: var(--iconSize);
+	margin-right: var(--gutterH);
+	margin-bottom: calc( var(--iconSize) - var(--titleLineHeight) );
+
+	background: cyan;
+}
+
+/* DESCRIPTION */
+#startPage2Wrap .cardLink > .description {
+	flex: 1 1 var(--descriptionBreakpoint);
+
+	margin-top: calc( var(--titleLineHeight) - var(--iconSize) );
+
+	color: var(--gray23);
+}
+
+/* :Hover, :Active */
+#startPage2Wrap .cardLink:hover > .description,
+#startPage2Wrap .cardLink:active > .description {
+	color: var(--gray7);
+}
+
+
+/* -------- CARD COMMUNITY -------- */
+
+/* CARD COMMUNITY */
+#startPage2Wrap .cardCommunity {
+	--iconSize: 32px;
+	--paddingH: 16px;
+	--paddingV: 8px;
+	--color: var(--gray11);
+
+	--\\halfIconSize: calc( var(--iconSize) / 2 );
+
+	position: relative;
+
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: flex-end;
+
+	min-width: 0;
+	min-height: 36px;
+	padding: var(--paddingV) var(--paddingH) var(--paddingV) calc( var(--iconSize) + var(--paddingH) * 2 );
+
+	white-space: pre-wrap;
+	word-break: break-word;
+
+	border-radius: 3px;
+	background: var(--gray11);
+
+	cursor: pointer;
+}
+
+/* :Hover */
+#startPage2Wrap .cardCommunity:hover {
+	color: var(--gray29);
+	background: var(--color);
+	filter: none;
+}
+
+/* :Active */
+#startPage2Wrap .cardCommunity:active {
+	color: var(--gray4);
+	background: var(--gray30);
+}
+
+/* -Facebook */
+#startPage2Wrap .cardCommunity.-facebook {
+	--color: #2483fe;
+}
+
+/* -Twitter */
+#startPage2Wrap .cardCommunity.-twitter {
+	--color: #24a2f7;
+}
+
+/* -Reddit */
+#startPage2Wrap .cardCommunity.-reddit {
+	--color: #ff510c;
+}
+
+/* -Youtube */
+#startPage2Wrap .cardCommunity.-youtube {
+	--color: #ff2626;
+}
+
+/* ICON */
+#startPage2Wrap .cardCommunity > .icon {
+	position: absolute;
+	top: calc( 50% - var(--\\halfIconSize) ); left: var(--paddingH);
+
+	width: var(--iconSize);
+	height: var(--iconSize);
+
+	border-radius: 50%;
+	background-image: radial-gradient(
+		white calc( var(--\\halfIconSize) - 1px ),
+		transparent calc( var(--\\halfIconSize) - 0.5px )
+	);
+	filter: none;
+}
+
+/* :Hover */
+#startPage2Wrap .cardCommunity:hover > .icon {
+	filter: brightness(0) invert(100%);
+	background: none;
+}
+
+/* :Active */
+#startPage2Wrap .cardCommunity:active > .icon {
+	filter: brightness(0) var(--gray6-filter);
+}
+
+/* TITLE */
+#startPage2Wrap .cardCommunity > .title {
+	text-transform: uppercase;
+
+	color: var(--gray26);
+}
+
+/* :Hover */
+#startPage2Wrap .cardCommunity:hover > .title {
+	color: var(--gray31);
+}
+
+/* :Active */
+#startPage2Wrap .cardCommunity:active > .title {
+	color: var(--gray4);
+}
+
+/* HANDLE */
+#startPage2Wrap .cardCommunity > .handle {
+	font-size: 0.9em;
+
+	color: var(--gray20);
+}
+
+/* :Hover */
+#startPage2Wrap .cardCommunity:hover > .handle {
+	color: var(--gray29);
+	opacity: 70%;
+}
+
+/* :Active */
+#startPage2Wrap .cardCommunity:active > .handle {
+	color: var(--gray10);
+	opacity: 100%;
+}
+
+/* -------- PLACEHOLDER EXAMPLE	-------- */
+
+#startPage2Wrap .placeholderExample {
+	border-radius: 8px;
+	background: var(--gray6);
+}
+
+
+/* -------- DIMMER -------- */
+
+#startPage2Wrap .dimmer {
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 1;
+
+	display: block;
+
+	background: rgba( var(--gray4-rgb), 0.5 );
+}
+
+
+/* -------- OVERLAY -------- */
+
+#startPage2Wrap .overlay {
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 1;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: auto;
+
+	cursor: pointer;
+}
+
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>> LAYOUTS <<<<<<<<<<<<<<<<<<<<<<<< */
+
+
+
+/* ================ SETTINGS ================ */
+
+
+#startPage2Wrap {
+	/* -------- BASE -------- */
+	--windowPaddingH-base: 5%;
+	--windowPaddingV-base: 24px;
+	--gutter: 8px;
+	--smallGutterV-base: 16px;
+	--mediumGutterV-base: 24px;
+	--bigGutterV-base: 44px;
+
+	--windowMinWidth: 160px;
+	--windowMaxWidth: calc(55ch * 4);
+
+	/* -------- BREAKPOINT A -------- */
+	--windowPaddingH-breakpointA: 32px;
+	--windowPaddingV-breakpointA: 28px;
+	--bigGutterH-breakpointA: 24px;
+	--mediumGutterV-breakpointA: 24px;
+	--bigGutterV-breakpointA: 44px;
+
+	/* -------- BREAKPOINT B -------- */
+	--windowPaddingH-breakpointB: 40px;
+	--windowPaddingV-breakpointB: 36px;
+	--bigGutterH-breakpointB: 36px;
+	--mediumGutterV-breakpointB: 24px;
+	--bigGutterV-breakpointB: 44px;
+}
+
+
+
+/* ================ VARIABLES ================ */
+
+
+#startPage2Wrap {
+	/* -------- BASE -------- */
+	--\\doubleGutter: calc( var(--gutter) * 2 );
+
+	--\\smallGutterV-base: calc( var(--smallGutterV-base) - var(--\\doubleGutter) );
+	--\\mediumGutterV-base: calc( var(--mediumGutterV-base) - var(--\\doubleGutter) );
+	--\\bigGutterV-base: calc( var(--bigGutterV-base) - var(--\\doubleGutter) );
+
+	/* -------- BREAKPOINT A -------- */
+	--\\bigGutterH-breakpointA: calc( var(--bigGutterH-breakpointA) - var(--\\doubleGutter) );
+	--\\mediumGutterV-breakpointA: calc( var(--mediumGutterV-breakpointA) - var(--\\doubleGutter) );
+	--\\bigGutterV-breakpointA: calc( var(--bigGutterV-breakpointA) - var(--\\doubleGutter) );
+
+	/* -------- BREAKPOINT B -------- */
+	--\\bigGutterH-breakpointB: calc( var(--bigGutterH-breakpointB) - var(--\\doubleGutter) );
+	--\\mediumGutterV-breakpointB: calc( var(--mediumGutterV-breakpointB) - var(--\\doubleGutter) );
+	--\\bigGutterV-breakpointB: calc( var(--bigGutterV-breakpointB) - var(--\\doubleGutter) );
+}
+
+
+
+/* ================ BASE LAYOUT ================ */
+
+
+/* -------- GRID AREAS PLACEMENT -------- */
+#startPage2Wrap #imageC3Logo    { grid-area: imageC3Logo; }
+#startPage2Wrap #groupNewOpen   { grid-area: groupNewOpen; }
+#startPage2Wrap #buttonExamples { grid-area: buttonExamples; }
+#startPage2Wrap #titleRecent    { grid-area: titleRecent; }
+#startPage2Wrap #groupRecent    { grid-area: groupRecent; }
+#startPage2Wrap #titleExamples  { grid-area: titleExamples; }
+#startPage2Wrap #groupExamples  { grid-area: groupExamples; }
+#startPage2Wrap #titleLinksA    { grid-area: titleLinksA;}
+#startPage2Wrap #groupLinksA    { grid-area: groupLinksA;}
+#startPage2Wrap #titleLinksB    { grid-area: titleLinksB; }
+#startPage2Wrap #groupLinksB    { grid-area: groupLinksB; }
+#startPage2Wrap #titleLinksC    { grid-area: titleLinksC; }
+#startPage2Wrap #groupLinksC    { grid-area: groupLinksC; }
+#startPage2Wrap #titleCommunity { grid-area: titleCommunity; }
+#startPage2Wrap #groupCommunity { grid-area: groupCommunity; }
+
+/* -------- START PAGE -------- */
+#startPage2Wrap {
+	overflow: auto;
+	display: flex;
+
+	color: var(--gray26);
+	background: var(--gray7);
+
+	user-select: none;
+}
+
+/* -------- CONTAINER -------- */
+#startPage2Wrap .container {
+	display: grid;
+	grid-gap: var(--gutter);
+	grid:
+		"imageC3Logo    imageC3Logo   " auto
+		"groupNewOpen   groupNewOpen  " auto
+		".              .             " var(--\\bigGutterV-base)
+		"titleRecent    titleRecent   " auto
+		"groupRecent    groupRecent   " auto
+		".              .             " var(--\\mediumGutterV-base)
+		"titleExamples  titleExamples " auto
+		"buttonExamples buttonExamples" auto
+		".              .             " var(--\\smallGutterV-base)
+		"groupExamples  groupExamples " auto
+		".              .             " var(--\\mediumGutterV-base)
+		"titleLinksA    titleLinksA   " auto
+		"groupLinksA    groupLinksA   " auto
+		".              .             " var(--\\mediumGutterV-base)
+		"titleLinksB    titleLinksB   " auto
+		"groupLinksB    groupLinksB   " auto
+		".              .             " var(--\\mediumGutterV-base)
+		"titleLinksC    titleLinksC   " auto
+		"groupLinksC    groupLinksC   " auto
+		".              .             " var(--\\mediumGutterV-base)
+		"titleCommunity titleCommunity" auto
+		"groupCommunity groupCommunity" auto
+		/1fr 1fr;
+	min-width: var(--windowMinWidth);
+	max-width: var(--windowMaxWidth);
+	width: 100%;
+	margin: auto;
+	padding: var(--windowPaddingV-base) var(--windowPaddingH-base);
+}
+
+/* -------- IMAGE C3 LOGO -------- */
+#startPage2Wrap #imageC3Logo {
+	height: 44px;
+}
+
+/* -------- GROUP NEW/OPEN -------- */
+#startPage2Wrap #groupNewOpen {
+	display: flex;
+}
+
+/* -------- BUTTON -------- */
+#startPage2Wrap .button {
+	align-self: end;
+}
+
+/* -------- TITLE SECTION -------- */
+#startPage2Wrap .titleSection {
+	align-self: end;
+}
+
+/* -------- CARD PROJECT -------- */
+/* :Empty */
+#startPage2Wrap .cardProject:empty {
+	display: none;
+}
+
+/* -------- GROUP LINKS -------- */
+#startPage2Wrap #groupLinksA,
+#startPage2Wrap #groupLinksB,
+#startPage2Wrap #groupLinksC {
+	grid-template-rows: repeat(3, 1fr);
+}
+
+/* BUTTON */
+#startPage2Wrap #groupNewOpen > .button {
+	flex: 1 1 100%;
+
+	min-height: 40px;
+}
+
+
+
+/* ================ BREAKPOINT A ================ */
+
+/* -------- CONTAINER -------- */
+#startPage2Wrap[w480] .container {
+	padding: var(--windowPaddingV-breakpointA) var(--windowPaddingH-breakpointA);
+
+	grid:
+		"imageC3Logo    imageC3Logo    imageC3Logo   " auto
+		"groupNewOpen   groupNewOpen   groupNewOpen  " auto
+		".              .              .             " var(--\\bigGutterV-breakpointA)
+		"titleRecent    .              titleLinksA   " auto
+		"groupRecent    .              groupLinksA   " 1fr
+		".              .              .             " var(--\\mediumGutterV-breakpointA)
+		"titleLinksB    .              titleLinksC   " auto
+		"groupLinksB    .              groupLinksC   " 1fr
+		".              .              .             " var(--\\mediumGutterV-breakpointA)
+		"titleExamples  titleExamples  buttonExamples" auto
+		"groupExamples  groupExamples  groupExamples " auto
+		".              .              .             " var(--\\mediumGutterV-breakpointA)
+		"titleCommunity titleCommunity titleCommunity" auto
+		"groupCommunity groupCommunity groupCommunity" auto
+		/1fr var(--\\bigGutterH-breakpointA) 1fr;
+}
+
+/* -------- IMAGE C3 LOGO -------- */
+#startPage2Wrap[w480] #imageC3Logo {
+	height: 48px;
+}
+
+/* -------- GROUP NEW/OPEN -------- */
+#startPage2Wrap[w480] #groupNewOpen {
+	gap: var(--bigGutterH-breakpointA);
+}
+
+/* -------- GROUP RECENT -------- */
+#startPage2Wrap[w480] #groupRecent {
+	grid-template-rows: repeat(6, 1fr);
+}
+
+/* -------- PROJECT CARD -------- */
+#startPage2Wrap[w480] .cardProject:empty {
+	display: initial;
+}
+
+/* -------- BUTTON EXAMPLES -------- */
+#startPage2Wrap[w480] #buttonExamples {
+	--lineHeight: 1.25em;
+
+	grid-column: 1 / -1;
+	justify-self: end;
+
+	min-height: 2.25em;
+	margin-bottom: calc( (var(--lineHeight) - 1em) );
+	padding: 0px 24px;
+}
+
+/* -------- GROUP EXAMPLES -------- */
+#startPage2Wrap[w480] #groupExamples {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+/* -------- CARD EXAMPLE -------- */
+#startPage2Wrap[w480] #groupExamples > .cardExample {
+	flex: 1 0 28ch;
+}
+
+/* -------- PLACEHOLDER EXAMPLE -------- */
+#startPage2Wrap[w480] #groupExamples > .placeholderExample {
+	flex: 1 0 28ch;
+}
+
+/* -------- GROUP LINKS -------- */
+#startPage2Wrap[w480] #groupLinksA,
+#startPage2Wrap[w480] #groupLinksB,
+#startPage2Wrap[w480] #groupLinksC {
+	grid-template-rows: repeat(3, 1fr);
+}
+
+/* -------- GROUP COMMUNITY -------- */
+#startPage2Wrap[w480] #linkFacebook { grid-area: linkFacebook; }
+#startPage2Wrap[w480] #linkTwitter  { grid-area: linkTwitter; }
+#startPage2Wrap[w480] #linkReddit	  { grid-area: linkReddit; }
+#startPage2Wrap[w480] #linkYoutube  { grid-area: linkYoutube; }
+
+#startPage2Wrap[w480] #groupCommunity {
+	grid:
+		"linkTwitter . linkReddit " auto
+		"linkYoutube . linkFacebook" auto
+		/1fr var(--\\bigGutterH-breakpointA) 1fr;
+}
+
+
+/* ================ BREAKPOINT B ================ */
+
+
+/* -------- CONTAINER -------- */
+#startPage2Wrap[w920] .container {
+	grid:
+		".              . .             .             .             " 1fr
+		"imageC3Logo    . groupNewOpen  groupNewOpen  groupNewOpen  " auto
+		".              . .             .             .             " var(--\\bigGutterV-breakpointB)
+		"titleRecent    . titleLinksA   titleLinksB   titleLinksC   " auto
+		"groupRecent    . groupLinksA   groupLinksB   groupLinksC   " auto
+		".              . .             .             .             " var(--\\mediumGutterV-breakpointB)
+		"titleCommunity . titleExamples titleExamples buttonExamples" auto
+		"groupCommunity . groupExamples groupExamples groupExamples " auto
+		".              . .             .             .             " 1fr
+		/3fr var(--\\bigGutterH-breakpointB) 2fr 2fr 2fr;
+
+	padding: var(--windowPaddingV-breakpointB) var(--windowPaddingH-breakpointB);
+}
+
+/* -------- IMAGE C3 LOGO -------- */
+#startPage2Wrap[w920] #imageC3Logo {
+	height: 56px;
+}
+
+/* -------- GROUP NEW/OPEN -------- */
+#startPage2Wrap[w920] #groupNewOpen {
+	gap: var(--gutter);
+}
+
+/* -------- GROUP EXAMPLES -------- */
+#startPage2Wrap[w920] #groupExamples {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+/* LAST CARD EXAMPLE */
+#startPage2Wrap[w920] #groupExamples > .cardExample:last-child {
+	grid-column: auto / auto;
+}
+
+/* -------- GROUP COMMUNITY -------- */
+#startPage2Wrap[w920] #linkFacebook { grid-area: auto; }
+#startPage2Wrap[w920] #linkTwitter  { grid-area: auto; }
+#startPage2Wrap[w920] #linkReddit	  { grid-area: auto; }
+#startPage2Wrap[w920] #linkYoutube  { grid-area: auto; }
+
+#startPage2Wrap[w920] #groupCommunity {
+	grid: none;
+	grid-template-rows: repeat(4, 1fr);
+}
