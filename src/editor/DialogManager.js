@@ -747,6 +747,88 @@ export const DialogManager = {
     return this.windows.get(id);
   },
 
+  updateWindowTitle(windowId, newTitle) {
+    const windowData = this.windows.get(windowId);
+    if (!windowData) return;
+
+    // Update the stored title
+    windowData.title = newTitle;
+
+    // Update the tab title if it exists
+    if (windowData.tabElement) {
+      const tabTitleElement = windowData.tabElement.querySelector(".tab-title");
+      if (tabTitleElement) {
+        tabTitleElement.textContent = newTitle;
+      }
+    }
+
+    // Update popup window title if it exists
+    if (windowData.popupWindow && !windowData.popupWindow.closed) {
+      windowData.popupWindow.document.title = newTitle;
+    }
+
+    // Update minimized dock if the window is minimized
+    if (windowData.isMinimized) {
+      this.updateMinimizedDock();
+    }
+  },
+
+  focusWindow(windowId) {
+    const windowData = this.windows.get(windowId);
+    if (!windowData) return;
+
+    // If window is in a popup, focus the popup window
+    if (
+      windowData.isInPopup &&
+      windowData.popupWindow &&
+      !windowData.popupWindow.closed
+    ) {
+      windowData.popupWindow.focus();
+      return;
+    }
+
+    // If window is minimized, restore it first
+    if (windowData.isMinimized) {
+      this.restoreWindow(windowId);
+      return;
+    }
+
+    // Focus the window in its container
+    const containerId = windowData.containerId;
+    if (containerId) {
+      this.focusWindowInContainer(windowId, containerId);
+    }
+  },
+
+  restoreWindow(windowId) {
+    const windowData = this.windows.get(windowId);
+    if (!windowData) return;
+
+    // If window is in a popup, bring popup to front
+    if (
+      windowData.isInPopup &&
+      windowData.popupWindow &&
+      !windowData.popupWindow.closed
+    ) {
+      windowData.popupWindow.focus();
+      return;
+    }
+
+    // If window is minimized, restore its container
+    if (windowData.isMinimized) {
+      const containerId = windowData.containerId;
+      if (containerId) {
+        this.restoreContainer(containerId);
+        // Focus this specific window after restoring
+        this.focusWindowInContainer(windowId, containerId);
+      }
+      return;
+    }
+
+    // If window is already visible, just focus it
+    this.focusWindow(windowId);
+  },
+
   closeWindow(id) {
     const windowData = this.windows.get(id);
     if (!windowData) return;
