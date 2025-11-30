@@ -1574,13 +1574,14 @@ function addDialogStyles() {
 
     .theme-dialog-header {
       background: #1a1a1a;
-      padding: 8px 15px;
+      padding: 8px 8px 0 8px;
       border-bottom: 1px solid #555;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-end;
       user-select: none;
       flex-shrink: 0;
+      border-radius: 8px 8px 0 0;
     }
 
     .theme-dialog-title {
@@ -1591,6 +1592,7 @@ function addDialogStyles() {
       overflow: hidden;
       text-overflow: ellipsis;
       flex: 1;
+      padding: 0 7px 8px 7px;
     }
 
     .theme-dialog-tabs {
@@ -1600,6 +1602,7 @@ function addDialogStyles() {
       overflow-x: auto;
       overflow-y: hidden;
       position: relative;
+      align-items: flex-end;
     }
     
     .theme-dialog-tabs.tabs-drop-target {
@@ -1619,27 +1622,34 @@ function addDialogStyles() {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 12px;
-      background: #2a2a2a;
+      padding: 8px 14px;
+      background: #1e1e1e;
       border: 1px solid #444;
-      border-radius: 4px 4px 0 0;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
       cursor: pointer;
       white-space: nowrap;
-      color: #aaa;
+      color: #888;
       font-size: 13px;
-      transition: all 0.2s;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      margin-bottom: -1px;
+      position: relative;
     }
 
     .theme-dialog-tab:hover {
-      background: #333;
-      color: #fff;
+      background: #262626;
+      color: #ccc;
+      border-color: #555;
     }
 
     .theme-dialog-tab.active {
       background: #2a2a2a;
-      border-bottom-color: #2a2a2a;
+      border-color: #555;
+      border-bottom: 1px solid #2a2a2a;
       color: #fff;
       font-weight: 500;
+      padding-top: 10px;
+      z-index: 1;
     }
 
     .theme-dialog-tab .tab-title {
@@ -1738,6 +1748,7 @@ function addDialogStyles() {
       display: flex;
       gap: 5px;
       margin-left: 10px;
+      padding-bottom: 12px;
     }
 
     .theme-dialog-btn {
@@ -1751,7 +1762,7 @@ function addDialogStyles() {
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 3px;
       transition: all 0.2s;
       padding: 0;
       line-height: 1;
