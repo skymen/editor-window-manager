@@ -169,6 +169,48 @@ Pop a window out to a separate browser window.
 DialogManager.popOutWindow("settings-window");
 ```
 
+##### `minimizeContainer(containerId)`
+
+Minimize a container, hiding it and adding all its windows to the minimized dock.
+
+**Parameters:**
+
+- `containerId` (string): Container identifier
+
+```javascript
+const window = DialogManager.getWindow("settings-window");
+if (window && window.containerId) {
+  DialogManager.minimizeContainer(window.containerId);
+}
+```
+
+##### `restoreContainer(containerId)`
+
+Restore a minimized container.
+
+**Parameters:**
+
+- `containerId` (string): Container identifier
+
+```javascript
+DialogManager.restoreContainer("container-1");
+```
+
+##### `closeContainer(containerId)`
+
+Close a container and all windows within it.
+
+**Parameters:**
+
+- `containerId` (string): Container identifier
+
+```javascript
+const window = DialogManager.getWindow("settings-window");
+if (window && window.containerId) {
+  DialogManager.closeContainer(window.containerId);
+}
+```
+
 ### Advanced Methods
 
 These methods provide fine-grained control over window and container behavior. Most users won't need these as the drag-and-drop interface handles common scenarios.

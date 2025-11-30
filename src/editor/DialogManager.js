@@ -120,7 +120,7 @@ export const DialogManager = {
 
     // Setup controls
     container.querySelector(".close-btn").addEventListener("click", () => {
-      this.closeAllWindowsInContainer(containerId);
+      this.closeContainer(containerId);
     });
 
     container.querySelector(".minimize-btn").addEventListener("click", () => {
@@ -1033,7 +1033,7 @@ export const DialogManager = {
     }
   },
 
-  closeAllWindowsInContainer(containerId) {
+  closeContainer(containerId) {
     const containerData = this.containers.get(containerId);
     if (!containerData) return;
 
