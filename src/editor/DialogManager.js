@@ -155,6 +155,13 @@ export const DialogManager = {
   setupContainerDropZone(container) {
     container.addEventListener("dragover", (e) => {
       if (!this.dragState) return;
+
+      const targetContainerId = container.dataset.containerId;
+      const sourceContainerId = this.dragState.sourceContainerId;
+
+      // Don't show drop target on the source container
+      if (sourceContainerId === targetContainerId) return;
+
       e.preventDefault();
       container.classList.add("drop-target");
     });
