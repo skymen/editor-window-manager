@@ -6,7 +6,9 @@ export default function (instanceClass) {
 
     Release() {}
 
-    OnCreate() {}
+    OnCreate() {
+      alert("You should not be adding this plugin to a project");
+    }
 
     OnPlacedInLayout() {}
 
