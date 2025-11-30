@@ -1,4 +1,12 @@
 // Dialog Manager - handles multiple windows, tabs, minimizing, and popups
+
+// Constants for window positioning and layering
+const WINDOW_OFFSET_STEP = 30; // Pixels to offset each new window
+const WINDOW_OFFSET_MAX = 150; // Maximum offset before wrapping
+const DRAG_OFFSET_X = 300; // X offset when dragging tab to new window
+const DRAG_OFFSET_Y = 20; // Y offset when dragging tab to new window
+const BASE_Z_INDEX = 10000; // Base z-index for dialog containers
+
 export const DialogManager = {
   windows: new Map(),
   containers: new Map(), // Track multiple containers
@@ -96,7 +104,7 @@ export const DialogManager = {
       // Offset new windows slightly from previous ones
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
-      const offset = (this.containers.size * 30) % 150;
+      const offset = (this.containers.size * WINDOW_OFFSET_STEP) % WINDOW_OFFSET_MAX;
       container.style.left = Math.max(0, (viewportWidth - 600) / 2 + offset) + "px";
       container.style.top = Math.max(0, (viewportHeight - 400) / 2 + offset) + "px";
     }
@@ -345,8 +353,8 @@ export const DialogManager = {
       if (!droppedOnContainer) {
         // Create new container at drop position
         this.popOutWindowToPosition(this.dragState.windowId, {
-          left: this.dragState.currentX - 300,
-          top: this.dragState.currentY - 20,
+          left: this.dragState.currentX - DRAG_OFFSET_X,
+          top: this.dragState.currentY - DRAG_OFFSET_Y,
         });
       }
     }
@@ -553,9 +561,9 @@ export const DialogManager = {
 
   bringContainerToFront(containerId) {
     // Get max z-index among all containers
-    let maxZ = 10000;
+    let maxZ = BASE_Z_INDEX;
     this.containers.forEach((containerData) => {
-      const z = parseInt(containerData.element.style.zIndex) || 10000;
+      const z = parseInt(containerData.element.style.zIndex) || BASE_Z_INDEX;
       if (z > maxZ) maxZ = z;
     });
     
