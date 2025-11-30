@@ -599,6 +599,9 @@ export const DialogManager = {
     // Move the window content to the popup
     const popupContent = popupWindow.document.getElementById("content");
     if (windowData.element && popupContent) {
+      // Make sure the element is visible before moving it
+      windowData.element.style.display = "block";
+
       popupContent.appendChild(windowData.element);
       windowData.isInPopup = true;
       windowData.popupWindow = popupWindow;
@@ -607,8 +610,22 @@ export const DialogManager = {
       const sourceContainerId = windowData.containerId;
       const sourceContainer = this.containers.get(sourceContainerId);
       if (sourceContainer) {
+        const containerData = this.containers.get(sourceContainerId);
+        const wasActiveWindow = containerData && containerData.activeWindowId === windowId;
+        
         this.updateTabVisibility(sourceContainer.element);
-        this.cleanupContainerIfEmpty(sourceContainerId);
+        this.updateContainerVisibility(sourceContainerId);
+        
+        // If this was the active window, focus another visible tab
+        if (wasActiveWindow) {
+          const remainingVisibleWindows = Array.from(this.windows.values()).filter(
+            (w) => w.containerId === sourceContainerId && !w.isInPopup
+          );
+          
+          if (remainingVisibleWindows.length > 0) {
+            this.focusWindowInContainer(remainingVisibleWindows[0].id, sourceContainerId);
+          }
+        }
       }
 
       // Handle popup close
@@ -623,7 +640,21 @@ export const DialogManager = {
             sourceContainer.element
               .querySelector(".theme-dialog-tabs-content")
               .appendChild(windowData.element);
+
+            // Check if this will be the only visible tab
+            const visibleWindowsAfterRestore = Array.from(
+              this.windows.values()
+            ).filter(
+              (w) => w.containerId === sourceContainerId && !w.isInPopup
+            );
+
             this.updateTabVisibility(sourceContainer.element);
+            this.updateContainerVisibility(sourceContainerId);
+
+            // Focus this window if it's the only visible tab
+            if (visibleWindowsAfterRestore.length === 1) {
+              this.focusWindowInContainer(windowId, sourceContainerId);
+            }
           } else {
             // Original container was closed, create a new one
             const newContainer = this.createNewContainer();
@@ -732,6 +763,24 @@ export const DialogManager = {
       this.containers.delete(containerId);
     } else {
       this.updateTabVisibility(containerData.element);
+      this.updateContainerVisibility(containerId);
+    }
+  },
+
+  updateContainerVisibility(containerId) {
+    const containerData = this.containers.get(containerId);
+    if (!containerData) return;
+
+    // Check if there are any visible (non-popup) windows in this container
+    const visibleWindows = Array.from(this.windows.values()).filter(
+      (w) => w.containerId === containerId && !w.isInPopup
+    );
+
+    // Hide container if all windows are popped out
+    if (visibleWindows.length === 0) {
+      containerData.element.style.display = "none";
+    } else {
+      containerData.element.style.display = "flex";
     }
   },
 
@@ -1767,11 +1816,6 @@ function addDialogStyles() {
       width: 20px;
       height: 20px;
       cursor: nwse-resize;
-      background: linear-gradient(135deg, transparent 50%, #555 50%);
-    }
-
-    .resize-bottom-right:hover {
-      background: linear-gradient(135deg, transparent 50%, #777 50%);
     }
 
     .theme-minimized-dock {
