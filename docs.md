@@ -8,10 +8,8 @@ A Construct 3 editor extension that provides a comprehensive window management s
 - [Getting Started](#getting-started)
 - [Core Concepts](#core-concepts)
 - [API Reference](#api-reference)
-  - [DialogManager](#dialogmanager)
-  - [Window Management](#window-management)
-  - [Container Management](#container-management)
-  - [Tab Management](#tab-management)
+  - [Core Methods](#core-methods)
+  - [Advanced Methods](#advanced-methods)
 - [Features](#features)
 - [Examples](#examples)
 
@@ -25,12 +23,6 @@ Access the DialogManager through the global SDK extensions:
 
 ```javascript
 const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
-```
-
-Initialize the dialog system (only needed once):
-
-```javascript
-DialogManager.init();
 ```
 
 Create your first window:
@@ -68,19 +60,9 @@ When multiple windows are in the same container, they appear as tabs. Users can 
 
 ## API Reference
 
-### DialogManager
+### Core Methods
 
-The main object that manages all windows and containers.
-
-#### Methods
-
-##### `init()`
-
-Initialize the dialog system. This should be called once before creating any windows.
-
-```javascript
-DialogManager.init();
-```
+These are the primary methods you'll use to work with windows.
 
 ##### `createWindow(options)`
 
@@ -175,8 +157,6 @@ Restore a minimized window or focus a popup window.
 DialogManager.restoreWindow("settings-window");
 ```
 
-### Window Management
-
 ##### `popOutWindow(windowId)`
 
 Pop a window out to a separate browser window.
@@ -188,6 +168,10 @@ Pop a window out to a separate browser window.
 ```javascript
 DialogManager.popOutWindow("settings-window");
 ```
+
+### Advanced Methods
+
+These methods provide fine-grained control over window and container behavior. Most users won't need these as the drag-and-drop interface handles common scenarios.
 
 ##### `popOutWindowToSeparateContainer(windowId)`
 
@@ -201,87 +185,17 @@ Move a window to a new container within the editor (not a popup).
 DialogManager.popOutWindowToSeparateContainer("settings-window");
 ```
 
-##### `popOutWindowToPosition(windowId, position)`
+##### `moveWindowToContainer(windowId, targetContainerId)`
 
-Move a window to a new container at a specific position.
+Move a window from its current container to a different container.
 
 **Parameters:**
 
 - `windowId` (string): Window identifier
-- `position` (object): Position with `left` and `top` properties in pixels
+- `targetContainerId` (string): Target container identifier
 
 ```javascript
-DialogManager.popOutWindowToPosition("settings-window", {
-  left: 100,
-  top: 100,
-});
-```
-
-### Container Management
-
-##### `createNewContainer(position)`
-
-Create a new empty container at a specific position or automatically positioned.
-
-**Parameters:**
-
-- `position` (object, optional): Position with `left` and `top` properties
-
-**Returns:** Container DOM element
-
-```javascript
-const container = DialogManager.createNewContainer({
-  left: 200,
-  top: 150,
-});
-```
-
-##### `closeAllWindowsInContainer(containerId)`
-
-Close all windows in a specific container.
-
-**Parameters:**
-
-- `containerId` (string): Container identifier
-
-```javascript
-DialogManager.closeAllWindowsInContainer("container-1");
-```
-
-##### `minimizeContainer(containerId)`
-
-Minimize a container, hiding it and adding all its windows to the minimized dock.
-
-**Parameters:**
-
-- `containerId` (string): Container identifier
-
-```javascript
-DialogManager.minimizeContainer("container-1");
-```
-
-##### `restoreContainer(containerId)`
-
-Restore a minimized container.
-
-**Parameters:**
-
-- `containerId` (string): Container identifier
-
-```javascript
-DialogManager.restoreContainer("container-1");
-```
-
-##### `bringContainerToFront(containerId)`
-
-Bring a container to the front (highest z-index).
-
-**Parameters:**
-
-- `containerId` (string): Container identifier
-
-```javascript
-DialogManager.bringContainerToFront("container-1");
+DialogManager.moveWindowToContainer("settings-window", "container-2");
 ```
 
 ##### `mergeContainers(sourceContainerId, targetContainerId)`
@@ -297,34 +211,6 @@ Move all windows from one container to another.
 DialogManager.mergeContainers("container-1", "container-2");
 ```
 
-### Tab Management
-
-##### `moveWindowToContainer(windowId, targetContainerId)`
-
-Move a window from its current container to a different container.
-
-**Parameters:**
-
-- `windowId` (string): Window identifier
-- `targetContainerId` (string): Target container identifier
-
-```javascript
-DialogManager.moveWindowToContainer("settings-window", "container-2");
-```
-
-##### `focusWindowInContainer(windowId, containerId)`
-
-Focus a specific window within its container.
-
-**Parameters:**
-
-- `windowId` (string): Window identifier
-- `containerId` (string): Container identifier
-
-```javascript
-DialogManager.focusWindowInContainer("settings-window", "container-1");
-```
-
 ## Features
 
 ### Multiple Windows
@@ -332,6 +218,8 @@ DialogManager.focusWindowInContainer("settings-window", "container-1");
 Create as many windows as needed. Each window starts in its own container by default.
 
 ```javascript
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
+
 DialogManager.createWindow({
   id: "window-1",
   title: "Window 1",
@@ -364,6 +252,8 @@ Users can:
 Containers can be minimized to a dock at the bottom of the screen. Click minimized items to restore them.
 
 ```javascript
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
+
 // Minimize programmatically
 const window = DialogManager.getWindow("settings-window");
 if (window && window.containerId) {
@@ -376,6 +266,8 @@ if (window && window.containerId) {
 Windows can be popped out to separate browser windows. When the popup is closed, the window returns to its original container.
 
 ```javascript
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
+
 DialogManager.popOutWindow("settings-window");
 ```
 
@@ -396,7 +288,7 @@ New containers are automatically positioned with a slight offset from previous c
 ### Simple Configuration Window
 
 ```javascript
-DialogManager.init();
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
 
 const configWindow = DialogManager.createWindow({
   id: "config-window",
@@ -427,7 +319,7 @@ const configWindow = DialogManager.createWindow({
 ### Multi-panel Tool
 
 ```javascript
-DialogManager.init();
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
 
 // Create main panel
 DialogManager.createWindow({
@@ -454,7 +346,7 @@ DialogManager.createWindow({
 ### Dynamic Content Window
 
 ```javascript
-DialogManager.init();
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
 
 const dataWindow = DialogManager.createWindow({
   id: "data-viewer",
@@ -495,7 +387,7 @@ window.updateDataViewer({ status: "Processing", items: 42 });
 ### Programmatic Window Control
 
 ```javascript
-DialogManager.init();
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
 
 // Create window
 const helpWindow = DialogManager.createWindow({
@@ -520,7 +412,7 @@ DialogManager.closeWindow("help-window");
 ### Working with Containers
 
 ```javascript
-DialogManager.init();
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
 
 // Create multiple windows
 const win1 = DialogManager.createWindow({
@@ -549,7 +441,7 @@ setTimeout(() => {
 ### Custom Styled Window
 
 ```javascript
-DialogManager.init();
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
 
 DialogManager.createWindow({
   id: "styled-window",
@@ -592,6 +484,8 @@ DialogManager.createWindow({
 ### Checking Window State
 
 ```javascript
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
+
 // Check if window exists
 const window = DialogManager.getWindow("my-window");
 if (window) {
