@@ -36,7 +36,10 @@ export const DialogManager = {
 
     window.addEventListener("resize", () => {
       this.containers.forEach((containerData) => {
-        if (containerData.element && containerData.element.style.display !== "none") {
+        if (
+          containerData.element &&
+          containerData.element.style.display !== "none"
+        ) {
           this.constrainToViewport(containerData.element);
         }
       });
@@ -68,7 +71,7 @@ export const DialogManager = {
     };
 
     this.windows.set(id, windowData);
-    
+
     // Each window opens in its own separate container by default
     const container = this.createNewContainer();
     this.renderWindowInContainer(windowData, container);
@@ -79,7 +82,7 @@ export const DialogManager = {
 
   createNewContainer(position = null) {
     const containerId = `container-${++this.containerIdCounter}`;
-    
+
     const container = document.createElement("div");
     container.className = "theme-dialog-container";
     container.dataset.containerId = containerId;
@@ -104,9 +107,12 @@ export const DialogManager = {
       // Offset new windows slightly from previous ones
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
-      const offset = (this.containers.size * WINDOW_OFFSET_STEP) % WINDOW_OFFSET_MAX;
-      container.style.left = Math.max(0, (viewportWidth - 600) / 2 + offset) + "px";
-      container.style.top = Math.max(0, (viewportHeight - 400) / 2 + offset) + "px";
+      const offset =
+        (this.containers.size * WINDOW_OFFSET_STEP) % WINDOW_OFFSET_MAX;
+      container.style.left =
+        Math.max(0, (viewportWidth - 600) / 2 + offset) + "px";
+      container.style.top =
+        Math.max(0, (viewportHeight - 400) / 2 + offset) + "px";
     }
 
     // Setup controls
@@ -153,15 +159,16 @@ export const DialogManager = {
     container.addEventListener("drop", (e) => {
       e.preventDefault();
       container.classList.remove("drop-target");
-      
+
       if (!this.dragState) return;
-      
+
       const { windowId, sourceContainerId } = this.dragState;
       const targetContainerId = container.dataset.containerId;
-      
+
       // Don't merge into the same container (reordering is handled separately)
       if (sourceContainerId === targetContainerId) return;
-      
+
+      // Merge into tabs
       this.moveWindowToContainer(windowId, targetContainerId);
       this.dragState = null;
     });
@@ -186,7 +193,9 @@ export const DialogManager = {
       }
     } else {
       // Move existing element to new container
-      container.querySelector(".theme-dialog-tabs-content").appendChild(windowData.element);
+      container
+        .querySelector(".theme-dialog-tabs-content")
+        .appendChild(windowData.element);
     }
 
     this.updateTabVisibility(container);
@@ -212,7 +221,7 @@ export const DialogManager = {
     tab.draggable = true;
     tab.innerHTML = `
       <span class="tab-title">${windowData.title}</span>
-      <button class="tab-popout" title="Pop out to separate window">⧉</button>
+      <button class="tab-popout" title="Pop out to browser window">⧉</button>
       <button class="tab-close" title="Close">×</button>
     `;
 
@@ -242,58 +251,108 @@ export const DialogManager = {
       this.handleTabDragEnd();
     });
 
-    // Tab drop for reordering within same container
+    // Tab drop for reordering within same container or merging into different container
     tab.addEventListener("dragover", (e) => {
       if (!this.dragState) return;
       e.preventDefault();
       e.stopPropagation();
-      
+
       const draggedWindowId = this.dragState.windowId;
       const targetWindowId = windowData.id;
-      
+
       if (draggedWindowId === targetWindowId) return;
-      if (this.dragState.sourceContainerId !== windowData.containerId) return;
-      
-      // Visual indicator for drop position
-      const rect = tab.getBoundingClientRect();
-      const midX = rect.left + rect.width / 2;
-      
-      tab.classList.remove("drop-left", "drop-right");
-      if (e.clientX < midX) {
-        tab.classList.add("drop-left");
-      } else {
-        tab.classList.add("drop-right");
-      }
+
+      tab.classList.add("drop-target-tab");
     });
 
     tab.addEventListener("dragleave", () => {
-      tab.classList.remove("drop-left", "drop-right");
+      tab.classList.remove("drop-target-tab");
     });
 
     tab.addEventListener("drop", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      
+
       if (!this.dragState) return;
-      
+
       const draggedWindowId = this.dragState.windowId;
       const targetWindowId = windowData.id;
-      
+
       if (draggedWindowId === targetWindowId) return;
-      
-      tab.classList.remove("drop-left", "drop-right");
-      
-      // Reorder tabs
-      const rect = tab.getBoundingClientRect();
-      const midX = rect.left + rect.width / 2;
-      const insertBefore = e.clientX < midX;
-      
-      this.reorderTab(draggedWindowId, targetWindowId, insertBefore, container);
+
+      tab.classList.remove("drop-target-tab");
+
+      // Check if merging from different container
+      if (this.dragState.sourceContainerId !== windowData.containerId) {
+        // Merge into this container
+        const targetContainerId = windowData.containerId;
+        this.moveWindowToContainer(draggedWindowId, targetContainerId);
+      } else {
+        // Reorder tabs in same container
+        const rect = tab.getBoundingClientRect();
+        const midX = rect.left + rect.width / 2;
+        const insertBefore = e.clientX < midX;
+
+        this.reorderTab(
+          draggedWindowId,
+          targetWindowId,
+          insertBefore,
+          container
+        );
+      }
+
       this.dragState = null;
     });
 
     windowData.tabElement = tab;
-    container.querySelector(".theme-dialog-tabs").appendChild(tab);
+    const tabsContainer = container.querySelector(".theme-dialog-tabs");
+    tabsContainer.appendChild(tab);
+
+    // Setup tabs container as drop zone (only once per container)
+    if (!tabsContainer.dataset.dropZoneSetup) {
+      tabsContainer.dataset.dropZoneSetup = "true";
+      this.setupTabsContainerDropZone(tabsContainer, container);
+    }
+  },
+
+  setupTabsContainerDropZone(tabsContainer, container) {
+    tabsContainer.addEventListener("dragover", (e) => {
+      if (!this.dragState) return;
+
+      // Only handle if not over a specific tab
+      if (e.target.closest(".theme-dialog-tab")) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      tabsContainer.classList.add("tabs-drop-target");
+    });
+
+    tabsContainer.addEventListener("dragleave", (e) => {
+      if (!tabsContainer.contains(e.relatedTarget)) {
+        tabsContainer.classList.remove("tabs-drop-target");
+      }
+    });
+
+    tabsContainer.addEventListener("drop", (e) => {
+      if (!this.dragState) return;
+
+      // Only handle if not over a specific tab
+      if (e.target.closest(".theme-dialog-tab")) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      tabsContainer.classList.remove("tabs-drop-target");
+
+      const { windowId, sourceContainerId } = this.dragState;
+      const targetContainerId = container.dataset.containerId;
+
+      // Don't merge into the same container (unless it's a different position)
+      if (sourceContainerId === targetContainerId) return;
+
+      // Merge into this container
+      this.moveWindowToContainer(windowId, targetContainerId);
+      this.dragState = null;
+    });
   },
 
   handleTabDragStart(e, windowData, container) {
@@ -303,24 +362,15 @@ export const DialogManager = {
       startX: e.clientX,
       startY: e.clientY,
     };
-    
+
     // Set drag image
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", windowData.id);
-    
-    // Highlight potential drop targets
-    setTimeout(() => {
-      this.containers.forEach((containerData) => {
-        if (containerData.id !== this.dragState?.sourceContainerId) {
-          containerData.element.classList.add("potential-drop-target");
-        }
-      });
-    }, 0);
   },
 
   handleTabDragMove(e) {
     if (!this.dragState) return;
-    
+
     // Track mouse position for creating new window when dropped outside
     this.dragState.currentX = e.clientX;
     this.dragState.currentY = e.clientY;
@@ -328,28 +378,30 @@ export const DialogManager = {
 
   handleTabDragEnd(e) {
     if (!this.dragState) return;
-    
+
     // Remove all highlight classes
     this.containers.forEach((containerData) => {
-      containerData.element.classList.remove("potential-drop-target", "drop-target");
+      containerData.element.classList.remove("drop-target");
     });
-    
+
     document.querySelectorAll(".theme-dialog-tab").forEach((tab) => {
-      tab.classList.remove("drop-left", "drop-right");
+      tab.classList.remove("drop-target-tab");
     });
-    
+
     // Check if dropped outside any container - create new window
     if (e && this.dragState.currentX !== undefined) {
-      const droppedOnContainer = Array.from(this.containers.values()).some((containerData) => {
-        const rect = containerData.element.getBoundingClientRect();
-        return (
-          this.dragState.currentX >= rect.left &&
-          this.dragState.currentX <= rect.right &&
-          this.dragState.currentY >= rect.top &&
-          this.dragState.currentY <= rect.bottom
-        );
-      });
-      
+      const droppedOnContainer = Array.from(this.containers.values()).some(
+        (containerData) => {
+          const rect = containerData.element.getBoundingClientRect();
+          return (
+            this.dragState.currentX >= rect.left &&
+            this.dragState.currentX <= rect.right &&
+            this.dragState.currentY >= rect.top &&
+            this.dragState.currentY <= rect.bottom
+          );
+        }
+      );
+
       if (!droppedOnContainer) {
         // Create new container at drop position
         this.popOutWindowToPosition(this.dragState.windowId, {
@@ -358,21 +410,21 @@ export const DialogManager = {
         });
       }
     }
-    
+
     this.dragState = null;
   },
 
   reorderTab(draggedWindowId, targetWindowId, insertBefore, container) {
     const draggedWindow = this.windows.get(draggedWindowId);
     const targetWindow = this.windows.get(targetWindowId);
-    
+
     if (!draggedWindow || !targetWindow) return;
     if (draggedWindow.containerId !== targetWindow.containerId) return;
-    
+
     const tabsContainer = container.querySelector(".theme-dialog-tabs");
     const draggedTab = draggedWindow.tabElement;
     const targetTab = targetWindow.tabElement;
-    
+
     if (insertBefore) {
       tabsContainer.insertBefore(draggedTab, targetTab);
     } else {
@@ -383,20 +435,20 @@ export const DialogManager = {
   moveWindowToContainer(windowId, targetContainerId) {
     const windowData = this.windows.get(windowId);
     if (!windowData) return;
-    
+
     const sourceContainerId = windowData.containerId;
     const sourceContainer = this.containers.get(sourceContainerId);
     const targetContainer = this.containers.get(targetContainerId);
-    
+
     if (!sourceContainer || !targetContainer) return;
-    
+
     // Move tab and content to new container
     const targetElement = targetContainer.element;
     this.renderWindowInContainer(windowData, targetElement);
-    
+
     // Update active window in target container
     this.focusWindowInContainer(windowId, targetContainerId);
-    
+
     // Clean up source container if empty
     this.cleanupContainerIfEmpty(sourceContainerId);
   },
@@ -404,55 +456,140 @@ export const DialogManager = {
   popOutWindow(windowId) {
     const windowData = this.windows.get(windowId);
     if (!windowData) return;
-    
+
+    // Create a browser popup window
+    const popupWidth = 800;
+    const popupHeight = 600;
+    const left = (window.screen.width - popupWidth) / 2;
+    const top = (window.screen.height - popupHeight) / 2;
+
+    const popupWindow = window.open(
+      "",
+      windowData.title,
+      `width=${popupWidth},height=${popupHeight},left=${left},top=${top},resizable=yes,scrollbars=yes`
+    );
+
+    if (!popupWindow) {
+      console.warn("Popup blocked. Creating separate window instead.");
+      // Fallback to separate window if popup is blocked
+      this.popOutWindowToSeparateContainer(windowId);
+      return;
+    }
+
+    // Set up the popup window
+    popupWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${windowData.title}</title>
+          <style>
+            body { margin: 0; padding: 0; overflow: hidden; }
+            #content { width: 100%; height: 100vh; overflow: auto; }
+          </style>
+        </head>
+        <body>
+          <div id="content"></div>
+        </body>
+      </html>
+    `);
+    popupWindow.document.close();
+
+    // Move the window content to the popup
+    const popupContent = popupWindow.document.getElementById("content");
+    if (windowData.element && popupContent) {
+      popupContent.appendChild(windowData.element);
+      windowData.isInPopup = true;
+      windowData.popupWindow = popupWindow;
+
+      // Update source container visibility
+      const sourceContainerId = windowData.containerId;
+      const sourceContainer = this.containers.get(sourceContainerId);
+      if (sourceContainer) {
+        this.updateTabVisibility(sourceContainer.element);
+        this.cleanupContainerIfEmpty(sourceContainerId);
+      }
+
+      // Handle popup close
+      popupWindow.addEventListener("beforeunload", () => {
+        // Move content back when popup closes
+        if (windowData.element && sourceContainer) {
+          windowData.isInPopup = false;
+          windowData.popupWindow = null;
+
+          // Restore to original container or create new one
+          if (this.containers.has(sourceContainerId)) {
+            sourceContainer.element
+              .querySelector(".theme-dialog-tabs-content")
+              .appendChild(windowData.element);
+            this.updateTabVisibility(sourceContainer.element);
+          } else {
+            // Original container was closed, create a new one
+            const newContainer = this.createNewContainer();
+            this.renderWindowInContainer(windowData, newContainer);
+            this.focusWindowInContainer(
+              windowId,
+              newContainer.dataset.containerId
+            );
+          }
+        }
+      });
+    }
+  },
+
+  popOutWindowToSeparateContainer(windowId) {
+    const windowData = this.windows.get(windowId);
+    if (!windowData) return;
+
     const sourceContainerId = windowData.containerId;
     const sourceContainer = this.containers.get(sourceContainerId);
     if (!sourceContainer) return;
-    
+
     // Count visible windows in source container
     const visibleWindowsInContainer = Array.from(this.windows.values()).filter(
       (w) => w.containerId === sourceContainerId && !w.isInPopup
     );
-    
-    // If this is the only window, don't pop out (already separate)
-    if (visibleWindowsInContainer.length <= 1) return;
-    
+
+    // Always allow popping out - just create a new container
     // Create new container for this window
     const sourceRect = sourceContainer.element.getBoundingClientRect();
     const newContainer = this.createNewContainer({
       left: sourceRect.left + 50,
       top: sourceRect.top + 50,
     });
-    
+
     this.renderWindowInContainer(windowData, newContainer);
     this.focusWindowInContainer(windowId, newContainer.dataset.containerId);
-    
+
     // Update source container
     this.cleanupContainerIfEmpty(sourceContainerId);
-    this.updateTabVisibility(sourceContainer.element);
-    
-    // Focus another window in source container
-    const remainingWindow = Array.from(this.windows.values()).find(
-      (w) => w.containerId === sourceContainerId && !w.isInPopup
-    );
-    if (remainingWindow) {
-      this.focusWindowInContainer(remainingWindow.id, sourceContainerId);
+
+    // Only update source container if it still exists
+    if (visibleWindowsInContainer.length > 1) {
+      this.updateTabVisibility(sourceContainer.element);
+
+      // Focus another window in source container
+      const remainingWindow = Array.from(this.windows.values()).find(
+        (w) => w.containerId === sourceContainerId && !w.isInPopup
+      );
+      if (remainingWindow) {
+        this.focusWindowInContainer(remainingWindow.id, sourceContainerId);
+      }
     }
   },
 
   popOutWindowToPosition(windowId, position) {
     const windowData = this.windows.get(windowId);
     if (!windowData) return;
-    
+
     const sourceContainerId = windowData.containerId;
     const sourceContainer = this.containers.get(sourceContainerId);
     if (!sourceContainer) return;
-    
+
     // Count visible windows in source container
     const visibleWindowsInContainer = Array.from(this.windows.values()).filter(
       (w) => w.containerId === sourceContainerId && !w.isInPopup
     );
-    
+
     // If this is the only window, just move the container
     if (visibleWindowsInContainer.length <= 1) {
       sourceContainer.element.style.left = position.left + "px";
@@ -460,17 +597,17 @@ export const DialogManager = {
       this.constrainToViewport(sourceContainer.element);
       return;
     }
-    
+
     // Create new container at position
     const newContainer = this.createNewContainer(position);
     this.constrainToViewport(newContainer);
-    
+
     this.renderWindowInContainer(windowData, newContainer);
     this.focusWindowInContainer(windowId, newContainer.dataset.containerId);
-    
+
     // Update source container
     this.updateTabVisibility(sourceContainer.element);
-    
+
     // Focus another window in source container
     const remainingWindow = Array.from(this.windows.values()).find(
       (w) => w.containerId === sourceContainerId && !w.isInPopup
@@ -483,11 +620,11 @@ export const DialogManager = {
   cleanupContainerIfEmpty(containerId) {
     const containerData = this.containers.get(containerId);
     if (!containerData) return;
-    
+
     const windowsInContainer = Array.from(this.windows.values()).filter(
       (w) => w.containerId === containerId
     );
-    
+
     if (windowsInContainer.length === 0) {
       containerData.element.remove();
       this.containers.delete(containerId);
@@ -516,9 +653,9 @@ export const DialogManager = {
       const windowId = tab.dataset.windowId;
       const windowData = this.windows.get(windowId);
       const isActive = windowId === containerData.activeWindowId;
-      
+
       tab.classList.toggle("active", isActive);
-      
+
       // Hide tabs that are in popup
       if (windowData && windowData.isInPopup) {
         tab.style.display = "none";
@@ -531,7 +668,7 @@ export const DialogManager = {
       const windowId = content.dataset.windowId;
       const windowData = this.windows.get(windowId);
       const isActive = windowId === containerData.activeWindowId;
-      
+
       // Hide content that is in popup or not active
       if (windowData && windowData.isInPopup) {
         content.style.display = "none";
@@ -548,12 +685,12 @@ export const DialogManager = {
   focusWindowInContainer(windowId, containerId) {
     const containerData = this.containers.get(containerId);
     if (!containerData) return;
-    
+
     containerData.activeWindowId = windowId;
-    
+
     // Bring container to front
     this.bringContainerToFront(containerId);
-    
+
     if (containerData.element) {
       this.updateTabVisibility(containerData.element);
     }
@@ -566,7 +703,7 @@ export const DialogManager = {
       const z = parseInt(containerData.element.style.zIndex) || BASE_Z_INDEX;
       if (z > maxZ) maxZ = z;
     });
-    
+
     const containerData = this.containers.get(containerId);
     if (containerData) {
       containerData.element.style.zIndex = maxZ + 1;
@@ -603,7 +740,8 @@ export const DialogManager = {
       const remainingWindows = Array.from(this.windows.values()).filter(
         (w) => w.containerId === containerId && !w.isInPopup
       );
-      containerData.activeWindowId = remainingWindows.length > 0 ? remainingWindows[0].id : null;
+      containerData.activeWindowId =
+        remainingWindows.length > 0 ? remainingWindows[0].id : null;
     }
 
     // Clean up container if empty
@@ -681,14 +819,16 @@ export const DialogManager = {
 
       const dockItem = document.createElement("div");
       dockItem.className = "theme-dock-item";
-      
+
       // Show all tab names if multiple, otherwise just the one
       if (windowsInContainer.length > 1) {
-        dockItem.textContent = windowsInContainer.map((w) => w.title).join(", ");
+        dockItem.textContent = windowsInContainer
+          .map((w) => w.title)
+          .join(", ");
       } else {
         dockItem.textContent = windowsInContainer[0].title;
       }
-      
+
       dockItem.addEventListener("click", () => {
         this.restoreContainer(containerData.id);
       });
@@ -701,6 +841,8 @@ export const DialogManager = {
     const header = container.querySelector(".theme-dialog-header");
     let isDragging = false;
     let startX, startY, startLeft, startTop;
+    let hasMoved = false;
+    let potentialMergeTarget = null;
 
     const onMouseDown = (e) => {
       if (
@@ -710,6 +852,7 @@ export const DialogManager = {
         return;
 
       isDragging = true;
+      hasMoved = false;
       startX = e.clientX;
       startY = e.clientY;
       startLeft = container.offsetLeft;
@@ -726,6 +869,10 @@ export const DialogManager = {
       const deltaX = e.clientX - startX;
       const deltaY = e.clientY - startY;
 
+      // Check if we've moved enough to consider this a drag (not just a click)
+      if (!hasMoved && (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5)) {
+        hasMoved = true;
+      }
       let newLeft = startLeft + deltaX;
       let newTop = startTop + deltaY;
 
@@ -741,13 +888,59 @@ export const DialogManager = {
 
       container.style.left = newLeft + "px";
       container.style.top = newTop + "px";
+
+      // Check for potential merge target
+      if (hasMoved) {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
+        // Remove previous merge highlight
+        if (potentialMergeTarget) {
+          potentialMergeTarget.classList.remove("drop-target");
+        }
+        potentialMergeTarget = null;
+
+        // Check if hovering over another container
+        this.containers.forEach((containerData) => {
+          if (containerData.element === container) return;
+
+          const rect = containerData.element.getBoundingClientRect();
+          if (
+            mouseX >= rect.left &&
+            mouseX <= rect.right &&
+            mouseY >= rect.top &&
+            mouseY <= rect.bottom
+          ) {
+            potentialMergeTarget = containerData.element;
+            potentialMergeTarget.classList.add("drop-target");
+          }
+        });
+      }
     };
 
-    const onMouseUp = () => {
+    const onMouseUp = (e) => {
       if (isDragging) {
         isDragging = false;
         header.style.cursor = "grab";
-        this.constrainToViewport(container);
+
+        // Remove all merge highlights
+        this.containers.forEach((containerData) => {
+          containerData.element.classList.remove("drop-target");
+        });
+
+        // Check if we should merge
+        if (hasMoved && potentialMergeTarget) {
+          const sourceContainerId = container.dataset.containerId;
+          const targetContainerId = potentialMergeTarget.dataset.containerId;
+
+          // Merge all windows from source to target
+          this.mergeContainers(sourceContainerId, targetContainerId);
+        } else {
+          this.constrainToViewport(container);
+        }
+
+        potentialMergeTarget = null;
+        hasMoved = false;
       }
     };
 
@@ -756,6 +949,30 @@ export const DialogManager = {
     document.addEventListener("mouseup", onMouseUp);
 
     header.style.cursor = "grab";
+  },
+
+  mergeContainers(sourceContainerId, targetContainerId) {
+    if (sourceContainerId === targetContainerId) return;
+
+    const sourceContainer = this.containers.get(sourceContainerId);
+    const targetContainer = this.containers.get(targetContainerId);
+
+    if (!sourceContainer || !targetContainer) return;
+
+    // Get all windows from source container
+    const windowsToMove = Array.from(this.windows.values()).filter(
+      (w) => w.containerId === sourceContainerId
+    );
+
+    // Move each window to target container
+    windowsToMove.forEach((windowData) => {
+      this.moveWindowToContainer(windowData.id, targetContainerId);
+    });
+
+    // Focus the first moved window
+    if (windowsToMove.length > 0) {
+      this.focusWindowInContainer(windowsToMove[0].id, targetContainerId);
+    }
   },
 
   makeResizable(container) {
@@ -973,6 +1190,11 @@ function addDialogStyles() {
       flex: 1;
       overflow-x: auto;
       overflow-y: hidden;
+      position: relative;
+    }
+    
+    .theme-dialog-tabs.tabs-drop-target {
+      background: rgba(74, 158, 255, 0.1);
     }
 
     .theme-dialog-tabs::-webkit-scrollbar {
@@ -1039,12 +1261,8 @@ function addDialogStyles() {
       color: #fff;
     }
 
-    .theme-dialog-tab.drop-left {
-      border-left: 3px solid #4a9eff;
-    }
-
-    .theme-dialog-tab.drop-right {
-      border-right: 3px solid #4a9eff;
+    .theme-dialog-tab.drop-target-tab {
+      background: rgba(74, 158, 255, 0.2);
     }
 
     .theme-dialog-tab[draggable="true"] {
@@ -1055,15 +1273,9 @@ function addDialogStyles() {
       cursor: grabbing;
     }
 
-    .theme-dialog-container.potential-drop-target {
-      outline: 2px dashed #4a9eff;
-      outline-offset: -2px;
-    }
-
     .theme-dialog-container.drop-target {
-      outline: 3px solid #4a9eff;
-      outline-offset: -3px;
-      background: rgba(74, 158, 255, 0.1);
+      outline: 2px solid #4a9eff;
+      outline-offset: -2px;
     }
 
     .theme-dialog-controls {
