@@ -90,6 +90,7 @@ export const DialogManager = {
       <div class="theme-dialog-header">
         <div class="theme-dialog-tabs"></div>
         <div class="theme-dialog-controls">
+          <button class="theme-dialog-btn popout-btn" title="Pop out to browser window" style="display: none;">⧉</button>
           <button class="theme-dialog-btn minimize-btn" title="Minimize">_</button>
           <button class="theme-dialog-btn close-btn" title="Close">×</button>
         </div>
@@ -122,6 +123,13 @@ export const DialogManager = {
 
     container.querySelector(".minimize-btn").addEventListener("click", () => {
       this.minimizeContainer(containerId);
+    });
+
+    container.querySelector(".popout-btn").addEventListener("click", () => {
+      const containerData = this.containers.get(containerId);
+      if (containerData && containerData.activeWindowId) {
+        this.popOutWindow(containerData.activeWindowId);
+      }
     });
 
     // Setup drop zone for merging windows
@@ -247,8 +255,8 @@ export const DialogManager = {
       this.handleTabDragStart(e, windowData, container);
     });
 
-    tab.addEventListener("dragend", () => {
-      this.handleTabDragEnd();
+    tab.addEventListener("dragend", (e) => {
+      this.handleTabDragEnd(e);
     });
 
     // Tab drop for reordering within same container or merging into different container
@@ -388,16 +396,20 @@ export const DialogManager = {
       tab.classList.remove("drop-target-tab");
     });
 
+    // Use event coordinates if available, otherwise use tracked position
+    const mouseX = e ? e.clientX : this.dragState.currentX;
+    const mouseY = e ? e.clientY : this.dragState.currentY;
+
     // Check if dropped outside any container - create new window
-    if (e && this.dragState.currentX !== undefined) {
+    if (mouseX !== undefined && mouseY !== undefined) {
       const droppedOnContainer = Array.from(this.containers.values()).some(
         (containerData) => {
           const rect = containerData.element.getBoundingClientRect();
           return (
-            this.dragState.currentX >= rect.left &&
-            this.dragState.currentX <= rect.right &&
-            this.dragState.currentY >= rect.top &&
-            this.dragState.currentY <= rect.bottom
+            mouseX >= rect.left &&
+            mouseX <= rect.right &&
+            mouseY >= rect.top &&
+            mouseY <= rect.bottom
           );
         }
       );
@@ -405,8 +417,8 @@ export const DialogManager = {
       if (!droppedOnContainer) {
         // Create new container at drop position
         this.popOutWindowToPosition(this.dragState.windowId, {
-          left: this.dragState.currentX - DRAG_OFFSET_X,
-          top: this.dragState.currentY - DRAG_OFFSET_Y,
+          left: mouseX - DRAG_OFFSET_X,
+          top: mouseY - DRAG_OFFSET_Y,
         });
       }
     }
@@ -483,8 +495,23 @@ export const DialogManager = {
         <head>
           <title>${windowData.title}</title>
           <style>
-            body { margin: 0; padding: 0; overflow: hidden; }
-            #content { width: 100%; height: 100vh; overflow: auto; }
+            body { 
+              margin: 0; 
+              padding: 0; 
+              overflow: hidden;
+              background: #2a2a2a;
+              color: #fff;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            }
+            #content { 
+              width: 100%; 
+              height: 100vh; 
+              overflow: auto;
+              color: #fff;
+            }
+            #content * {
+              color: inherit;
+            }
           </style>
         </head>
         <body>
@@ -680,6 +707,12 @@ export const DialogManager = {
     // Show/hide tabs bar if only one visible tab
     const tabsBar = container.querySelector(".theme-dialog-tabs");
     tabsBar.style.display = visibleTabs.length > 1 ? "flex" : "none";
+
+    // Show/hide pop-out button in header controls when there's only one tab
+    const popoutBtn = container.querySelector(".popout-btn");
+    if (popoutBtn) {
+      popoutBtn.style.display = visibleTabs.length === 1 ? "" : "none";
+    }
   },
 
   focusWindowInContainer(windowId, containerId) {
