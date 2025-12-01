@@ -20,6 +20,7 @@ export const DialogManager = {
     this.createMinimizedDock();
     this.setupWindowResizeListener();
     this.setupGlobalDragListeners();
+    this.setupPopupCleanupListener();
   },
 
   createMinimizedDock() {
@@ -53,6 +54,24 @@ export const DialogManager = {
 
     document.addEventListener("mousemove", (e) => this.handleTabDragMove(e));
     document.addEventListener("mouseup", (e) => this.handleTabDragEnd(e));
+  },
+
+  setupPopupCleanupListener() {
+    if (this.popupCleanupListenerAdded) return;
+    this.popupCleanupListenerAdded = true;
+
+    // Close all popup windows when the main window is closed or refreshed
+    window.addEventListener("beforeunload", () => {
+      this.windows.forEach((windowData) => {
+        if (windowData.popupWindow && !windowData.popupWindow.closed) {
+          try {
+            windowData.popupWindow.close();
+          } catch (error) {
+            console.error("Error closing popup window:", error);
+          }
+        }
+      });
+    });
   },
 
   createWindow({
