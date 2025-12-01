@@ -73,7 +73,12 @@ Create a new window and display it in a new container.
 - `id` (string): Unique identifier for the window
 - `title` (string): Display title for the window
 - `content` (string): HTML content for the window
-- `onInit` (function): Callback function called after window is initialized
+- `onInit` (function, optional): Callback function called after window is initialized. Receives the window's DOM element as parameter.
+- `onMinimize` (function, optional): Callback function called when the window is minimized. Receives the window data object as parameter.
+- `onRestore` (function, optional): Callback function called when the window is restored from minimized state. Receives the window data object as parameter.
+- `onClose` (function, optional): Callback function called before the window is closed. Receives the window data object as parameter.
+- `onPopout` (function, optional): Callback function called when the window is popped out to a browser window. Receives the window data object and popup window reference as parameters.
+- `onPopupClose` (function, optional): Callback function called when a popped-out window's browser window is closed. Receives the window data object as parameter.
 
 **Returns:** Window data object
 
@@ -87,6 +92,24 @@ const window = DialogManager.createWindow({
     element.querySelector(".save-btn").addEventListener("click", () => {
       // Handle save
     });
+  },
+  onMinimize: (windowData) => {
+    console.log("Window minimized:", windowData.title);
+  },
+  onRestore: (windowData) => {
+    console.log("Window restored:", windowData.title);
+  },
+  onClose: (windowData) => {
+    console.log("Window closing:", windowData.title);
+    // Cleanup resources, save state, etc.
+  },
+  onPopout: (windowData, popupWindow) => {
+    console.log("Window popped out to browser:", windowData.title);
+    // You can interact with the popup window reference if needed
+  },
+  onPopupClose: (windowData) => {
+    console.log("Popup window closed:", windowData.title);
+    // Window is being moved back to the editor
   },
 });
 ```
@@ -542,4 +565,162 @@ if (window) {
     window.element.style.background = "#333";
   }
 }
+```
+
+### Using Window Lifecycle Callbacks
+
+Track and respond to window state changes using callbacks:
+
+```javascript
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
+
+// Create a window with full lifecycle management
+const dataWindow = DialogManager.createWindow({
+  id: "data-editor",
+  title: "Data Editor",
+  content: `
+    <div style="padding: 20px;">
+      <textarea id="editor" style="width: 100%; height: 300px;"></textarea>
+      <button id="save">Save</button>
+    </div>
+  `,
+  onInit: (element) => {
+    console.log("Window initialized");
+    const textarea = element.querySelector("#editor");
+    const saveBtn = element.querySelector("#save");
+
+    // Load saved data
+    textarea.value = localStorage.getItem("editorData") || "";
+
+    saveBtn.addEventListener("click", () => {
+      localStorage.setItem("editorData", textarea.value);
+      console.log("Data saved");
+    });
+  },
+
+  onMinimize: (windowData) => {
+    console.log("Editor minimized - saving draft");
+    const textarea = windowData.element.querySelector("#editor");
+    localStorage.setItem("editorDraft", textarea.value);
+  },
+
+  onRestore: (windowData) => {
+    console.log("Editor restored - checking for draft");
+    const textarea = windowData.element.querySelector("#editor");
+    const draft = localStorage.getItem("editorDraft");
+    if (draft && draft !== textarea.value) {
+      if (confirm("Restore draft from when window was minimized?")) {
+        textarea.value = draft;
+      }
+    }
+  },
+
+  onClose: (windowData) => {
+    console.log("Editor closing - checking for unsaved changes");
+    const textarea = windowData.element.querySelector("#editor");
+    const currentData = textarea.value;
+    const savedData = localStorage.getItem("editorData") || "";
+
+    if (currentData !== savedData) {
+      // Note: In a real implementation, you might want to prevent closing
+      // or show a modal dialog
+      console.warn("Window has unsaved changes!");
+    }
+
+    // Cleanup
+    localStorage.removeItem("editorDraft");
+  },
+
+  onPopout: (windowData, popupWindow) => {
+    console.log("Editor popped out to browser window");
+    // The window content is now in a separate browser window
+    // You can add custom styles or scripts to the popup if needed
+  },
+
+  onPopupClose: (windowData) => {
+    console.log("Popup window closed - editor returning to main window");
+    // Window is being moved back into the editor interface
+  },
+});
+```
+
+### State Persistence Example
+
+Use callbacks to automatically save and restore window state:
+
+```javascript
+const DialogManager = globalThis.SDKExtensions.EditorDialogManager;
+
+class WindowStateManager {
+  constructor(windowId) {
+    this.windowId = windowId;
+    this.stateKey = `window-state-${windowId}`;
+  }
+
+  saveState(data) {
+    const state = {
+      timestamp: Date.now(),
+      data: data,
+    };
+    localStorage.setItem(this.stateKey, JSON.stringify(state));
+  }
+
+  loadState() {
+    const stored = localStorage.getItem(this.stateKey);
+    return stored ? JSON.parse(stored) : null;
+  }
+
+  clearState() {
+    localStorage.removeItem(this.stateKey);
+  }
+}
+
+// Create a stateful window
+const stateManager = new WindowStateManager("my-tool");
+
+DialogManager.createWindow({
+  id: "my-tool",
+  title: "Stateful Tool",
+  content: `
+    <div style="padding: 20px;">
+      <input type="text" id="input1" placeholder="Field 1">
+      <input type="text" id="input2" placeholder="Field 2">
+      <select id="select1">
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+      </select>
+    </div>
+  `,
+
+  onInit: (element) => {
+    // Restore saved state
+    const state = stateManager.loadState();
+    if (state) {
+      element.querySelector("#input1").value = state.data.input1 || "";
+      element.querySelector("#input2").value = state.data.input2 || "";
+      element.querySelector("#select1").value = state.data.select1 || "option1";
+    }
+  },
+
+  onMinimize: (windowData) => {
+    // Auto-save state when minimized
+    const element = windowData.element;
+    stateManager.saveState({
+      input1: element.querySelector("#input1").value,
+      input2: element.querySelector("#input2").value,
+      select1: element.querySelector("#select1").value,
+    });
+  },
+
+  onClose: (windowData) => {
+    // Save final state when closed
+    const element = windowData.element;
+    stateManager.saveState({
+      input1: element.querySelector("#input1").value,
+      input2: element.querySelector("#input2").value,
+      select1: element.querySelector("#select1").value,
+    });
+  },
+});
 ```

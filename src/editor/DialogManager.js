@@ -55,7 +55,17 @@ export const DialogManager = {
     document.addEventListener("mouseup", (e) => this.handleTabDragEnd(e));
   },
 
-  createWindow({ id, title, content, onInit }) {
+  createWindow({
+    id,
+    title,
+    content,
+    onInit,
+    onMinimize,
+    onClose,
+    onPopout,
+    onPopupClose,
+    onRestore,
+  }) {
     if (!this.minimizedDock) this.init();
 
     const windowData = {
@@ -63,6 +73,11 @@ export const DialogManager = {
       title,
       content,
       onInit,
+      onMinimize,
+      onClose,
+      onPopout,
+      onPopupClose,
+      onRestore,
       element: null,
       popupWindow: null,
       isMinimized: false,
@@ -625,9 +640,6 @@ export const DialogManager = {
               overflow: auto;
               color: #b8b8b8;
             }
-            #content * {
-              color: inherit;
-            }
           </style>
         </head>
         <body>
@@ -646,6 +658,15 @@ export const DialogManager = {
       popupContent.appendChild(windowData.element);
       windowData.isInPopup = true;
       windowData.popupWindow = popupWindow;
+
+      // Call onPopout callback
+      if (windowData.onPopout) {
+        try {
+          windowData.onPopout(windowData, popupWindow);
+        } catch (error) {
+          console.error("Error in onPopout callback:", error);
+        }
+      }
 
       // Update source container visibility
       const sourceContainerId = windowData.containerId;
@@ -675,6 +696,15 @@ export const DialogManager = {
 
       // Handle popup close
       popupWindow.addEventListener("beforeunload", () => {
+        // Call onPopupClose callback
+        if (windowData.onPopupClose) {
+          try {
+            windowData.onPopupClose(windowData);
+          } catch (error) {
+            console.error("Error in onPopupClose callback:", error);
+          }
+        }
+
         // Move content back when popup closes
         if (windowData.element && sourceContainer) {
           windowData.isInPopup = false;
@@ -1029,6 +1059,15 @@ export const DialogManager = {
     const windowData = this.windows.get(id);
     if (!windowData) return;
 
+    // Call onClose callback before cleanup
+    if (windowData.onClose) {
+      try {
+        windowData.onClose(windowData);
+      } catch (error) {
+        console.error("Error in onClose callback:", error);
+      }
+    }
+
     if (windowData.popupWindow && !windowData.popupWindow.closed) {
       windowData.popupWindow.close();
     }
@@ -1090,10 +1129,19 @@ export const DialogManager = {
     containerData.element.style.display = "none";
     containerData.isMinimized = true;
 
-    // Mark all windows in this container as minimized
+    // Mark all windows in this container as minimized and call callbacks
     this.windows.forEach((windowData) => {
       if (windowData.containerId === containerId) {
         windowData.isMinimized = true;
+
+        // Call onMinimize callback
+        if (windowData.onMinimize) {
+          try {
+            windowData.onMinimize(windowData);
+          } catch (error) {
+            console.error("Error in onMinimize callback:", error);
+          }
+        }
       }
     });
 
@@ -1107,10 +1155,19 @@ export const DialogManager = {
     containerData.element.style.display = "flex";
     containerData.isMinimized = false;
 
-    // Mark all windows in this container as not minimized
+    // Mark all windows in this container as not minimized and call callbacks
     this.windows.forEach((windowData) => {
       if (windowData.containerId === containerId) {
         windowData.isMinimized = false;
+
+        // Call onRestore callback
+        if (windowData.onRestore) {
+          try {
+            windowData.onRestore(windowData);
+          } catch (error) {
+            console.error("Error in onRestore callback:", error);
+          }
+        }
       }
     });
 
