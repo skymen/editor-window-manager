@@ -26,7 +26,7 @@ export const DialogManager = {
     if (this.minimizedDock) return;
 
     this.minimizedDock = document.createElement("div");
-    this.minimizedDock.className = "theme-minimized-dock";
+    this.minimizedDock.className = "window-manager-minimized-dock";
     this.minimizedDock.style.display = "none";
     document.body.appendChild(this.minimizedDock);
   },
@@ -85,19 +85,19 @@ export const DialogManager = {
     const containerId = `container-${++this.containerIdCounter}`;
 
     const container = document.createElement("div");
-    container.className = "theme-dialog-container";
+    container.className = "window-manager-dialog-container";
     container.dataset.containerId = containerId;
     container.innerHTML = `
-      <div class="theme-dialog-header">
-        <div class="theme-dialog-title" style="display: none;"></div>
-        <div class="theme-dialog-tabs"></div>
-        <div class="theme-dialog-controls">
-          <button class="theme-dialog-btn popout-btn" title="Pop out to browser window" style="display: none;">⧉</button>
-          <button class="theme-dialog-btn minimize-btn" title="Minimize">_</button>
-          <button class="theme-dialog-btn close-btn" title="Close">×</button>
+      <div class="window-manager-dialog-header">
+        <div class="window-manager-dialog-title" style="display: none;"></div>
+        <div class="window-manager-dialog-tabs"></div>
+        <div class="window-manager-dialog-controls">
+          <button class="window-manager-dialog-btn popout-btn" title="Pop out to browser window" style="display: none;">⧉</button>
+          <button class="window-manager-dialog-btn minimize-btn" title="Minimize">_</button>
+          <button class="window-manager-dialog-btn close-btn" title="Close">×</button>
         </div>
       </div>
-      <div class="theme-dialog-tabs-content"></div>
+      <div class="window-manager-dialog-tabs-content"></div>
     `;
 
     document.body.appendChild(container);
@@ -168,19 +168,19 @@ export const DialogManager = {
       if (sourceContainerId === targetContainerId) return;
 
       e.preventDefault();
-      container.classList.add("drop-target");
+      container.classList.add("window-manager-drop-target");
     });
 
     container.addEventListener("dragleave", (e) => {
       // Only remove if we're actually leaving the container
       if (!container.contains(e.relatedTarget)) {
-        container.classList.remove("drop-target");
+        container.classList.remove("window-manager-drop-target");
       }
     });
 
     container.addEventListener("drop", (e) => {
       e.preventDefault();
-      container.classList.remove("drop-target");
+      container.classList.remove("window-manager-drop-target");
 
       if (!this.dragState) return;
 
@@ -207,7 +207,7 @@ export const DialogManager = {
     if (!windowData.element) {
       windowData.element = this.createWindowElement(windowData);
       container
-        .querySelector(".theme-dialog-tabs-content")
+        .querySelector(".window-manager-dialog-tabs-content")
         .appendChild(windowData.element);
 
       if (windowData.onInit) {
@@ -216,7 +216,7 @@ export const DialogManager = {
     } else {
       // Move existing element to new container
       container
-        .querySelector(".theme-dialog-tabs-content")
+        .querySelector(".window-manager-dialog-tabs-content")
         .appendChild(windowData.element);
     }
 
@@ -225,7 +225,7 @@ export const DialogManager = {
 
   createWindowElement(windowData) {
     const windowEl = document.createElement("div");
-    windowEl.className = "theme-window-content";
+    windowEl.className = "window-manager-window-content";
     windowEl.dataset.windowId = windowData.id;
     windowEl.innerHTML = windowData.content;
     return windowEl;
@@ -238,26 +238,30 @@ export const DialogManager = {
     }
 
     const tab = document.createElement("div");
-    tab.className = "theme-dialog-tab";
+    tab.className = "window-manager-dialog-tab";
     tab.dataset.windowId = windowData.id;
     tab.draggable = true;
     tab.innerHTML = `
-      <span class="tab-title">${windowData.title}</span>
-      <button class="tab-popout" title="Pop out to browser window">⧉</button>
-      <button class="tab-close" title="Close">×</button>
+      <span class="window-manager-tab-title">${windowData.title}</span>
+      <button class="window-manager-tab-popout" title="Pop out to browser window">⧉</button>
+      <button class="window-manager-tab-close" title="Close">×</button>
     `;
 
     // Pop-out button handler
-    tab.querySelector(".tab-popout").addEventListener("click", (e) => {
-      e.stopPropagation();
-      this.popOutWindow(windowData.id);
-    });
+    tab
+      .querySelector(".window-manager-tab-popout")
+      .addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.popOutWindow(windowData.id);
+      });
 
     // Close button handler
-    tab.querySelector(".tab-close").addEventListener("click", (e) => {
-      e.stopPropagation();
-      this.closeWindow(windowData.id);
-    });
+    tab
+      .querySelector(".window-manager-tab-close")
+      .addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.closeWindow(windowData.id);
+      });
 
     // Tab click to focus
     tab.addEventListener("click", () => {
@@ -287,7 +291,7 @@ export const DialogManager = {
       // Check if merging from different container
       if (this.dragState.sourceContainerId !== windowData.containerId) {
         // Different container - show merge highlight
-        tab.classList.add("drop-target-tab");
+        tab.classList.add("window-manager-window-manager-drop-target-tab");
       } else {
         // Same container - show reorder indicator
         const rect = tab.getBoundingClientRect();
@@ -295,15 +299,18 @@ export const DialogManager = {
         const insertBefore = e.clientX < midX;
 
         // Remove previous indicators from all tabs
-        document.querySelectorAll(".theme-dialog-tab").forEach((t) => {
-          t.classList.remove("drop-indicator-before", "drop-indicator-after");
+        document.querySelectorAll(".window-manager-dialog-tab").forEach((t) => {
+          t.classList.remove(
+            "window-manager-drop-indicator-before",
+            "window-manager-drop-indicator-after"
+          );
         });
 
         // Add indicator to target tab
         if (insertBefore) {
-          tab.classList.add("drop-indicator-before");
+          tab.classList.add("window-manager-drop-indicator-before");
         } else {
-          tab.classList.add("drop-indicator-after");
+          tab.classList.add("window-manager-drop-indicator-after");
         }
       }
     });
@@ -312,9 +319,9 @@ export const DialogManager = {
       // Only remove if we're actually leaving the tab
       if (!tab.contains(e.relatedTarget)) {
         tab.classList.remove(
-          "drop-target-tab",
-          "drop-indicator-before",
-          "drop-indicator-after"
+          "window-manager-window-manager-drop-target-tab",
+          "window-manager-drop-indicator-before",
+          "window-manager-drop-indicator-after"
         );
       }
     });
@@ -331,9 +338,9 @@ export const DialogManager = {
       if (draggedWindowId === targetWindowId) return;
 
       tab.classList.remove(
-        "drop-target-tab",
-        "drop-indicator-before",
-        "drop-indicator-after"
+        "window-manager-window-manager-drop-target-tab",
+        "window-manager-drop-indicator-before",
+        "window-manager-drop-indicator-after"
       );
 
       // Check if merging from different container
@@ -359,7 +366,9 @@ export const DialogManager = {
     });
 
     windowData.tabElement = tab;
-    const tabsContainer = container.querySelector(".theme-dialog-tabs");
+    const tabsContainer = container.querySelector(
+      ".window-manager-dialog-tabs"
+    );
     tabsContainer.appendChild(tab);
 
     // Setup tabs container as drop zone (only once per container)
@@ -374,9 +383,11 @@ export const DialogManager = {
       if (!this.dragState) return;
 
       // Only handle if not over a specific tab
-      if (e.target.closest(".theme-dialog-tab")) {
-        // Over a specific tab, remove the tabs-drop-target class
-        tabsContainer.classList.remove("tabs-drop-target");
+      if (e.target.closest(".window-manager-dialog-tab")) {
+        // Over a specific tab, remove the window-manager-tabs-window-manager-drop-target class
+        tabsContainer.classList.remove(
+          "window-manager-tabs-window-manager-drop-target"
+        );
         return;
       }
 
@@ -386,15 +397,21 @@ export const DialogManager = {
       // Only show drop target for merging from different container
       const targetContainerId = container.dataset.containerId;
       if (this.dragState.sourceContainerId !== targetContainerId) {
-        tabsContainer.classList.add("tabs-drop-target");
+        tabsContainer.classList.add(
+          "window-manager-tabs-window-manager-drop-target"
+        );
       } else {
-        tabsContainer.classList.remove("tabs-drop-target");
+        tabsContainer.classList.remove(
+          "window-manager-tabs-window-manager-drop-target"
+        );
       }
     });
 
     tabsContainer.addEventListener("dragleave", (e) => {
       if (!tabsContainer.contains(e.relatedTarget)) {
-        tabsContainer.classList.remove("tabs-drop-target");
+        tabsContainer.classList.remove(
+          "window-manager-tabs-window-manager-drop-target"
+        );
       }
     });
 
@@ -402,14 +419,18 @@ export const DialogManager = {
       if (!this.dragState) return;
 
       // Only handle if not over a specific tab
-      if (e.target.closest(".theme-dialog-tab")) {
-        tabsContainer.classList.remove("tabs-drop-target");
+      if (e.target.closest(".window-manager-dialog-tab")) {
+        tabsContainer.classList.remove(
+          "window-manager-tabs-window-manager-drop-target"
+        );
         return;
       }
 
       e.preventDefault();
       e.stopPropagation();
-      tabsContainer.classList.remove("tabs-drop-target");
+      tabsContainer.classList.remove(
+        "window-manager-tabs-window-manager-drop-target"
+      );
 
       const { windowId, sourceContainerId } = this.dragState;
       const targetContainerId = container.dataset.containerId;
@@ -433,7 +454,7 @@ export const DialogManager = {
     };
 
     // Add dragging class for styling
-    windowData.tabElement.classList.add("tab-dragging");
+    windowData.tabElement.classList.add("window-manager-tab-dragging");
 
     // Set drag image
     e.dataTransfer.effectAllowed = "move";
@@ -453,20 +474,23 @@ export const DialogManager = {
 
     // Remove all highlight classes
     this.containers.forEach((containerData) => {
-      containerData.element.classList.remove("drop-target");
-      const tabsContainer =
-        containerData.element.querySelector(".theme-dialog-tabs");
+      containerData.element.classList.remove("window-manager-drop-target");
+      const tabsContainer = containerData.element.querySelector(
+        ".window-manager-dialog-tabs"
+      );
       if (tabsContainer) {
-        tabsContainer.classList.remove("tabs-drop-target");
+        tabsContainer.classList.remove(
+          "window-manager-tabs-window-manager-drop-target"
+        );
       }
     });
 
-    document.querySelectorAll(".theme-dialog-tab").forEach((tab) => {
+    document.querySelectorAll(".window-manager-dialog-tab").forEach((tab) => {
       tab.classList.remove(
-        "drop-target-tab",
-        "tab-dragging",
-        "drop-indicator-before",
-        "drop-indicator-after"
+        "window-manager-window-manager-drop-target-tab",
+        "window-manager-tab-dragging",
+        "window-manager-drop-indicator-before",
+        "window-manager-drop-indicator-after"
       );
     });
 
@@ -512,17 +536,22 @@ export const DialogManager = {
     if (!draggedWindow || !targetWindow) return;
     if (draggedWindow.containerId !== targetWindow.containerId) return;
 
-    const tabsContainer = container.querySelector(".theme-dialog-tabs");
+    const tabsContainer = container.querySelector(
+      ".window-manager-dialog-tabs"
+    );
     const draggedTab = draggedWindow.tabElement;
     const targetTab = targetWindow.tabElement;
 
     // Remove any drag-related classes
     draggedTab.classList.remove(
-      "tab-dragging",
-      "drop-indicator-before",
-      "drop-indicator-after"
+      "window-manager-tab-dragging",
+      "window-manager-drop-indicator-before",
+      "window-manager-drop-indicator-after"
     );
-    targetTab.classList.remove("drop-indicator-before", "drop-indicator-after");
+    targetTab.classList.remove(
+      "window-manager-drop-indicator-before",
+      "window-manager-drop-indicator-after"
+    );
 
     if (insertBefore) {
       tabsContainer.insertBefore(draggedTab, targetTab);
@@ -654,7 +683,7 @@ export const DialogManager = {
           // Restore to original container or create new one
           if (this.containers.has(sourceContainerId)) {
             sourceContainer.element
-              .querySelector(".theme-dialog-tabs-content")
+              .querySelector(".window-manager-dialog-tabs-content")
               .appendChild(windowData.element);
 
             // Check if this will be the only visible tab
@@ -806,14 +835,16 @@ export const DialogManager = {
     if (!containerData) return;
 
     // Get all visible tabs (not in popup)
-    const allTabs = container.querySelectorAll(".theme-dialog-tab");
+    const allTabs = container.querySelectorAll(".window-manager-dialog-tab");
     const visibleTabs = Array.from(allTabs).filter((tab) => {
       const windowId = tab.dataset.windowId;
       const windowData = this.windows.get(windowId);
       return windowData && !windowData.isInPopup;
     });
 
-    const contents = container.querySelectorAll(".theme-window-content");
+    const contents = container.querySelectorAll(
+      ".window-manager-window-content"
+    );
 
     // Update tab active states and visibility
     allTabs.forEach((tab) => {
@@ -844,9 +875,11 @@ export const DialogManager = {
       }
     });
 
-    const titleElement = container.querySelector(".theme-dialog-title");
-    const tabsBar = container.querySelector(".theme-dialog-tabs");
-    const header = container.querySelector(".theme-dialog-header");
+    const titleElement = container.querySelector(
+      ".window-manager-dialog-title"
+    );
+    const tabsBar = container.querySelector(".window-manager-dialog-tabs");
+    const header = container.querySelector(".window-manager-dialog-header");
     const popoutBtn = container.querySelector(".popout-btn");
 
     if (visibleTabs.length === 1) {
@@ -917,7 +950,9 @@ export const DialogManager = {
 
     // Update the tab title if it exists
     if (windowData.tabElement) {
-      const tabTitleElement = windowData.tabElement.querySelector(".tab-title");
+      const tabTitleElement = windowData.tabElement.querySelector(
+        ".window-manager-tab-title"
+      );
       if (tabTitleElement) {
         tabTitleElement.textContent = newTitle;
       }
@@ -1109,7 +1144,7 @@ export const DialogManager = {
       if (windowsInContainer.length === 0) return;
 
       const dockItem = document.createElement("div");
-      dockItem.className = "theme-dock-item";
+      dockItem.className = "window-manager-dock-item";
       dockItem.draggable = true;
       dockItem.dataset.containerId = containerData.id;
 
@@ -1128,25 +1163,29 @@ export const DialogManager = {
 
       // Drag handlers for reordering
       dockItem.addEventListener("dragstart", (e) => {
-        dockItem.classList.add("dock-item-dragging");
+        dockItem.classList.add("window-manager-dock-item-dragging");
         e.dataTransfer.effectAllowed = "move";
         e.dataTransfer.setData("text/plain", containerData.id);
       });
 
       dockItem.addEventListener("dragend", () => {
-        dockItem.classList.remove("dock-item-dragging");
+        dockItem.classList.remove("window-manager-dock-item-dragging");
         // Remove all drop indicators
-        document.querySelectorAll(".theme-dock-item").forEach((item) => {
-          item.classList.remove(
-            "dock-drop-indicator-before",
-            "dock-drop-indicator-after"
-          );
-        });
+        document
+          .querySelectorAll(".window-manager-dock-item")
+          .forEach((item) => {
+            item.classList.remove(
+              "window-manager-dock-drop-indicator-before",
+              "window-manager-dock-drop-indicator-after"
+            );
+          });
       });
 
       dockItem.addEventListener("dragover", (e) => {
         e.preventDefault();
-        const draggingItem = document.querySelector(".dock-item-dragging");
+        const draggingItem = document.querySelector(
+          ".window-manager-dock-item-dragging"
+        );
         if (!draggingItem || draggingItem === dockItem) return;
 
         // Determine drop position
@@ -1155,33 +1194,37 @@ export const DialogManager = {
         const insertBefore = e.clientX < midX;
 
         // Remove previous indicators
-        document.querySelectorAll(".theme-dock-item").forEach((item) => {
-          item.classList.remove(
-            "dock-drop-indicator-before",
-            "dock-drop-indicator-after"
-          );
-        });
+        document
+          .querySelectorAll(".window-manager-dock-item")
+          .forEach((item) => {
+            item.classList.remove(
+              "window-manager-dock-drop-indicator-before",
+              "window-manager-dock-drop-indicator-after"
+            );
+          });
 
         // Add new indicator
         if (insertBefore) {
-          dockItem.classList.add("dock-drop-indicator-before");
+          dockItem.classList.add("window-manager-dock-drop-indicator-before");
         } else {
-          dockItem.classList.add("dock-drop-indicator-after");
+          dockItem.classList.add("window-manager-dock-drop-indicator-after");
         }
       });
 
       dockItem.addEventListener("dragleave", (e) => {
         if (!dockItem.contains(e.relatedTarget)) {
           dockItem.classList.remove(
-            "dock-drop-indicator-before",
-            "dock-drop-indicator-after"
+            "window-manager-dock-drop-indicator-before",
+            "window-manager-dock-drop-indicator-after"
           );
         }
       });
 
       dockItem.addEventListener("drop", (e) => {
         e.preventDefault();
-        const draggingItem = document.querySelector(".dock-item-dragging");
+        const draggingItem = document.querySelector(
+          ".window-manager-dock-item-dragging"
+        );
         if (!draggingItem || draggingItem === dockItem) return;
 
         // Determine drop position
@@ -1198,8 +1241,8 @@ export const DialogManager = {
 
         // Clean up
         dockItem.classList.remove(
-          "dock-drop-indicator-before",
-          "dock-drop-indicator-after"
+          "window-manager-dock-drop-indicator-before",
+          "window-manager-dock-drop-indicator-after"
         );
       });
 
@@ -1208,7 +1251,7 @@ export const DialogManager = {
   },
 
   makeDraggable(container) {
-    const header = container.querySelector(".theme-dialog-header");
+    const header = container.querySelector(".window-manager-dialog-header");
     let isDragging = false;
     let startX, startY, startLeft, startTop;
     let hasMoved = false;
@@ -1218,8 +1261,8 @@ export const DialogManager = {
 
     const onMouseDown = (e) => {
       if (
-        e.target.closest(".theme-dialog-controls") ||
-        e.target.closest(".theme-dialog-tab")
+        e.target.closest(".window-manager-dialog-controls") ||
+        e.target.closest(".window-manager-dialog-tab")
       )
         return;
 
@@ -1292,7 +1335,7 @@ export const DialogManager = {
             mergeHoverTimer = null;
           }
           if (potentialMergeTarget) {
-            potentialMergeTarget.classList.remove("drop-target");
+            potentialMergeTarget.classList.remove("window-manager-drop-target");
           }
           mergeEnabled = false;
           potentialMergeTarget = foundTarget;
@@ -1302,7 +1345,9 @@ export const DialogManager = {
             mergeHoverTimer = setTimeout(() => {
               mergeEnabled = true;
               if (potentialMergeTarget) {
-                potentialMergeTarget.classList.add("drop-target");
+                potentialMergeTarget.classList.add(
+                  "window-manager-drop-target"
+                );
               }
             }, MERGE_HOVER_DELAY);
           }
@@ -1323,7 +1368,7 @@ export const DialogManager = {
 
         // Remove all merge highlights
         this.containers.forEach((containerData) => {
-          containerData.element.classList.remove("drop-target");
+          containerData.element.classList.remove("window-manager-drop-target");
         });
 
         // Check if we should merge (only if merge was enabled by hovering long enough)
@@ -1501,7 +1546,7 @@ export const DialogManager = {
 
   createResizeHandle(direction) {
     const handle = document.createElement("div");
-    handle.className = `theme-dialog-resize-handle resize-${direction}`;
+    handle.className = `window-manager-dialog-resize-handle resize-${direction}`;
     return handle;
   },
 
@@ -1546,14 +1591,14 @@ export const DialogManager = {
 
 function addDialogStyles() {
   // Check if styles already added
-  if (document.querySelector("#theme-editor-styles")) {
+  if (document.querySelector("#window-manager-styles")) {
     return;
   }
 
   const style = document.createElement("style");
-  style.id = "theme-editor-styles";
+  style.id = "window-manager-styles";
   style.textContent = `
-    .theme-dialog-container {
+    .window-manager-dialog-container {
       position: fixed;
       width: 600px;
       height: 400px;
@@ -1566,12 +1611,12 @@ function addDialogStyles() {
       overflow: visible;
     }
 
-    .theme-dialog-container > .theme-dialog-header,
-    .theme-dialog-container > .theme-dialog-tabs-content {
+    .window-manager-dialog-container > .window-manager-dialog-header,
+    .window-manager-dialog-container > .window-manager-dialog-tabs-content {
       overflow: hidden;
     }
 
-    .theme-dialog-header {
+    .window-manager-dialog-header {
       background: var(--gray13, #696969);
       padding: 8px 8px 0 8px;
       display: flex;
@@ -1582,7 +1627,7 @@ function addDialogStyles() {
       border-radius: 4px 4px 0 0;
     }
 
-    .theme-dialog-title {
+    .window-manager-dialog-title {
       color: var(--gray29, #e8e8e8);
       font-size: 14px;
       font-weight: 500;
@@ -1593,7 +1638,7 @@ function addDialogStyles() {
       padding: 0 7px 8px 7px;
     }
 
-    .theme-dialog-tabs {
+    .window-manager-dialog-tabs {
       display: flex;
       gap: 2px;
       flex: 1;
@@ -1603,20 +1648,20 @@ function addDialogStyles() {
       align-items: flex-end;
     }
     
-    .theme-dialog-tabs.tabs-drop-target {
+    .window-manager-dialog-tabs.window-manager-tabs-window-manager-drop-target {
       background: rgba(var(--turquoise-rgb, 41, 243, 208), 0.1);
     }
 
-    .theme-dialog-tabs::-webkit-scrollbar {
+    .window-manager-dialog-tabs::-webkit-scrollbar {
       height: 4px;
     }
 
-    .theme-dialog-tabs::-webkit-scrollbar-thumb {
+    .window-manager-dialog-tabs::-webkit-scrollbar-thumb {
       background: var(--gray11, #575757);
       border-radius: 2px;
     }
 
-    .theme-dialog-tab {
+    .window-manager-dialog-tab {
       display: flex;
       align-items: center;
       gap: 2px;
@@ -1633,12 +1678,12 @@ function addDialogStyles() {
       position: relative;
     }
 
-    .theme-dialog-tab:hover {
+    .window-manager-dialog-tab:hover {
       background: var(--gray9, #474747);
       color: var(--gray26, #cfcfcf);
     }
 
-    .theme-dialog-tab.active {
+    .window-manager-dialog-tab.active {
       background: var(--gray11, #575757);
       border-bottom: 2px solid var(--turquoise, #29f3d0);
       color: var(--gray29, #e8e8e8);
@@ -1647,14 +1692,14 @@ function addDialogStyles() {
       z-index: 1;
     }
 
-    .theme-dialog-tab .tab-title {
+    .window-manager-dialog-tab .window-manager-tab-title {
       flex: 1;
       margin-right: 10px;
       margin-left: 6px;
     }
 
-    .theme-dialog-tab .tab-popout,
-    .theme-dialog-tab .tab-close {
+    .window-manager-dialog-tab .window-manager-tab-popout,
+    .window-manager-dialog-tab .window-manager-tab-close {
       background: transparent;
       border: none;
       color: var(--gray21, #a8a8a8);
@@ -1671,25 +1716,25 @@ function addDialogStyles() {
       flex-shrink: 0;
     }
 
-    .theme-dialog-tab .tab-popout:hover,
-    .theme-dialog-tab .tab-close:hover {
+    .window-manager-dialog-tab .window-manager-tab-popout:hover,
+    .window-manager-dialog-tab .window-manager-tab-close:hover {
       background: var(--gray11, #575757);
       color: var(--turquoise, #29f3d0);
     }
 
-    .theme-dialog-tab.drop-target-tab {
+    .window-manager-dialog-tab.window-manager-window-manager-drop-target-tab {
       background: rgba(var(--turquoise-rgb, 41, 243, 208), 0.2);
     }
 
-    .theme-dialog-tab.tab-dragging {
+    .window-manager-dialog-tab.window-manager-tab-dragging {
       opacity: 0.5;
     }
 
-    .theme-dialog-tab.drop-indicator-before {
+    .window-manager-dialog-tab.window-manager-drop-indicator-before {
       position: relative;
     }
 
-    .theme-dialog-tab.drop-indicator-before::before {
+    .window-manager-dialog-tab.window-manager-drop-indicator-before::before {
       content: '';
       position: absolute;
       left: -2px;
@@ -1698,14 +1743,14 @@ function addDialogStyles() {
       width: 3px;
       background: var(--turquoise, #29f3d0);
       border-radius: 2px;
-      animation: pulse-indicator 0.6s ease-in-out infinite;
+      animation: window-manager-pulse-indicator 0.6s ease-in-out infinite;
     }
 
-    .theme-dialog-tab.drop-indicator-after {
+    .window-manager-dialog-tab.window-manager-drop-indicator-after {
       position: relative;
     }
 
-    .theme-dialog-tab.drop-indicator-after::after {
+    .window-manager-dialog-tab.window-manager-drop-indicator-after::after {
       content: '';
       position: absolute;
       right: -2px;
@@ -1714,10 +1759,10 @@ function addDialogStyles() {
       width: 3px;
       background: var(--turquoise, #29f3d0);
       border-radius: 2px;
-      animation: pulse-indicator 0.6s ease-in-out infinite;
+      animation: window-manager-pulse-indicator 0.6s ease-in-out infinite;
     }
 
-    @keyframes pulse-indicator {
+    @keyframes window-manager-pulse-indicator {
       0%, 100% {
         opacity: 1;
         transform: scaleY(1);
@@ -1728,27 +1773,27 @@ function addDialogStyles() {
       }
     }
 
-    .theme-dialog-tab[draggable="true"] {
+    .window-manager-dialog-tab[draggable="true"] {
       cursor: grab;
     }
 
-    .theme-dialog-tab[draggable="true"]:active {
+    .window-manager-dialog-tab[draggable="true"]:active {
       cursor: grabbing;
     }
 
-    .theme-dialog-container.drop-target {
+    .window-manager-dialog-container.window-manager-drop-target {
       outline: 2px solid var(--turquoise, #29f3d0);
       outline-offset: -2px;
     }
 
-    .theme-dialog-controls {
+    .window-manager-dialog-controls {
       display: flex;
       gap: 5px;
       margin-left: 10px;
       padding-bottom: 10px;
     }
 
-    .theme-dialog-btn {
+    .window-manager-dialog-btn {
       background: transparent;
       border: none;
       color: var(--gray21, #a8a8a8);
@@ -1765,18 +1810,18 @@ function addDialogStyles() {
       line-height: 1;
     }
 
-    .theme-dialog-btn:hover {
+    .window-manager-dialog-btn:hover {
       background: var(--gray8, #404040);
       color: var(--gray29, #e8e8e8);
     }
 
-    .theme-dialog-tabs-content {
+    .window-manager-dialog-tabs-content {
       flex: 1;
       overflow: hidden;
       position: relative;
     }
 
-    .theme-window-content {
+    .window-manager-window-content {
       position: absolute;
       top: 0;
       left: 0;
@@ -1786,13 +1831,13 @@ function addDialogStyles() {
       color: var(--gray23, #b8b8b8);
     }
 
-    .theme-dialog-resize-handle {
+    .window-manager-dialog-resize-handle {
       position: absolute;
       z-index: 10;
     }
 
     /* Edge handles */
-    .resize-top {
+    .window-manager-resize-top {
       top: -5px;
       left: 0;
       right: 0;
@@ -1800,7 +1845,7 @@ function addDialogStyles() {
       cursor: ns-resize;
     }
 
-    .resize-bottom {
+    .window-manager-resize-bottom {
       bottom: -5px;
       left: 0;
       right: 0;
@@ -1808,7 +1853,7 @@ function addDialogStyles() {
       cursor: ns-resize;
     }
 
-    .resize-left {
+    .window-manager-resize-left {
       top: 0;
       bottom: 0;
       left: -5px;
@@ -1816,7 +1861,7 @@ function addDialogStyles() {
       cursor: ew-resize;
     }
 
-    .resize-right {
+    .window-manager-resize-right {
       top: 0;
       bottom: 0;
       right: -5px;
@@ -1825,7 +1870,7 @@ function addDialogStyles() {
     }
 
     /* Corner handles */
-    .resize-top-left {
+    .window-manager-resize-top-left {
       top: -10px;
       left: -10px;
       width: 20px;
@@ -1833,7 +1878,7 @@ function addDialogStyles() {
       cursor: nwse-resize;
     }
 
-    .resize-top-right {
+    .window-manager-resize-top-right {
       top: -10px;
       right: -10px;
       width: 20px;
@@ -1841,7 +1886,7 @@ function addDialogStyles() {
       cursor: nesw-resize;
     }
 
-    .resize-bottom-left {
+    .window-manager-resize-bottom-left {
       bottom: -10px;
       left: -10px;
       width: 20px;
@@ -1849,7 +1894,7 @@ function addDialogStyles() {
       cursor: nesw-resize;
     }
 
-    .resize-bottom-right {
+    .window-manager-resize-bottom-right {
       bottom: -10px;
       right: -10px;
       width: 20px;
@@ -1857,7 +1902,7 @@ function addDialogStyles() {
       cursor: nwse-resize;
     }
 
-    .theme-minimized-dock {
+    .window-manager-minimized-dock {
       position: fixed;
       bottom: 0px;
       left: 50%;
@@ -1875,7 +1920,7 @@ function addDialogStyles() {
       border-radius: 4px 0 0 0;
     }
 
-    .theme-dock-item {
+    .window-manager-dock-item {
       margin-bottom: -2px;
       border-radius: 2px 2px 0 0;
       padding: 10px 14px;
@@ -1891,7 +1936,7 @@ function addDialogStyles() {
       position: relative;
     }
 
-    .theme-dock-item:hover {
+    .window-manager-dock-item:hover {
       background: var(--gray13, #404040);
       filter: brightness(1.1);
       border-bottom: 4px solid var(--turquoise, #29f3d0);
@@ -1899,19 +1944,19 @@ function addDialogStyles() {
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
     }
 
-    .theme-dock-item[draggable="true"] {
+    .window-manager-dock-item[draggable="true"] {
       cursor: grab;
     }
 
-    .theme-dock-item[draggable="true"]:active {
+    .window-manager-dock-item[draggable="true"]:active {
       cursor: grabbing;
     }
 
-    .theme-dock-item.dock-item-dragging {
+    .window-manager-dock-item.window-manager-dock-item-dragging {
       opacity: 0.5;
     }
 
-    .theme-dock-item.dock-drop-indicator-before::before {
+    .window-manager-dock-item.window-manager-dock-drop-indicator-before::before {
       content: '';
       position: absolute;
       left: -6px;
@@ -1920,10 +1965,10 @@ function addDialogStyles() {
       width: 3px;
       background: var(--turquoise, #29f3d0);
       border-radius: 2px;
-      animation: pulse-indicator 0.6s ease-in-out infinite;
+      animation: window-manager-pulse-indicator 0.6s ease-in-out infinite;
     }
 
-    .theme-dock-item.dock-drop-indicator-after::after {
+    .window-manager-dock-item.window-manager-dock-drop-indicator-after::after {
       content: '';
       position: absolute;
       right: -6px;
@@ -1932,7 +1977,7 @@ function addDialogStyles() {
       width: 3px;
       background: var(--turquoise, #29f3d0);
       border-radius: 2px;
-      animation: pulse-indicator 0.6s ease-in-out infinite;
+      animation: window-manager-pulse-indicator 0.6s ease-in-out infinite;
     }
   `;
 
