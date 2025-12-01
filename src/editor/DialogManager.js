@@ -120,7 +120,7 @@ export const DialogManager = {
 
     // Setup controls
     container.querySelector(".close-btn").addEventListener("click", () => {
-      this.closeContainer(containerId);
+      this.closeContainer(containerId, true);
     });
 
     container.querySelector(".minimize-btn").addEventListener("click", () => {
@@ -1033,13 +1033,13 @@ export const DialogManager = {
     }
   },
 
-  closeContainer(containerId) {
+  closeContainer(containerId, onlyVisible = false) {
     const containerData = this.containers.get(containerId);
     if (!containerData) return;
 
     // Get all windows in this container (including those in popups)
     const windowsInContainer = Array.from(this.windows.values()).filter(
-      (w) => w.containerId === containerId
+      (w) => w.containerId === containerId && (!onlyVisible || !w.isInPopup)
     );
 
     // Close all windows (iterate backwards to avoid issues with collection modification)
