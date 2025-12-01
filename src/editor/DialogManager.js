@@ -1546,7 +1546,7 @@ export const DialogManager = {
 
   createResizeHandle(direction) {
     const handle = document.createElement("div");
-    handle.className = `window-manager-dialog-resize-handle resize-${direction}`;
+    handle.className = `window-manager-dialog-resize-handle window-manager-resize-${direction}`;
     return handle;
   },
 
