@@ -81,6 +81,8 @@ export const DialogManager = {
     id,
     title,
     content,
+    width,
+    height,
     onInit,
     onMinimize,
     onClose,
@@ -94,6 +96,8 @@ export const DialogManager = {
       id,
       title,
       content,
+      width,
+      height,
       onInit,
       onMinimize,
       onClose,
@@ -703,9 +707,10 @@ export const DialogManager = {
     const windowData = this.windows.get(windowId);
     if (!windowData) return;
 
-    // Create a browser popup window
-    const popupWidth = 800;
-    const popupHeight = 600;
+    // Create a browser popup window using custom dimensions or defaults
+    // Validate width/height are positive numbers, fallback to defaults otherwise
+    const popupWidth = (typeof windowData.width === 'number' && windowData.width > 0) ? windowData.width : 800;
+    const popupHeight = (typeof windowData.height === 'number' && windowData.height > 0) ? windowData.height : 600;
     const left = (window.screen.width - popupWidth) / 2;
     const top = (window.screen.height - popupHeight) / 2;
 
