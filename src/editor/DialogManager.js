@@ -262,7 +262,102 @@ export const DialogManager = {
     windowEl.className = "window-manager-window-content";
     windowEl.dataset.windowId = windowData.id;
     windowEl.innerHTML = windowData.content;
+
+    // Prevent events from propagating to the rest of the UI
+    this.setupEventIsolation(windowEl);
+
     return windowEl;
+  },
+
+  setupEventIsolation(element) {
+    // Stop propagation for mouse events
+    const mouseEvents = [
+      "mousedown",
+      "mouseup",
+      "mousemove",
+      "click",
+      "dblclick",
+      "contextmenu",
+      "wheel",
+    ];
+    mouseEvents.forEach((eventType) => {
+      element.addEventListener(
+        eventType,
+        (e) => {
+          e.stopPropagation();
+        },
+        true
+      );
+    });
+
+    // Stop propagation for pointer events
+    const pointerEvents = [
+      "pointerdown",
+      "pointerup",
+      "pointermove",
+      "pointercancel",
+      "pointerenter",
+      "pointerleave",
+      "pointerover",
+      "pointerout",
+    ];
+    pointerEvents.forEach((eventType) => {
+      element.addEventListener(
+        eventType,
+        (e) => {
+          e.stopPropagation();
+        },
+        true
+      );
+    });
+
+    // Stop propagation for keyboard events
+    const keyboardEvents = ["keydown", "keyup", "keypress"];
+    keyboardEvents.forEach((eventType) => {
+      element.addEventListener(
+        eventType,
+        (e) => {
+          e.stopPropagation();
+        },
+        true
+      );
+    });
+
+    // Stop propagation for touch events (for mobile support)
+    const touchEvents = ["touchstart", "touchend", "touchmove", "touchcancel"];
+    touchEvents.forEach((eventType) => {
+      element.addEventListener(
+        eventType,
+        (e) => {
+          e.stopPropagation();
+        },
+        true
+      );
+    });
+
+    // Stop propagation for focus events
+    const focusEvents = ["focus", "blur", "focusin", "focusout"];
+    focusEvents.forEach((eventType) => {
+      element.addEventListener(
+        eventType,
+        (e) => {
+          e.stopPropagation();
+        },
+        true
+      );
+    });
+
+    // Stop propagation for input events
+    const inputEvents = ["input", "change", "select"];
+    inputEvents.forEach((eventType) => {
+      element.addEventListener(
+        eventType,
+        (e) => {
+          e.stopPropagation();
+        },
+        true
+      );
+    });
   },
 
   createTab(windowData, container) {
