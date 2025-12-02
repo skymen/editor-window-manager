@@ -30,6 +30,9 @@ export const DialogManager = {
     this.minimizedDock.className = "window-manager-minimized-dock";
     this.minimizedDock.style.display = "none";
     document.body.appendChild(this.minimizedDock);
+
+    // Prevent events from propagating to the rest of the UI
+    this.setupEventIsolation(this.minimizedDock);
   },
 
   setupWindowResizeListener() {
@@ -179,6 +182,9 @@ export const DialogManager = {
       this.bringContainerToFront(containerId);
     });
 
+    // Prevent events from propagating to the rest of the UI
+    this.setupEventIsolation(container);
+
     // Store container data
     const containerData = {
       id: containerId,
@@ -262,15 +268,10 @@ export const DialogManager = {
     windowEl.className = "window-manager-window-content";
     windowEl.dataset.windowId = windowData.id;
     windowEl.innerHTML = windowData.content;
-
-    // Prevent events from propagating to the rest of the UI
-    this.setupEventIsolation(windowEl);
-
     return windowEl;
   },
 
   setupEventIsolation(element) {
-    // Stop propagation for mouse events
     const mouseEvents = [
       "mousedown",
       "mouseup",
@@ -281,13 +282,11 @@ export const DialogManager = {
       "wheel",
     ];
     mouseEvents.forEach((eventType) => {
-      element.addEventListener(
-        eventType,
-        (e) => {
+      element.addEventListener(eventType, (e) => {
+        if (e.target !== element && !element.contains(e.target)) {
           e.stopPropagation();
-        },
-        true
-      );
+        }
+      });
     });
 
     // Stop propagation for pointer events
@@ -302,61 +301,51 @@ export const DialogManager = {
       "pointerout",
     ];
     pointerEvents.forEach((eventType) => {
-      element.addEventListener(
-        eventType,
-        (e) => {
+      element.addEventListener(eventType, (e) => {
+        if (e.target !== element && element.contains(e.target)) {
           e.stopPropagation();
-        },
-        true
-      );
+        }
+      });
     });
 
     // Stop propagation for keyboard events
     const keyboardEvents = ["keydown", "keyup", "keypress"];
     keyboardEvents.forEach((eventType) => {
-      element.addEventListener(
-        eventType,
-        (e) => {
+      element.addEventListener(eventType, (e) => {
+        if (e.target !== element && !element.contains(e.target)) {
           e.stopPropagation();
-        },
-        true
-      );
+        }
+      });
     });
 
     // Stop propagation for touch events (for mobile support)
     const touchEvents = ["touchstart", "touchend", "touchmove", "touchcancel"];
     touchEvents.forEach((eventType) => {
-      element.addEventListener(
-        eventType,
-        (e) => {
+      element.addEventListener(eventType, (e) => {
+        if (e.target !== element && !element.contains(e.target)) {
           e.stopPropagation();
-        },
-        true
-      );
+        }
+      });
     });
 
     // Stop propagation for focus events
     const focusEvents = ["focus", "blur", "focusin", "focusout"];
     focusEvents.forEach((eventType) => {
-      element.addEventListener(
-        eventType,
-        (e) => {
+      element.addEventListener(eventType, (e) => {
+        if (e.target !== element && !element.contains(e.target)) {
           e.stopPropagation();
-        },
-        true
-      );
+        }
+      });
     });
 
     // Stop propagation for input events
     const inputEvents = ["input", "change", "select"];
     inputEvents.forEach((eventType) => {
-      element.addEventListener(
-        eventType,
-        (e) => {
+      element.addEventListener(eventType, (e) => {
+        if (e.target !== element && !element.contains(e.target)) {
           e.stopPropagation();
-        },
-        true
-      );
+        }
+      });
     });
   },
 
