@@ -115,14 +115,14 @@ export const DialogManager = {
     this.windows.set(id, windowData);
 
     // Each window opens in its own separate container by default
-    const container = this.createNewContainer();
+    const container = this.createNewContainer(null, { width, height });
     this.renderWindowInContainer(windowData, container);
     this.focusWindowInContainer(id, container.dataset.containerId);
 
     return windowData;
   },
 
-  createNewContainer(position = null) {
+  createNewContainer(position = null, dimensions = null) {
     const containerId = `container-${++this.containerIdCounter}`;
 
     const container = document.createElement("div");
@@ -143,6 +143,13 @@ export const DialogManager = {
 
     document.body.appendChild(container);
 
+    // Apply custom dimensions if provided (validate they are positive numbers)
+    const containerWidth = (dimensions && typeof dimensions.width === 'number' && dimensions.width > 0) ? dimensions.width : 600;
+    const containerHeight = (dimensions && typeof dimensions.height === 'number' && dimensions.height > 0) ? dimensions.height : 400;
+    
+    container.style.width = containerWidth + "px";
+    container.style.height = containerHeight + "px";
+
     // Position the container
     if (position) {
       container.style.left = position.left + "px";
@@ -154,9 +161,9 @@ export const DialogManager = {
       const offset =
         (this.containers.size * WINDOW_OFFSET_STEP) % WINDOW_OFFSET_MAX;
       container.style.left =
-        Math.max(0, (viewportWidth - 600) / 2 + offset) + "px";
+        Math.max(0, (viewportWidth - containerWidth) / 2 + offset) + "px";
       container.style.top =
-        Math.max(0, (viewportHeight - 400) / 2 + offset) + "px";
+        Math.max(0, (viewportHeight - containerHeight) / 2 + offset) + "px";
     }
 
     // Setup controls
