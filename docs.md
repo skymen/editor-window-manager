@@ -73,6 +73,8 @@ Create a new window and display it in a new container.
 - `id` (string): Unique identifier for the window
 - `title` (string): Display title for the window
 - `content` (string): HTML content for the window
+- `width` (number, optional): Initial width of the window container in pixels. Defaults to 600.
+- `height` (number, optional): Initial height of the window container in pixels. Defaults to 400.
 - `onInit` (function, optional): Callback function called after window is initialized. Receives the window's DOM element as parameter.
 - `onMinimize` (function, optional): Callback function called when the window is minimized. Receives the window data object as parameter.
 - `onRestore` (function, optional): Callback function called when the window is restored from minimized state. Receives the window data object as parameter.

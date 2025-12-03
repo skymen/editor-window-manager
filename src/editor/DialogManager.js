@@ -144,9 +144,17 @@ export const DialogManager = {
     document.body.appendChild(container);
 
     // Apply custom dimensions if provided (validate they are positive numbers)
-    const containerWidth = (dimensions && typeof dimensions.width === 'number' && dimensions.width > 0) ? dimensions.width : 600;
-    const containerHeight = (dimensions && typeof dimensions.height === 'number' && dimensions.height > 0) ? dimensions.height : 400;
-    
+    const containerWidth =
+      dimensions && typeof dimensions.width === "number" && dimensions.width > 0
+        ? dimensions.width
+        : 600;
+    const containerHeight =
+      dimensions &&
+      typeof dimensions.height === "number" &&
+      dimensions.height > 0
+        ? dimensions.height
+        : 400;
+
     container.style.width = containerWidth + "px";
     container.style.height = containerHeight + "px";
 
@@ -716,8 +724,14 @@ export const DialogManager = {
 
     // Create a browser popup window using custom dimensions or defaults
     // Validate width/height are positive numbers, fallback to defaults otherwise
-    const popupWidth = (typeof windowData.width === 'number' && windowData.width > 0) ? windowData.width : 800;
-    const popupHeight = (typeof windowData.height === 'number' && windowData.height > 0) ? windowData.height : 600;
+    const popupWidth =
+      typeof windowData.width === "number" && windowData.width > 0
+        ? windowData.width
+        : 600;
+    const popupHeight =
+      typeof windowData.height === "number" && windowData.height > 0
+        ? windowData.height
+        : 400;
     const left = (window.screen.width - popupWidth) / 2;
     const top = (window.screen.height - popupHeight) / 2;
 
