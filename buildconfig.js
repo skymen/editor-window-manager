@@ -16,6 +16,7 @@ export const disableTips = false;
 export const disableWarnings = false;
 
 export const publishConfig = {
-  addonUrl: "",
+  addonUrl:
+    "https://www.construct.net/en/make-games/addons/1534/editor-window-manager",
   autoGenReadme: true,
 };
